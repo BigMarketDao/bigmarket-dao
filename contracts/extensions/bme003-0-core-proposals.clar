@@ -18,6 +18,11 @@
 (define-constant err-not-core-team-member (err u3301))
 (define-constant err-sunset-height-reached (err u3302))
 (define-constant err-sunset-height-in-past (err u3303))
+(define-constant err-start-too-soon (err u3304))
+(define-constant err-ends-too-late (err u3305))
+
+(define-constant MIN_PROPOSAL_DELAY u3)       ;; at least 3 blocks in future
+(define-constant MAX_PROPOSAL_DURATION u4380) ;; approx. 1 month
 
 (define-map core-team principal bool)
 
@@ -55,6 +60,9 @@
 	(begin
 		(asserts! (is-core-team-member tx-sender) err-not-core-team-member)
 		(asserts! (or (is-eq (var-get core-team-sunset-height) u0) (< burn-block-height (var-get core-team-sunset-height))) err-sunset-height-reached)
+		;; Bounds enforcement
+		(asserts! (>= (- start-burn-height burn-block-height) MIN_PROPOSAL_DELAY) err-start-too-soon)
+		(asserts! (<= duration MAX_PROPOSAL_DURATION) err-ends-too-late)
 		(contract-call? .bme001-0-proposal-voting add-proposal proposal
 			{
 				start-burn-height: start-burn-height,

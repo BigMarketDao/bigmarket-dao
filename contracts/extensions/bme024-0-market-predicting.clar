@@ -507,8 +507,12 @@
     (treasury (get treasury md))
     (original-sender tx-sender)
 
+    (user-token-list (unwrap! (map-get? token-balances {market-id: market-id, user: tx-sender}) err-user-not-staked))
+    (user-tokens (unwrap! (element-at? user-token-list index-won) err-user-not-staked))
+
     (user-stake-list (unwrap! (map-get? stake-balances {market-id: market-id, user: tx-sender}) err-user-not-staked))
     (user-shares (unwrap! (element-at? user-stake-list index-won) err-user-not-staked))
+
     (stake-list (get stakes md))
     (winning-pool (unwrap! (element-at? stake-list index-won) err-market-not-concluded))
     (total-share-pool (fold + stake-list u0))
@@ -544,7 +548,7 @@
     (map-set token-balances {market-id: market-id, user: tx-sender} (list u0 u0 u0 u0 u0 u0 u0 u0 u0 u0))
     (map-set stake-balances {market-id: market-id, user: tx-sender} (list u0 u0 u0 u0 u0 u0 u0 u0 u0 u0))
     (try! (contract-call? .bme030-0-reputation-token mint tx-sender u6 u2))
-    (print {event: "claim-winnings", market-id: market-id, index-won: index-won, claimer: tx-sender, user-stake: user-shares, refund: net-refund, net: net-refund, marketfee: marketfee, winning-pool: winning-pool, total-pool: total-share-pool})
+    (print {event: "claim-winnings", market-id: market-id, index-won: index-won, claimer: tx-sender, user-tokens: user-tokens, user-shares: user-shares, refund: net-refund, marketfee: marketfee, winning-pool: winning-pool, total-pool: total-share-pool})
     (ok net-refund)
   )
 )
@@ -552,18 +556,20 @@
 (define-read-only (get-expected-payout (market-id uint) (index uint) (user principal))
   (let (
     (md (unwrap-panic (map-get? markets market-id)))
-    (stake-list (get stakes md))
-    (stake-tokens-list (get stake-tokens md))
-    (user-stake-list (unwrap-panic (map-get? stake-balances {market-id: market-id, user: user})))
-    (user-shares (unwrap-panic (element-at? user-stake-list index)))
-    (winning-pool (unwrap-panic (element-at? stake-list index)))
-    (token-pool (fold + stake-tokens-list u0))
+
+    (token-pool (fold + (get stake-tokens md) u0))
+
+    (user-shares-list (unwrap-panic (map-get? stake-balances {market-id: market-id, user: user})))
+    (user-shares (unwrap-panic (element-at? user-shares-list index)))
+
+    (winning-shares-pool (unwrap-panic (element-at? (get stakes md) index)))
+    
     (marketfee-bips (get market-fee-bips md))
-    (gross-refund (if (> winning-pool u0) (/ (* user-shares token-pool) winning-pool) u0))
+    (gross-refund (if (> winning-shares-pool u0) (/ (* user-shares token-pool) winning-shares-pool) u0))
     (marketfee (/ (* gross-refund marketfee-bips) u10000))
     (net-refund (- gross-refund marketfee))
   )
-    (if (and (> user-shares u0) (> winning-pool u0) (> net-refund u0))
+    (if (and (> user-shares u0) (> winning-shares-pool u0) (> net-refund u0))
       (ok { net-refund: net-refund, marketfee: marketfee-bips })
       (err u1) ;; not eligible or payout = 0
     )
