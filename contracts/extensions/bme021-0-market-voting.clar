@@ -241,7 +241,7 @@
       )
 
       ;; Emit an event for the vote
-      (try! (contract-call? .bme030-0-reputation-token mint voter u5 u2))
+      (try! (contract-call? .bme030-0-reputation-token mint voter u3 u7))
       (print {event: "market-vote", market-id: market-id, voter: voter, category-for: category-for, sip18: sip18, amount: amount, prev-market-id: prev-market-id})
 
 		  (contract-call? .bme000-0-governance-token bmg-lock amount voter)
@@ -288,7 +288,7 @@
 		(asserts! (>= burn-block-height (get end-burn-height poll-data)) err-end-burn-height-not-reached)
 		(map-set resolution-polls {market-id: market-id, market: (contract-of market)} (merge poll-data {concluded: true, winning-category: (some winning-category)}))
 		(print {event: "conclude-market-vote", market-id: market-id, winning-category: winning-category, result: result})
-    (try! (contract-call? .bme030-0-reputation-token mint tx-sender u3 u3))
+    (try! (contract-call? .bme030-0-reputation-token mint tx-sender u13 u2))
 		(ok winning-category)
 	)
 )

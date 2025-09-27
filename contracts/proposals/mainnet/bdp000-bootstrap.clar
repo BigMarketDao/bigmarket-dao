@@ -1,7 +1,6 @@
 ;; Title: BDP000 Bootstrap
 ;; Description:
-;; Sets up and configure the DAO
-;; Allowed = ["ST2X0FMCBMBK3F41WVS8PKN75PF9H5ZDRJB7H600B, ST1WBKBD16E10AAX6F3Z54ARM2S1Q4AVRW1CYZVH, ST167Z6WFHMV0FZKFCRNWZ33WTB0DFBCW9M1FW3AY, ST105HCS1RTR7D61EZET8CWNEF24ENEN3V6ARBYBJ, ST3SJD6KV86N90W0MREGRTM1GWXN8Z91PF6W0BQKM"];
+;; Sets up and configure the BigMarket DAO
 
 (impl-trait  'SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z.proposal-trait.proposal-trait)
 
@@ -15,9 +14,7 @@
 				{extension: .bme000-0-governance-token, enabled: true}
 				{extension: .bme001-0-proposal-voting, enabled: true}
 				{extension: .bme003-0-core-proposals, enabled: true}
-				;;{extension: .bme004-0-core-execute, enabled: false}
 				{extension: .bme006-0-treasury, enabled: true}
-				;;{extension: .bme010-0-token-sale, enabled: false}
 				{extension: .bme010-0-liquidity-contribution, enabled: true}
 				{extension: .bme021-0-market-voting, enabled: true}
 				{extension: .bme022-0-market-gating, enabled: true}
@@ -25,62 +22,58 @@
 				{extension: .bme024-0-market-predicting, enabled: true}
 				{extension: .bme030-0-reputation-token, enabled: true}
 				{extension: .bme032-0-scalar-strategy-hedge, enabled: true}
-				{extension: .bme040-0-shares-marketplace, enabled: true}
 			)
 		))
 		;; Set core team members.
-		(try! (contract-call? .bme003-0-core-proposals set-core-team-member 'ST167Z6WFHMV0FZKFCRNWZ33WTB0DFBCW9M1FW3AY true))
-		(try! (contract-call? .bme003-0-core-proposals set-core-team-member 'ST105HCS1RTR7D61EZET8CWNEF24ENEN3V6ARBYBJ true))
-		(try! (contract-call? .bme003-0-core-proposals set-core-team-member 'ST2X0FMCBMBK3F41WVS8PKN75PF9H5ZDRJB7H600B true))
-		(try! (contract-call? .bme003-0-core-proposals set-core-team-member 'ST3SJD6KV86N90W0MREGRTM1GWXN8Z91PF6W0BQKM true))
-
-		;; Set executive team members.
-		;;(try! (contract-call? .bme004-0-core-execute set-executive-team-member 'ST2X0FMCBMBK3F41WVS8PKN75PF9H5ZDRJB7H600B true))
-		;;(try! (contract-call? .bme004-0-core-execute set-executive-team-member 'ST167Z6WFHMV0FZKFCRNWZ33WTB0DFBCW9M1FW3AY true))
-		;;(try! (contract-call? .bme004-0-core-execute set-executive-team-member 'ST105HCS1RTR7D61EZET8CWNEF24ENEN3V6ARBYBJ true))
-		;;(try! (contract-call? .bme004-0-core-execute set-signals-required u2)) ;; signal 2 out of 3.
+		(try! (contract-call? .bme003-0-core-proposals set-core-team-member 'SP22NW0RYCW4GFZRPE8VGJRCKGQMRMMX4903A2TRG true))
+		(try! (contract-call? .bme003-0-core-proposals set-core-team-member 'SPEZD95XQ194X67C1QJW4PHKDG8F5D66ZCT8BY29 true))
+		(try! (contract-call? .bme003-0-core-proposals set-core-team-member 'SP3QT57B9T88KPJ76BAKYTC9HV48QN35HA3XEN6AZ true))
+		(try! (contract-call? .bme003-0-core-proposals set-core-team-member 'SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z true))
 
 		;; configure prediction markets
-		;; allowedCreators = ["ST2X0FMCBMBK3F41WVS8PKN75PF9H5ZDRJB7H600B, ST1WBKBD16E10AAX6F3Z54ARM2S1Q4AVRW1CYZVH, ST167Z6WFHMV0FZKFCRNWZ33WTB0DFBCW9M1FW3AY, ST105HCS1RTR7D61EZET8CWNEF24ENEN3V6ARBYBJ, ST3SJD6KV86N90W0MREGRTM1GWXN8Z91PF6W0BQKM, STQE3J7XMMK0DN0BWJZHGE6B05VDYQRXRNM0T1J8, ST2RNHHQDTHGHPEVX83291K4AQZVGWEJ7WD7SDHD8"];
+		;; Allowed = ["SP22NW0RYCW4GFZRPE8VGJRCKGQMRMMX4903A2TRG", "SPEZD95XQ194X67C1QJW4PHKDG8F5D66ZCT8BY29", "SP3QT57B9T88KPJ76BAKYTC9HV48QN35HA3XEN6AZ", "SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z"];
 		(try! (contract-call? .bme022-0-market-gating set-merkle-root-by-principal .bme024-0-market-predicting 0x9e208b9b0d42a633acf7fd4adc3a24646202c887e476e6f27ecde500ed119587))
 		(try! (contract-call? .bme022-0-market-gating set-merkle-root-by-principal .bme024-0-market-scalar-pyth 0x9e208b9b0d42a633acf7fd4adc3a24646202c887e476e6f27ecde500ed119587))
 		
-		(try! (contract-call? .bme024-0-market-predicting set-resolution-agent 'ST167Z6WFHMV0FZKFCRNWZ33WTB0DFBCW9M1FW3AY))
-		(try! (contract-call? .bme024-0-market-predicting set-dev-fund 'ST16RPMHH96463TP1AFEWZKQ12D7CY57YZGRWJR88))
+		;; Category contract setting
+		(try! (contract-call? .bme024-0-market-predicting set-resolution-agent 'SP3NS9010CQ9AK3M6XN3XD9EHNTDZVGYSMFWZ288Z))
+		(try! (contract-call? .bme024-0-market-predicting set-dev-fund 'SM38XBR119DCN8D3WTBGWYYXC3K8X0FY0F9TSD8AF))
 		(try! (contract-call? .bme024-0-market-predicting set-dao-treasury .bme006-0-treasury))
 		(try! (contract-call? .bme024-0-market-predicting set-creation-gated true))
-		(try! (contract-call? .bme024-0-market-predicting set-allowed-token 'ST2X0FMCBMBK3F41WVS8PKN75PF9H5ZDRJB7H600B.wrapped-stx true))
+		(try! (contract-call? .bme024-0-market-predicting set-allowed-token 'SP22NW0RYCW4GFZRPE8VGJRCKGQMRMMX4903A2TRG.wrapped-stx true))
+		(try! (contract-call? .bme024-0-market-predicting set-allowed-token 'SM3VDXK3WZZSA84XXFKAFAF15NNZX32CTSG82JFQ4.sbtc-token true))
 		(try! (contract-call? .bme024-0-market-predicting set-allowed-token .bme000-0-governance-token true))
-		(try! (contract-call? .bme024-0-market-predicting set-allowed-token 'ST1F7QA2MDF17S807EPA36TSS8AMEFY4KA9TVGWXT.sbtc-token true))
-		(try! (contract-call? .bme024-0-market-predicting set-allowed-token .tusdh true))
-		(try! (contract-call? .bme024-0-market-predicting set-allowed-token .tpepe true))
-		(try! (contract-call? .bme024-0-market-predicting set-market-fee-bips-max u1000))
-		(try! (contract-call? .bme024-0-market-predicting set-token-minimum-seed 'ST2X0FMCBMBK3F41WVS8PKN75PF9H5ZDRJB7H600B.wrapped-stx u100000000))
-		(try! (contract-call? .bme024-0-market-predicting set-token-minimum-seed 'ST2X0FMCBMBK3F41WVS8PKN75PF9H5ZDRJB7H600B.bme000-0-governance-token u100000000))
-		(try! (contract-call? .bme024-0-market-predicting set-token-minimum-seed 'ST2X0FMCBMBK3F41WVS8PKN75PF9H5ZDRJB7H600B.tpepe u100000000))
-		(try! (contract-call? .bme024-0-market-predicting set-token-minimum-seed 'ST2X0FMCBMBK3F41WVS8PKN75PF9H5ZDRJB7H600B.tusdh u100000000))
-		(try! (contract-call? .bme024-0-market-predicting set-token-minimum-seed 'ST1F7QA2MDF17S807EPA36TSS8AMEFY4KA9TVGWXT.sbtc-token u100000000))
+		(try! (contract-call? .bme024-0-market-predicting set-allowed-token .big-play true))
 
-		(try! (contract-call? .bme024-0-market-scalar-pyth set-resolution-agent 'ST167Z6WFHMV0FZKFCRNWZ33WTB0DFBCW9M1FW3AY))
-		(try! (contract-call? .bme024-0-market-scalar-pyth set-dev-fund 'ST16RPMHH96463TP1AFEWZKQ12D7CY57YZGRWJR88))
+		(try! (contract-call? .bme024-0-market-predicting set-market-fee-bips-max u1000))
+		(try! (contract-call? .bme024-0-market-predicting set-token-minimum-seed 'SP22NW0RYCW4GFZRPE8VGJRCKGQMRMMX4903A2TRG.wrapped-stx u50000000))
+		(try! (contract-call? .bme024-0-market-predicting set-token-minimum-seed 'SP22NW0RYCW4GFZRPE8VGJRCKGQMRMMX4903A2TRG.bme000-0-governance-token u50000000))
+		(try! (contract-call? .bme024-0-market-predicting set-token-minimum-seed 'SP22NW0RYCW4GFZRPE8VGJRCKGQMRMMX4903A2TRG.big-play u100000000))
+		(try! (contract-call? .bme024-0-market-predicting set-token-minimum-seed 'SM3VDXK3WZZSA84XXFKAFAF15NNZX32CTSG82JFQ4.sbtc-token u10000))
+
+		;; Scalar contract setting
+		(try! (contract-call? .bme024-0-market-scalar-pyth set-resolution-agent 'SP3NS9010CQ9AK3M6XN3XD9EHNTDZVGYSMFWZ288Z))
+		(try! (contract-call? .bme024-0-market-scalar-pyth set-dev-fund 'SM38XBR119DCN8D3WTBGWYYXC3K8X0FY0F9TSD8AF))
 		(try! (contract-call? .bme024-0-market-scalar-pyth set-dao-treasury .bme006-0-treasury))
 		(try! (contract-call? .bme024-0-market-scalar-pyth set-creation-gated true))
-		(try! (contract-call? .bme024-0-market-scalar-pyth set-allowed-token 'ST2X0FMCBMBK3F41WVS8PKN75PF9H5ZDRJB7H600B.wrapped-stx true))
-		(try! (contract-call? .bme024-0-market-scalar-pyth set-allowed-token 'ST1F7QA2MDF17S807EPA36TSS8AMEFY4KA9TVGWXT.sbtc-token true))
-		(try! (contract-call? .bme024-0-market-scalar-pyth set-allowed-token .tusdh true))
-		(try! (contract-call? .bme024-0-market-scalar-pyth set-allowed-token .tpepe true))
-		;; STXUSD / BTCUSD / SOLUSD / ETHUSD
+		(try! (contract-call? .bme024-0-market-scalar-pyth set-allowed-token 'SP22NW0RYCW4GFZRPE8VGJRCKGQMRMMX4903A2TRG.wrapped-stx true))
+		(try! (contract-call? .bme024-0-market-scalar-pyth set-allowed-token 'SM3VDXK3WZZSA84XXFKAFAF15NNZX32CTSG82JFQ4.sbtc-token true))
+		(try! (contract-call? .bme024-0-market-scalar-pyth set-allowed-token .bme000-0-governance-token true))
+		(try! (contract-call? .bme024-0-market-scalar-pyth set-allowed-token .big-play true))
+		;; STXUSD / BTCUSD / SOLUSD / ETHUSD / SUIUSD / TONUSD
 		(try! (contract-call? .bme024-0-market-scalar-pyth set-price-band-width 0xec7a775f46379b5e943c3526b1c8d54cd49749176b0b98e02dde68d1bd335c17 u2000))
 		(try! (contract-call? .bme024-0-market-scalar-pyth set-price-band-width 0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43 u100))
 		(try! (contract-call? .bme024-0-market-scalar-pyth set-price-band-width 0xef0d8b6fda2ceba41da15d4095d1da392a0d2f8ed0c6c7bc0f4cfac8c280b56d u500))
 		(try! (contract-call? .bme024-0-market-scalar-pyth set-price-band-width 0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace u1000))
+		(try! (contract-call? .bme024-0-market-scalar-pyth set-price-band-width 0x23d7315113f5b1d3ba7a83604c44b94d79f4fd69af77f804fc7f920a6dc65744 u900))
+		(try! (contract-call? .bme024-0-market-scalar-pyth set-price-band-width 0x8963217838ab4cf5cadc172203c1f0b763fbaa45f346d8ee50ba994bbcac3026 u600))
+		
 		
 		(try! (contract-call? .bme024-0-market-scalar-pyth set-market-fee-bips-max u1000))
-		(try! (contract-call? .bme024-0-market-scalar-pyth set-token-minimum-seed 'ST2X0FMCBMBK3F41WVS8PKN75PF9H5ZDRJB7H600B.wrapped-stx u100000000))
-		(try! (contract-call? .bme024-0-market-scalar-pyth set-token-minimum-seed 'ST2X0FMCBMBK3F41WVS8PKN75PF9H5ZDRJB7H600B.bme000-0-governance-token u100000000))
-		(try! (contract-call? .bme024-0-market-scalar-pyth set-token-minimum-seed 'ST2X0FMCBMBK3F41WVS8PKN75PF9H5ZDRJB7H600B.tpepe u100000000))
-		(try! (contract-call? .bme024-0-market-scalar-pyth set-token-minimum-seed 'ST2X0FMCBMBK3F41WVS8PKN75PF9H5ZDRJB7H600B.tusdh u100000000))
-		(try! (contract-call? .bme024-0-market-scalar-pyth set-token-minimum-seed 'ST1F7QA2MDF17S807EPA36TSS8AMEFY4KA9TVGWXT.sbtc-token u100000000))
+		(try! (contract-call? .bme024-0-market-scalar-pyth set-token-minimum-seed 'SP22NW0RYCW4GFZRPE8VGJRCKGQMRMMX4903A2TRG.wrapped-stx u50000000))
+		(try! (contract-call? .bme024-0-market-scalar-pyth set-token-minimum-seed 'SP22NW0RYCW4GFZRPE8VGJRCKGQMRMMX4903A2TRG.bme000-0-governance-token u50000000))
+		(try! (contract-call? .bme024-0-market-scalar-pyth set-token-minimum-seed 'SP22NW0RYCW4GFZRPE8VGJRCKGQMRMMX4903A2TRG.big-play u100000000))
+		(try! (contract-call? .bme024-0-market-scalar-pyth set-token-minimum-seed 'SM3VDXK3WZZSA84XXFKAFAF15NNZX32CTSG82JFQ4.sbtc-token u10000))
 
 		;;(try! (contract-call? .bme010-0-token-sale initialize-ido))
 

@@ -58,7 +58,7 @@
     ;; work of transfer in the market contract
     (try! (contract-call? market transfer-shares market-id outcome seller tx-sender amount token))
     (map-delete share-orders order-key)
-    (try! (contract-call? .bme030-0-reputation-token mint tx-sender u6 u8))
+    (try! (contract-call? .bme030-0-reputation-token mint tx-sender u9 u4))
     (print {event: "fill-share-order", market: (contract-of market), market-id: market-id, outcome: outcome, buyer: tx-sender, seller: seller, amount: amount})
     (ok true)
   )

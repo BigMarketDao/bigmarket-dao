@@ -38,7 +38,7 @@
   (let (
         (user tx-sender)
         (rate (var-get stx-to-bigr-rate))
-        (bigr-earned (* amount rate))
+        (bigr-earned (* (log2 amount) rate))
         (existing (default-to u0 (map-get? stx-contributions {who: user})))
     )
     (asserts! (> amount u0) err-zero-amount)
@@ -50,7 +50,7 @@
     (map-set stx-contributions {who: user} (+ existing amount))
 
     ;; Mint BIGR to the contributor
-    (try! (contract-call? .bme030-0-reputation-token mint user u7 bigr-earned))
+    (try! (contract-call? .bme030-0-reputation-token mint user u4 bigr-earned))
     (print {event: "liquidity_contribution", from: user, amount: amount, bigr: bigr-earned})
     (ok bigr-earned)
   )
