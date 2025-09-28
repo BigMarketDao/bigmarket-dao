@@ -74,12 +74,12 @@
     (try! (is-dao-or-extension))
 
     ;; Set up each stage
-    (map-set ido-stage-details u1 {price: u5, max-supply: u600000000000, tokens-sold: u0, cancelled: false})
-    (map-set ido-stage-details u2 {price: u6, max-supply: u833333000000, tokens-sold: u0, cancelled: false})
-    (map-set ido-stage-details u3 {price: u7, max-supply: u1071429000000, tokens-sold: u0, cancelled: false})
-    (map-set ido-stage-details u4 {price: u8, max-supply: u1250000000000, tokens-sold: u0, cancelled: false})
-    (map-set ido-stage-details u5 {price: u10, max-supply: u1500000000000, tokens-sold: u0, cancelled: false})
-    (map-set ido-stage-details u6 {price: u20, max-supply: u1000000000000, tokens-sold: u0, cancelled: false})
+  (map-set ido-stage-details u1 {price: u5,  max-supply: u6000000000000, tokens-sold: u0, cancelled: false})
+  (map-set ido-stage-details u2 {price: u6,  max-supply: u8333330000000, tokens-sold: u0, cancelled: false})
+  (map-set ido-stage-details u3 {price: u7,  max-supply: u10714290000000, tokens-sold: u0, cancelled: false})
+  (map-set ido-stage-details u4 {price: u8,  max-supply: u12500000000000, tokens-sold: u0, cancelled: false})
+  (map-set ido-stage-details u5 {price: u10, max-supply: u15000000000000, tokens-sold: u0, cancelled: false})
+  (map-set ido-stage-details u6 {price: u20, max-supply: u10000000000000, tokens-sold: u0, cancelled: false})
 
     (print {event: "ido-initialized"})
     (ok true)

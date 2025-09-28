@@ -13,7 +13,7 @@
 (define-constant err-zero-amount (err u5001))
 
 ;; Contract variables
-(define-data-var stx-to-bigr-rate uint u1) ;; Default: 1 STX = 1 BIGR
+(define-data-var stx-to-bigr-rate uint u10) ;; Default: 1 STX = 1 BIGR
 
 (define-map stx-contributions {who: principal} uint)
 
@@ -38,7 +38,7 @@
   (let (
         (user tx-sender)
         (rate (var-get stx-to-bigr-rate))
-        (bigr-earned (* (log2 amount) rate))
+        (bigr-earned (* (sqrti amount) rate))
         (existing (default-to u0 (map-get? stx-contributions {who: user})))
     )
     (asserts! (> amount u0) err-zero-amount)
