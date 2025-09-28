@@ -21,12 +21,12 @@
     )
     (ok {
       price: price,
-      conf: u0,
-      expo: 0,
+      conf: u100,
+      expo: -8,
       ema-price: price,
-      ema-conf: u0,
-      publish-time: u0,
-      prev-publish-time: u0
+      ema-conf: u10,
+      publish-time: u10,
+      prev-publish-time: u9
     })
 ))
 
