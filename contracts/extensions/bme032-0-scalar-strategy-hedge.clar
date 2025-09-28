@@ -17,10 +17,21 @@
 (define-constant err-hedge-not-found (err u32003))
 (define-constant err-token-incorrect (err u32004))
 (define-constant err-pair-not-found (err u32005))
+(define-constant err-cooldown (err u32006))
+(define-constant err-amount-zero (err u32007))
+(define-constant err-slippage (err u32008))
+(define-constant err-invalid-amount (err u32009))
 
 (define-data-var hedge-market-contract principal .bme024-0-market-predicting)
 (define-data-var hedge-scalar-contract principal .bme024-0-market-scalar-pyth)
 (define-data-var hedge-multipliers (list 6 uint) (list u750 u500 u250 u250 u500 u750))
+(define-data-var max-hedge-bips uint u1000)      ;; hard cap per trade = 10% of balance
+(define-data-var max-hedge-abs  uint u0)         ;; optional absolute cap (0 = disabled)
+(define-data-var min-trade      uint u0)         ;; optional minimum trade size (0 = disabled)
+(define-data-var per-market-cooldown uint u144)  ;; ~1 day (tune as needed)
+(define-data-var per-trade-slippage uint u300)   ;; 3% default for hedges (stricter than treasury 5%)
+
+(define-map last-hedge-height {market-id:uint} uint)  ;; anti-replay
 
 (define-map swap-token-pairs (buff 32) {token-in: principal, token-out: principal, token0: principal, token1: principal})
 (define-map hedges
@@ -57,6 +68,24 @@
     (ok true)
   )
 )
+
+(define-public (set-hedge-caps (bips uint) (abs uint))
+  (begin (try! (is-dao-or-extension))
+         (asserts! (<= bips u5000) err-invalid-amount) ;; <=50%
+         (var-set max-hedge-bips bips)
+         (var-set max-hedge-abs  abs)
+         (ok true)))
+
+(define-public (set-hedge-min-trade (min uint))
+  (begin (try! (is-dao-or-extension)) (var-set min-trade min) (ok true)))
+
+(define-public (set-hedge-cooldown (blocks uint))
+  (begin (try! (is-dao-or-extension)) (var-set per-market-cooldown blocks) (ok true)))
+
+(define-public (set-hedge-slippage (bips uint))
+  (begin (try! (is-dao-or-extension))
+         (asserts! (and (>= bips u1) (<= bips u3000)) err-invalid-amount)
+         (var-set per-trade-slippage bips) (ok true)))
 
 (define-public (set-swap-token-pair
   (feed-id (buff 32))
@@ -98,35 +127,63 @@
 	(map-get? swap-token-pairs feed-id)
 )
 
-(define-public (perform-swap-hedge (market-id uint) (predicted-index uint) (feed-id (buff 32)) (token0 <ft-velar-token>) (token1 <ft-velar-token>) (token-in <ft-velar-token>) (token-out <ft-velar-token>))
+(define-public (perform-swap-hedge
+  (market-id uint) (predicted-index uint) (feed-id (buff 32))
+  (token0 <ft-velar-token>) (token1 <ft-velar-token>)
+  (token-in <ft-velar-token>) (token-out <ft-velar-token>)
+)
   (let (
     (pair (unwrap! (map-get? swap-token-pairs feed-id) err-pair-not-found))
     (is-bearish (< predicted-index u3))
-    ;; conditional direction
-    (actual-token-in (if is-bearish token-in token-out))
-    (actual-token-out (if is-bearish token-out token-in))
+    (expected-in  (if is-bearish (get token-in pair)  (get token-out pair)))
+    (expected-out (if is-bearish (get token-out pair) (get token-in pair)))
+    (lh (default-to u0 (map-get? last-hedge-height {market-id: market-id})))
+    (cool (var-get per-market-cooldown))
   )
-    ;; caller must be both an ACTIVE extension and sepecifically the scalar prediction market
+    ;; auth + source contract check
     (try! (is-dao-or-extension))
     (asserts! (is-eq contract-caller (var-get hedge-scalar-contract)) err-unauthorised)
-    ;; Choose direction
-    (try! (contract-call? .bme006-0-treasury swap-tokens
-      token0
-      token1
-      actual-token-in
-      actual-token-out
-      (unwrap! (compute-swap-amount actual-token-in predicted-index) err-unauthorised)
-    ))
-    ;; Store hedge record
-    (map-set hedges
-      market-id
-      {
-        executed: true,
-        feed-id : feed-id 
-      }
+
+    ;; one-shot safety: refuse if this market was already hedged here
+    (asserts! (is-none (map-get? hedges market-id)) err-already-executed)
+
+    ;; cooldown even if another component tries to hedge repeatedly
+    (if (> lh u0)
+      (asserts! (> stacks-block-height (+ lh cool)) err-cooldown)
+      true
     )
-    (print {event: "perform-swap-hedge", market-id: market-id, predicted: predicted-index, feed-id: feed-id})
-    (ok true)
+
+    ;; pair validation: enforce tokens match configured direction
+    (asserts! (is-eq (contract-of token-in)  expected-in)  err-token-incorrect)
+    (asserts! (is-eq (contract-of token-out) expected-out) err-token-incorrect)
+
+    ;; compute bounded amount
+    (let (
+      (balance (unwrap! (contract-call? token-in get-balance .bme006-0-treasury) err-unauthorised))
+      (bips-mult (unwrap! (element-at? (var-get hedge-multipliers) predicted-index) err-token-incorrect)) ;; e.g., 750 = 7.5%
+      (cap-bips (var-get max-hedge-bips))
+      (bips (if (> bips-mult cap-bips) cap-bips bips-mult))
+      (raw (/ (* balance bips) u10000))
+      (abs-cap (var-get max-hedge-abs))
+      (amt (if (and (> abs-cap u0) (> raw abs-cap)) abs-cap raw))
+      (min-size (var-get min-trade))
+    )
+      (asserts! (> amt u0) err-amount-zero)
+      (if (> min-size u0) (asserts! (>= amt min-size) err-amount-zero) true)
+
+      ;; do the swap with stricter slippage than treasury default
+      (let ((slip (var-get per-trade-slippage)))
+        (asserts! (and (>= slip u1) (<= slip u3000)) err-slippage)
+        (try! (contract-call? .bme006-0-treasury swap-tokens-with-slippage
+              token0 token1 token-in token-out amt slip))
+      )
+
+      ;; record hedge + height
+      (map-set hedges market-id {executed: true, feed-id: feed-id})
+      (map-set last-hedge-height {market-id: market-id} stacks-block-height)
+      (print {event:"perform-swap-hedge", market-id: market-id, predicted: predicted-index, feed-id: feed-id, amount: amt})
+      (ok true)
+    )
   )
 )
 

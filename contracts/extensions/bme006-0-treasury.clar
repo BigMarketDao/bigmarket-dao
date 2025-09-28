@@ -18,10 +18,19 @@
 (define-constant err-unauthorised (err u3000))
 (define-constant err-invalid-amount (err u3001))
 
-(define-constant slippage-bips u500)
 (define-constant share-fee-to 'SP1Y5YSTAHZ88XYK1VPDH24GY0HPX5J4JECTMY4A1.univ2-share-fee-to) 
 
 ;; --- Transferable traits
+(define-data-var slippage-bips uint u500) ;; default 5%
+
+(define-public (set-slippage-bips (bips uint))
+  (begin
+    (try! (is-dao-or-extension))
+    (asserts! (and (>= bips u1) (<= bips u3000)) err-invalid-amount) ;; 0.01%..30% bounds
+    (var-set slippage-bips bips)
+    (ok true)
+  )
+)
 
 (define-trait sip009-transferable
 	(
@@ -58,31 +67,41 @@
 ;; --- Internal DAO functions
 
 (define-public (swap-tokens
-		(token0 <ft-velar-token>)
-		(token1 <ft-velar-token>)
-		(token-in <ft-velar-token>)
-		(token-out <ft-velar-token>)
-		(amount uint)
-	)
-	(let (
-			(min-amount (/ (* amount (- u10000 slippage-bips)) u10000))
-		)
-		;; Auth check: must be DAO or approved extension
-		(try! (is-dao-or-extension))
-
-		(asserts! (> amount u0) err-invalid-amount)
-		(asserts! (> amount min-amount) err-invalid-amount)
-
-		;; Call Velar swap
-		(try! (as-contract (contract-call? .univ2-router swap-exact-tokens-for-tokens u0 token0 token1 token-in token-out share-fee-to amount min-amount)))
-
-		(print {event: "swap-tokens", token-in: token-in, token-out: token-out, amount: amount, min-amount: min-amount})
-		(ok true)
-	)
+  (token0 <ft-velar-token>) (token1 <ft-velar-token>)
+  (token-in <ft-velar-token>) (token-out <ft-velar-token>)
+  (amount uint)
+)
+  (let ((bips (var-get slippage-bips))
+        (min-amount (/ (* amount (- u10000 bips)) u10000)))
+    (try! (is-dao-or-extension))
+    (asserts! (> amount u0) err-invalid-amount)
+    (asserts! (> amount min-amount) err-invalid-amount)
+    (try! (as-contract (contract-call? .univ2-router swap-exact-tokens-for-tokens
+           u0 token0 token1 token-in token-out share-fee-to amount min-amount)))
+    (print {event:"swap-tokens", amount:amount, min-amount:min-amount})
+    (ok true)
+  )
+)
+;;entrypoint to pass slippage per trade
+(define-public (swap-tokens-with-slippage
+  (token0 <ft-velar-token>) (token1 <ft-velar-token>)
+  (token-in <ft-velar-token>) (token-out <ft-velar-token>)
+  (amount uint) (slip-bips uint)
+)
+  (let ((min-amount (/ (* amount (- u10000 slip-bips)) u10000)))
+    (try! (is-dao-or-extension))
+    (asserts! (and (>= slip-bips u1) (<= slip-bips u3000)) err-invalid-amount)
+    (asserts! (> amount u0) err-invalid-amount)
+    (asserts! (> amount min-amount) err-invalid-amount)
+    (try! (as-contract (contract-call? .univ2-router swap-exact-tokens-for-tokens
+           u0 token0 token1 token-in token-out share-fee-to amount min-amount)))
+    (print {event:"swap-tokens", amount:amount, min-amount:min-amount, slip-bips:slip-bips})
+    (ok true)
+  )
 )
 
-;; STX
 
+;; STX
 (define-public (stx-transfer (amount uint) (recipient principal) (memo (optional (buff 34))))
 	(begin
 		(try! (is-dao-or-extension))

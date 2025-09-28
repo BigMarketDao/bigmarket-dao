@@ -3,9 +3,9 @@
 ;; Check for latest version: https://github.com/Trust-Machines/stacks-pyth-bridge#latest-version
 ;; Report an issue: https://github.com/Trust-Machines/stacks-pyth-bridge/issues
 
-(use-trait pyth-storage-trait .pyth-traits-v1.storage-trait)
+(use-trait pyth-storage-trait .pyth-traits-v2.storage-trait)
 
-(define-public (read-price-feed (price-feed-id (buff 32)) (pyth-storage-address <pyth-storage-trait>))
+(define-public (get-price (price-feed-id (buff 32)))
   (let (
     (btc-id 0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43)
     (eth-id 0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace)
