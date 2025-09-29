@@ -7,14 +7,13 @@
 ;; BigMarket DAO proposals and extensions.
 ;; The operations vesting schedule and recipients can be updated (see current-key and 
 ;; set-core-team-vesting) up till the first claim. If more recipients are added they 
-;; allocation is proportionally diluted. 
-;; Max token supply is 100M. 
+;; allocation is proportionally diluted.
 
 (impl-trait .governance-token-trait.governance-token-trait)
 (impl-trait 'SP2AKWJYC7BNY18W1XXKPGP0YVEK63QJG4793Z2D4.sip-010-trait-ft-standard.sip-010-trait)
 (impl-trait 'SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z.extension-trait.extension-trait)
 
-(define-fungible-token bmg-token u100000000000000)
+(define-fungible-token bmg-token u100000000000000) ;; 100M
 (define-fungible-token bmg-token-locked)
 
 (define-constant core-team-max-vesting u1500000000000) ;; 15% of total supply (10,000,000 BIG)

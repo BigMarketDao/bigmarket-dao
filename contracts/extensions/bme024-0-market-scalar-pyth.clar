@@ -73,12 +73,21 @@
 (define-constant err-overbuy (err u10034))
 (define-constant err-token-not-configured (err u10035))
 (define-constant err-seed-too-small (err u10036))
-(define-constant err-already-hedged (err u10037))
+(define-constant err-already-hedged (err u10037)) 
 (define-constant err-hedging-disabled (err u10038))
+(define-constant err-insufficient-liquidity (err u11041))
+(define-constant err-arithmetic (err u11043))
 (define-constant err-oracle (err u10039))
 (define-constant err-band-not-set (err u10040))
+(define-constant err-oracle-stale (err u10150))
+(define-constant err-oracle-uncertain (err u10151))
+(define-constant err-oracle-volatile (err u10152))
+(define-constant err-oracle-no-fallback (err u10153))
 
 (define-constant marketplace .bme040-0-shares-marketplace)
+(define-constant MIN_POOL u1)
+(define-constant PYTH_ORACLE .pyth-oracle-v4)
+(define-constant PYTH_STORAGE .pyth-storage-v4)
 
 (define-data-var market-counter uint u0)
 (define-data-var dispute-window-length uint u144)
@@ -93,8 +102,13 @@
 (define-data-var default-hedge-executor principal .bme032-0-scalar-strategy-hedge)
 (define-data-var hedging-enabled bool true)
 
+(define-data-var max-staleness-secs uint u900)  ;; optional defense-in-depth
+(define-data-var max-conf-bips     uint u200)   ;; 2%
+(define-data-var max-move-bips     uint u2000)  ;; 20%
+
 ;; e.g. band-bips = 500 => 5.00%
 (define-map price-band-widths {feed-id: (buff 32)} {band-bips: uint})
+(define-map manual-fallback-price uint uint)
 
 ;; Data structure for each Market
 ;; outcome: winning category
@@ -119,7 +133,8 @@
     hedge-executor: (optional principal),
     hedged: bool,
     price-feed-id: (buff 32), ;; Pyth price feed ID
-    price-outcome: (optional uint)
+    price-outcome: (optional uint),
+    start-price: uint,
   }
 )
 ;; defines the minimum liquidity a market creator needs to provide
@@ -293,7 +308,7 @@
         (market-duration-final (default-to DEFAULT_MARKET_DURATION market-duration))
         (cool-down-final (default-to DEFAULT_COOL_DOWN_PERIOD cool-down-period))
         (current-block burn-block-height)
-        (start-price (unwrap! (get-current-price price-feed-id) err-oracle))
+        (start-price (unwrap! (get-current-price-safe price-feed-id) err-oracle))
         (band-bips (get band-bips (unwrap! (map-get? price-band-widths {feed-id: price-feed-id}) err-band-not-set)))
         (delta (/ (* start-price band-bips) u10000))
         (categories (category-bands start-price delta))
@@ -313,6 +328,9 @@
 
       ;; ensure enough liquidity
       (asserts! (>= seed-amount (unwrap! (map-get? token-minimum-seed {token: (contract-of token)}) err-token-not-configured)) err-seed-too-small)
+      ;; liquidity floor guards (for CPMM safety)
+      (asserts! (>= seed MIN_POOL) err-insufficient-liquidity)
+      (asserts! (>= seed-amount (* num-categories MIN_POOL)) err-insufficient-liquidity) ;; avoid rounding below floor
 
       ;; Transfer single winning portion of seed to market contract to fund claims
       (try! (contract-call? token transfer seed-amount tx-sender (as-contract tx-sender) none))
@@ -345,7 +363,8 @@
           hedge-executor: hedge-executor,
           hedged: false,
           price-feed-id: price-feed-id,
-          price-outcome: none
+          price-outcome: none,
+          start-price: start-price
         }
       )
       (var-set market-counter (+ new-id u1))
@@ -358,28 +377,40 @@
 ;; Read-only: get current price to buy `amount` shares in a category
 (define-read-only (get-share-cost (market-id uint) (index uint) (amount-shares uint))
   (let (
-    (market-data (unwrap-panic (map-get? markets market-id)))
-    (stake-list (get stakes market-data))
-    (selected-pool (unwrap-panic (element-at? stake-list index)))
-    (total-pool (fold + stake-list u0))
-    (other-pool (- total-pool selected-pool))
-    (cost (unwrap-panic (cpmm-cost selected-pool other-pool amount-shares)))
-    (max-purchase (if (> other-pool u0) (- other-pool u1) u0))
-  )
+        (market-data (unwrap-panic (map-get? markets market-id)))
+        (stake-list (get stakes market-data))
+        (selected-pool (unwrap-panic (element-at? stake-list index)))
+        (total-pool (fold + stake-list u0))
+        (other-pool (- total-pool selected-pool))
+        (max-purchase (if (> other-pool MIN_POOL) (- other-pool MIN_POOL) u0))
+        (cost (unwrap! (cpmm-cost selected-pool other-pool amount-shares) err-arithmetic))
+       )
     (ok { cost: cost, max-purchase: max-purchase })
   )
 )
 
-;; Helper: compute CPMM cost for buying dy shares
+;; Compute the token cost to buy `amount-shares` from `selected-pool`,
+;; given the rest-of-market liquidity `other-pool`.
 (define-private (cpmm-cost (selected-pool uint) (other-pool uint) (amount-shares uint))
-  (if (>= amount-shares other-pool)
-    (err err-overbuy) ;; Prevent underflow before subtracting
+  (begin
+    ;; Both pools must have liquidity
+    (asserts! (> selected-pool u0) err-insufficient-liquidity)
+    (asserts! (> other-pool u0) err-insufficient-liquidity)
+
+    ;; You cannot buy so much that the counter-pool hits 0 or below MIN_POOL
     (let (
-      (new-y (- other-pool amount-shares))
-      (new-x (/ (* selected-pool other-pool) new-y))
-      (cost (- new-x selected-pool))
-    )
-      (ok cost)
+          (max-purchase (if (> other-pool MIN_POOL) (- other-pool MIN_POOL) u0))
+         )
+      (asserts! (<= amount-shares max-purchase) err-overbuy)
+
+      (let (
+            (new-y (- other-pool amount-shares))
+            (numerator (* selected-pool other-pool))
+            (new-x (/ numerator new-y))
+            (cost   (if (> new-x selected-pool) (- new-x selected-pool) u0))
+           )
+        (ok cost)
+      )
     )
   )
 )
@@ -387,32 +418,42 @@
 ;; Read-only: get current price to buy `amount` shares in a category
 (define-read-only (get-max-shares (market-id uint) (index uint) (total-cost uint))
   (let (
-    (fee (/ (* total-cost (var-get dev-fee-bips)) u10000))
-    (cost-of-shares (- total-cost fee))
-    (market-data (unwrap-panic (map-get? markets market-id)))
-    (stake-list (get stakes market-data))
-    (selected-pool (unwrap-panic (element-at? stake-list index)))
-    (total-pool (fold + stake-list u0))
-    (other-pool (- total-pool selected-pool))
-    (shares (unwrap-panic (cpmm-shares selected-pool other-pool cost-of-shares)))
-  )
-    (ok { shares: shares, fee: fee, cost-of-shares: cost-of-shares })
+        (fee (/ (* total-cost (var-get dev-fee-bips)) u10000))
+        (cost-of-shares (if (> total-cost fee) (- total-cost fee) u0))
+        (market-data (unwrap-panic (map-get? markets market-id)))
+        (stake-list (get stakes market-data))
+        (selected-pool (unwrap-panic (element-at? stake-list index)))
+        (total-pool (fold + stake-list u0))
+        (other-pool (- total-pool selected-pool))
+        (max-by-floor (if (> other-pool MIN_POOL) (- other-pool MIN_POOL) u0))
+        (shares (unwrap! (cpmm-shares selected-pool other-pool cost-of-shares) err-arithmetic))
+        (shares-clamped (if (> shares max-by-floor) max-by-floor shares))
+       )
+    (ok { shares: shares-clamped, fee: fee, cost-of-shares: cost-of-shares })
   )
 )
+;; Inverse: given a token `cost`, how many shares can be bought safely?
 (define-private (cpmm-shares (selected-pool uint) (other-pool uint) (cost uint))
-  (if (is-eq cost u0)
-    (ok u0)
-    (let (
-      (numerator (* selected-pool other-pool))
-      (denominator (+ selected-pool cost))
-      (new-y (/ numerator denominator))
-      (shares (- other-pool new-y))
-    )
-      (ok shares)
+  (begin
+    (asserts! (> selected-pool u0) err-insufficient-liquidity)
+    (asserts! (> other-pool u0) err-insufficient-liquidity)
+
+    (if (is-eq cost u0)
+        (ok u0)
+        (let (
+              (denom (+ selected-pool cost))            ;; > selected-pool, non-zero
+              (numerator (* selected-pool other-pool))
+              (new-y (/ numerator denom))               ;; integer division
+              (raw-shares (if (> other-pool new-y) (- other-pool new-y) u0))
+              ;; Enforce floor: clamp to keep MIN_POOL on the other side
+              (max-by-floor (if (> other-pool MIN_POOL) (- other-pool MIN_POOL) u0))
+              (shares (if (> raw-shares max-by-floor) max-by-floor raw-shares))
+             )
+          (ok shares)
+        )
     )
   )
 )
-
 ;; Predict category with CPMM pricing
 (define-public (predict-category (market-id uint) (min-shares uint) (index uint) (token <ft-token>) (max-cost uint))
   (let (
@@ -427,9 +468,10 @@
         (sender-balance (unwrap! (contract-call? token get-balance tx-sender) err-insufficient-balance))
         (fee (/ (* max-cost (var-get dev-fee-bips)) u10000))
         (cost-of-shares (if (> max-cost fee) (- max-cost fee) u0))
+        (max-by-floor (if (> other-pool MIN_POOL) (- other-pool MIN_POOL) u0))
         (amount-shares (unwrap! (cpmm-shares selected-pool other-pool cost-of-shares) err-insufficient-balance))
+        (max-cost-of-shares (unwrap! (cpmm-cost selected-pool other-pool max-by-floor) err-overbuy))
         (max-purchase (if (> other-pool u0) (- other-pool u1) u0))
-        (max-cost-of-shares (unwrap! (cpmm-cost selected-pool other-pool max-purchase) err-overbuy))
         (market-end (+ (get market-start md) (get market-duration md)))
   )
     ;; Validate token and market state
@@ -445,6 +487,8 @@
     (asserts! (<= cost-of-shares max-cost-of-shares) err-overbuy)
     (asserts! (< amount-shares other-pool) err-overbuy)
     (asserts! (>= amount-shares min-shares) err-slippage-too-high)
+  (asserts! (> other-pool u0) err-insufficient-liquidity)
+  (asserts! (<= amount-shares max-by-floor) err-overbuy)
     
     ;; --- Token Transfers ---
     (try! (contract-call? token transfer cost-of-shares tx-sender (as-contract tx-sender) none))
@@ -486,39 +530,55 @@
       (md (unwrap! (map-get? markets market-id) err-market-not-found))
       (market-end (+ (get market-start md) (get market-duration md)))
       (market-close (+ market-end (get cool-down-period md)))
-      (price-feed-id (get price-feed-id md))
-      (parsed-price (unwrap! (get-current-price price-feed-id) err-oracle))
+      (feed-id (get price-feed-id md))
+      (start (get start-price md))
+      (price-oracle (get-current-price-safe feed-id))  ;; uses v4 now
+
+      (price-final
+        (unwrap!
+          (match price-oracle
+            ;; OK branch from oracle
+            p
+              (let (
+                    (delta     (if (> p start) (- p start) (- start p)))
+                    (move-bips (if (> start u0) (/ (* delta u10000) start) u10000))
+                   )
+                (if (<= move-bips (var-get max-move-bips))
+                    (ok p)                          ;; accept oracle price
+                    (get-manual-fallback market-id) ;; too volatile -> fallback
+                )
+              )
+            ;; ERR branch from oracle
+            e
+              (get-manual-fallback market-id)       ;; oracle failed -> fallback
+          )
+          err-oracle-no-fallback   ;; unwrap! error if no manual fallback set
+        )
+      )
+     
+
       (categories (get categories md))
       (first-category (unwrap! (element-at? categories u0) err-category-not-found))
       (winning-category-index
         (get winning-index
           (fold select-winner-pyth categories
-            {current-index: u0, winning-index: none, price: parsed-price}
-          )
-        )
-      )
+            {current-index: u0, winning-index: none, price: price-final})))
       (final-index
         (if (is-some winning-category-index)
             winning-category-index
-            (if (< parsed-price (get min first-category))
-                (some u0)  ;; If price < first category min, assign first category
-                (some (- (len categories) u1))  ;; If price >= last category max, assign last category
-            )
-        )
-      )
+            (if (< price-final (get min first-category))
+                (some u0)
+                (some (- (len categories) u1)))))
     )
     (asserts! (or (is-eq tx-sender (var-get resolution-agent)) (is-eq tx-sender (get creator md))) err-unauthorised)
     (asserts! (>= burn-block-height market-close) err-market-wrong-state)
     (asserts! (is-eq (get resolution-state md) RESOLUTION_OPEN) err-market-wrong-state)
-    (asserts! (is-some final-index) err-category-not-found) ;; Ensure category was assigned
+    (asserts! (is-some final-index) err-category-not-found)
 
-      ;; Store the result
     (map-set markets market-id
       (merge md
-        { outcome: final-index, price-outcome: (some parsed-price), resolution-state: RESOLUTION_RESOLVING, resolution-burn-height: burn-block-height }
-      )
-    )
-    (print {event: "resolve-market", market-id: market-id, outcome: final-index, resolver: tx-sender, resolution-state: RESOLUTION_RESOLVING, resolution-burn-height: burn-block-height, price: parsed-price})
+        { outcome: final-index, price-outcome: (some price-final), resolution-state: RESOLUTION_RESOLVING, resolution-burn-height: burn-block-height }))
+    (print {event: "resolve-market", market-id: market-id, outcome: final-index, price: price-final})
     (ok final-index)
   )
 )
@@ -819,11 +879,26 @@
   )
 )
 
-(define-private (get-current-price (feed-id (buff 32)))
+(define-private (get-current-price-safe (feed-id (buff 32)))
   (let (
-    (price-data (unwrap! (contract-call? .pyth-oracle-v3 read-price-feed feed-id .pyth-storage-v3) err-oracle))
-  )
-    (ok (to-uint (get price price-data)))
+      ;;(d         (unwrap! (contract-call? PYTH_ORACLE get-price feed-id PYTH_STORAGE) err-oracle))
+      (d         (unwrap! (contract-call? .pyth-oracle-v4 get-price feed-id .pyth-storage-v4) err-oracle))
+      (raw-price (to-uint (get price d)))         ;; int
+      (raw-conf  (get conf d))          ;; uint
+      (expo      (get expo d))          ;; int
+      (ts        (get publish-time d))  ;; uint (not optional)
+      (price     (scale-pyth raw-price expo)) ;; -> uint
+      (conf      (scale-pyth raw-conf  expo)) ;; -> uint
+      (conf-bips (if (> price u0) (/ (* conf u10000) price) u10000))
+      (now       (now-seconds))
+    )
+    (begin
+      ;; freshness check in seconds
+      ;;(asserts! (<= (- now ts) (var-get max-staleness-secs)) err-oracle-stale)
+      ;; confidence bound
+      ;;(asserts! (<= conf-bips (var-get max-conf-bips)) err-oracle-uncertain)
+      (ok price)
+    )
   )
 )
 
@@ -841,6 +916,42 @@
         {current-index: (+ current-index u1), winning-index: (some current-index), price: price}
         {current-index: (+ current-index u1), winning-index: (get winning-index acc), price: price}
     )
+  )
+)
+
+(define-public (set-manual-price (market-id uint) (price uint))
+  (begin
+    (try! (is-dao-or-extension))
+    (map-set manual-fallback-price market-id price)
+    (ok true)
+  )
+)
+
+;; Pyth v4 and audit updates 
+
+(define-read-only (abs-int (x int))
+  (if (< x 0) (- 0 x) x)
+)
+
+(define-private (scale-pyth (val uint) (expo int)) ;; -> uint
+  (let (
+        (v-abs (abs-int (to-int val)))
+       )
+    (if (>= expo 0)
+        (to-uint (* v-abs (to-int (pow u10 (to-uint expo)))))
+        (to-uint (/ v-abs (to-int (pow u10 (to-uint (- 0 expo))))))
+    )
+  )
+)
+
+(define-read-only (now-seconds)
+  (unwrap-panic (get-stacks-block-info? time (- stacks-block-height u1)))
+)
+
+(define-private (get-manual-fallback (market-id uint))
+  (match (map-get? manual-fallback-price market-id)
+    price (ok price)
+         (err err-oracle-no-fallback)
   )
 )
 

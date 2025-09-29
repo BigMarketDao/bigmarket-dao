@@ -69,8 +69,18 @@
 (define-constant err-seed-too-small (err u10036))
 (define-constant err-already-hedged (err u10037))
 (define-constant err-hedging-disabled (err u10038))
+(define-constant err-hedge-unauthorised (err u10100))
+(define-constant err-hedge-window (err u10101))
+(define-constant err-hedge-already (err u10102))
+(define-constant err-hedge-bad-prediction (err u10103))
+(define-constant err-hedge-bad-token (err u10104))
+(define-constant err-hedge-exec-mismatch (err u10105))
+(define-constant err-insufficient-liquidity (err u11041))
+(define-constant err-arithmetic (err u11043))
 
 (define-constant marketplace .bme040-0-shares-marketplace)
+(define-constant MIN_POOL u1)
+
 
 (define-data-var market-counter uint u0)
 (define-data-var dispute-window-length uint u144)
@@ -287,6 +297,9 @@
 
       ;; ensure enough liquidity
       (asserts! (>= seed-amount (unwrap! (map-get? token-minimum-seed {token: (contract-of token)}) err-token-not-configured)) err-seed-too-small)
+      ;; liquidity floor guards (for CPMM safety)
+      (asserts! (>= seed MIN_POOL) err-insufficient-liquidity)
+      (asserts! (>= seed-amount (* num-categories MIN_POOL)) err-insufficient-liquidity) ;; avoid rounding below floor
 
       ;; Transfer single winning portion of seed to market contract to fund claims
       (try! (contract-call? token transfer seed-amount tx-sender (as-contract tx-sender) none))
@@ -330,28 +343,40 @@
 ;; Read-only: get current price to buy `amount` shares in a category
 (define-read-only (get-share-cost (market-id uint) (index uint) (amount-shares uint))
   (let (
-    (market-data (unwrap-panic (map-get? markets market-id)))
-    (stake-list (get stakes market-data))
-    (selected-pool (unwrap-panic (element-at? stake-list index)))
-    (total-pool (fold + stake-list u0))
-    (other-pool (- total-pool selected-pool))
-    (cost (unwrap-panic (cpmm-cost selected-pool other-pool amount-shares)))
-    (max-purchase (if (> other-pool u0) (- other-pool u1) u0))
-  )
+        (market-data (unwrap-panic (map-get? markets market-id)))
+        (stake-list (get stakes market-data))
+        (selected-pool (unwrap-panic (element-at? stake-list index)))
+        (total-pool (fold + stake-list u0))
+        (other-pool (- total-pool selected-pool))
+        (max-purchase (if (> other-pool MIN_POOL) (- other-pool MIN_POOL) u0))
+        (cost (unwrap! (cpmm-cost selected-pool other-pool amount-shares) err-arithmetic))
+       )
     (ok { cost: cost, max-purchase: max-purchase })
   )
 )
 
-;; Helper: compute CPMM cost for buying dy shares
+;; Compute the token cost to buy `amount-shares` from `selected-pool`,
+;; given the rest-of-market liquidity `other-pool`.
 (define-private (cpmm-cost (selected-pool uint) (other-pool uint) (amount-shares uint))
-  (if (>= amount-shares other-pool)
-    (err err-overbuy) ;; Prevent underflow before subtracting
+  (begin
+    ;; Both pools must have liquidity
+    (asserts! (> selected-pool u0) err-insufficient-liquidity)
+    (asserts! (> other-pool u0) err-insufficient-liquidity)
+
+    ;; You cannot buy so much that the counter-pool hits 0 or below MIN_POOL
     (let (
-      (new-y (- other-pool amount-shares))
-      (new-x (/ (* selected-pool other-pool) new-y))
-      (cost (- new-x selected-pool))
-    )
-      (ok cost)
+          (max-purchase (if (> other-pool MIN_POOL) (- other-pool MIN_POOL) u0))
+         )
+      (asserts! (<= amount-shares max-purchase) err-overbuy)
+
+      (let (
+            (new-y (- other-pool amount-shares))
+            (numerator (* selected-pool other-pool))
+            (new-x (/ numerator new-y))
+            (cost   (if (> new-x selected-pool) (- new-x selected-pool) u0))
+           )
+        (ok cost)
+      )
     )
   )
 )
@@ -359,32 +384,42 @@
 ;; Read-only: get current price to buy `amount` shares in a category
 (define-read-only (get-max-shares (market-id uint) (index uint) (total-cost uint))
   (let (
-    (fee (/ (* total-cost (var-get dev-fee-bips)) u10000))
-    (cost-of-shares (- total-cost fee))
-    (market-data (unwrap-panic (map-get? markets market-id)))
-    (stake-list (get stakes market-data))
-    (selected-pool (unwrap-panic (element-at? stake-list index)))
-    (total-pool (fold + stake-list u0))
-    (other-pool (- total-pool selected-pool))
-    (shares (unwrap-panic (cpmm-shares selected-pool other-pool cost-of-shares)))
-  )
-    (ok { shares: shares, fee: fee, cost-of-shares: cost-of-shares })
+        (fee (/ (* total-cost (var-get dev-fee-bips)) u10000))
+        (cost-of-shares (if (> total-cost fee) (- total-cost fee) u0))
+        (market-data (unwrap-panic (map-get? markets market-id)))
+        (stake-list (get stakes market-data))
+        (selected-pool (unwrap-panic (element-at? stake-list index)))
+        (total-pool (fold + stake-list u0))
+        (other-pool (- total-pool selected-pool))
+        (max-by-floor (if (> other-pool MIN_POOL) (- other-pool MIN_POOL) u0))
+        (shares (unwrap! (cpmm-shares selected-pool other-pool cost-of-shares) err-arithmetic))
+        (shares-clamped (if (> shares max-by-floor) max-by-floor shares))
+       )
+    (ok { shares: shares-clamped, fee: fee, cost-of-shares: cost-of-shares })
   )
 )
+;; Inverse: given a token `cost`, how many shares can be bought safely?
 (define-private (cpmm-shares (selected-pool uint) (other-pool uint) (cost uint))
-  (if (is-eq cost u0)
-    (ok u0)
-    (let (
-      (numerator (* selected-pool other-pool))
-      (denominator (+ selected-pool cost))
-      (new-y (/ numerator denominator))
-      (shares (- other-pool new-y))
-    )
-      (ok shares)
+  (begin
+    (asserts! (> selected-pool u0) err-insufficient-liquidity)
+    (asserts! (> other-pool u0) err-insufficient-liquidity)
+
+    (if (is-eq cost u0)
+        (ok u0)
+        (let (
+              (denom (+ selected-pool cost))            ;; > selected-pool, non-zero
+              (numerator (* selected-pool other-pool))
+              (new-y (/ numerator denom))               ;; integer division
+              (raw-shares (if (> other-pool new-y) (- other-pool new-y) u0))
+              ;; Enforce floor: clamp to keep MIN_POOL on the other side
+              (max-by-floor (if (> other-pool MIN_POOL) (- other-pool MIN_POOL) u0))
+              (shares (if (> raw-shares max-by-floor) max-by-floor raw-shares))
+             )
+          (ok shares)
+        )
     )
   )
 )
-
 ;; Predict category with CPMM pricing
 (define-public (predict-category (market-id uint) (min-shares uint) (category (string-ascii 64)) (token <ft-token>) (max-cost uint))
   (let (
@@ -400,9 +435,10 @@
         (sender-balance (unwrap! (contract-call? token get-balance tx-sender) err-insufficient-balance))
         (fee (/ (* max-cost (var-get dev-fee-bips)) u10000))
         (cost-of-shares (if (> max-cost fee) (- max-cost fee) u0))
+        (max-by-floor (if (> other-pool MIN_POOL) (- other-pool MIN_POOL) u0))
         (amount-shares (unwrap! (cpmm-shares selected-pool other-pool cost-of-shares) err-insufficient-balance))
+        (max-cost-of-shares (unwrap! (cpmm-cost selected-pool other-pool max-by-floor) err-overbuy))
         (max-purchase (if (> other-pool u0) (- other-pool u1) u0))
-        (max-cost-of-shares (unwrap! (cpmm-cost selected-pool other-pool max-purchase) err-overbuy))
         (market-end (+ (get market-start md) (get market-duration md)))
   )
     ;; Validate token and market state
@@ -418,6 +454,8 @@
     (asserts! (<= cost-of-shares max-cost-of-shares) err-overbuy)
     (asserts! (< amount-shares other-pool) err-overbuy)
     (asserts! (>= amount-shares min-shares) err-slippage-too-high)
+  (asserts! (> other-pool u0) err-insufficient-liquidity)
+  (asserts! (<= amount-shares max-by-floor) err-overbuy)
 
     ;; --- Token Transfers ---
     (try! (contract-call? token transfer cost-of-shares tx-sender (as-contract tx-sender) none))
@@ -475,29 +513,70 @@
   )
 )
 
-(define-public (execute-hedge (market-id uint) (hedge-executor <hedge-trait>) (token0 <ft-velar-token>) (token1 <ft-velar-token>) (token-in <ft-velar-token>) (token-out <ft-velar-token>) )
+(define-public (execute-hedge
+  (market-id uint)
+  (hedge-executor <hedge-trait>)
+  (token0 <ft-velar-token>) (token1 <ft-velar-token>)
+  (token-in <ft-velar-token>) (token-out <ft-velar-token>))
+
   (let (
       (md (unwrap! (map-get? markets market-id) err-market-not-found))
-      (feed-id (get market-data-hash md))
-      (hedged (get hedged md))
       (market-end (+ (get market-start md) (get market-duration md)))
-      (stored-hedge-executor (default-to (var-get default-hedge-executor) (get hedge-executor md)))
-      (predicted (get-biggest-pool-index (get stakes md)))
+      (cool-end (+ market-end (get cool-down-period md)))
+      (hedged (get hedged md))
+      (stored-hexec (default-to (var-get default-hedge-executor) (get hedge-executor md)))
+      (cats (get categories md))
+      (stakes (get stakes md))
+      (predicted (get-biggest-pool-index stakes))
     )
-    ;; check hedging allowed
+
+    ;; 0) Feature flag
     (asserts! (var-get hedging-enabled) err-hedging-disabled)
-    ;; Ensure caller is the same contract that's stored
-    (asserts! (not hedged) err-already-hedged)
-    (asserts! (is-eq (contract-of hedge-executor) stored-hedge-executor) err-unauthorised)
 
-    ;; Time window check
-    (asserts! (>= burn-block-height market-end) err-market-wrong-state)
-    (asserts! (< burn-block-height (+ market-end (get cool-down-period md))) err-market-wrong-state)
+    ;; 1) Auth: restrict who can trigger the hedge (DAO or resolution-agent)
+    (asserts!
+      (or (is-eq tx-sender (var-get resolution-agent))
+          (unwrap! (is-dao-or-extension) err-hedge-unauthorised))
+      err-hedge-unauthorised)
 
-    ;; Compute crowd-predicted outcome
+    ;; 2) Executor authenticity: the provided contract must match stored one exactly
+    (asserts! (is-eq (contract-of hedge-executor) stored-hexec) err-hedge-exec-mismatch)
+
+    ;; 3) Time window: only during cool-down window
+    (asserts! (>= burn-block-height market-end) err-hedge-window)
+    (asserts! (<  burn-block-height cool-end)  err-hedge-window)
+
+    ;; 4) Market must be unresolved + not already hedged
+    (asserts! (not (get concluded md)) err-market-wrong-state)
+    (asserts! (not hedged)            err-hedge-already)
+
+    ;; 5) Validate predicted index against categories length
+    (asserts! (< (get index (fold find-max-helper stakes { max-val: u0, index: u0, current-index: u0 }))
+                 (len cats))
+              err-hedge-bad-prediction)
+
+    ;; 6) Validate all tokens are allowed & consistent
+    (asserts! (is-allowed-token (contract-of token0)) err-hedge-bad-token)
+    (asserts! (is-allowed-token (contract-of token1)) err-hedge-bad-token)
+    (asserts! (is-allowed-token (contract-of token-in)) err-hedge-bad-token)
+    (asserts! (is-allowed-token (contract-of token-out)) err-hedge-bad-token)
+    ;; (optional) require token-in/out to be among token0/token1
+    (asserts!
+      (or (and (is-eq (contract-of token-in)  (contract-of token0))
+               (is-eq (contract-of token-out) (contract-of token1)))
+          (and (is-eq (contract-of token-in)  (contract-of token1))
+               (is-eq (contract-of token-out) (contract-of token0))))
+      err-hedge-bad-token)
+
+    ;; 7) Reentrancy/race guard: set hedged=true before external call.
+    ;; If the call fails, state reverts automatically.
+    (map-set markets market-id (merge md { hedged: true }))
+    (print {event: "hedge-start", market-id: market-id, predicted: predicted, executor: stored-hexec})
+
+    ;; 8) Execute the hedge via the whitelisted strategy
     (try! (contract-call? hedge-executor perform-custom-hedge market-id predicted))
-    (map-set markets market-id (merge md {hedged: true}))
-    (print {event: "hedge-action", market-id: market-id, predicted: predicted})
+
+    (print {event: "hedge-done", market-id: market-id, predicted: predicted})
     (ok predicted)
   )
 )

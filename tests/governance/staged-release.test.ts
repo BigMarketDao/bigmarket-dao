@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest';
 import { Cl } from '@stacks/transactions';
+import { describe, expect, it } from 'vitest';
 import { alice, betty, bob, constructDao, deployer, passProposalByCoreVote, setupSimnet } from '../helpers';
 
 const simnet = await setupSimnet();
@@ -39,9 +39,9 @@ describe('initial distribution', () => {
 		response = await simnet.getDataVar(`${deployer}.bme010-0-token-sale`, 'current-stage-start');
 		//expect(response).toEqual(Cl.uint(0));
 		response = await simnet.getMapEntry(`${deployer}.bme010-0-token-sale`, 'ido-stage-details', Cl.uint(1));
-		expect(response).toMatchObject(Cl.some(Cl.tuple({ price: Cl.uint(5), 'max-supply': Cl.uint(600000000000), 'tokens-sold': Cl.uint(0), cancelled: Cl.bool(false) })));
+		expect(response).toMatchObject(Cl.some(Cl.tuple({ price: Cl.uint(5), 'max-supply': Cl.uint(6000000000000), 'tokens-sold': Cl.uint(0), cancelled: Cl.bool(false) })));
 		response = await simnet.getMapEntry(`${deployer}.bme010-0-token-sale`, 'ido-stage-details', Cl.uint(6));
-		expect(response).toMatchObject(Cl.some(Cl.tuple({ price: Cl.uint(20), 'max-supply': Cl.uint(1000000000000), 'tokens-sold': Cl.uint(0), cancelled: Cl.bool(false) })));
+		expect(response).toMatchObject(Cl.some(Cl.tuple({ price: Cl.uint(20), 'max-supply': Cl.uint(10000000000000), 'tokens-sold': Cl.uint(0), cancelled: Cl.bool(false) })));
 	});
 
 	it('cannot claim before initialisation', async () => {
@@ -71,13 +71,13 @@ describe('initial distribution', () => {
 		let response1 = await simnet.getDataVar(`${deployer}.bme010-0-token-sale`, 'current-stage');
 		expect(response1).toEqual(Cl.uint(1));
 		let data = await simnet.getMapEntry(`${deployer}.bme010-0-token-sale`, 'ido-stage-details', Cl.uint(1));
-		expect(data).toMatchObject(Cl.some(Cl.tuple({ price: Cl.uint(5), 'max-supply': Cl.uint(600000000000), 'tokens-sold': Cl.uint(0), cancelled: Cl.bool(false) })));
+		expect(data).toMatchObject(Cl.some(Cl.tuple({ price: Cl.uint(5), 'max-supply': Cl.uint(6000000000000), 'tokens-sold': Cl.uint(0), cancelled: Cl.bool(false) })));
 
 		response = await passProposalByCoreVote('bdp001-advance-stage-2');
 		response1 = await simnet.getDataVar(`${deployer}.bme010-0-token-sale`, 'current-stage');
 		expect(response1).toEqual(Cl.uint(2));
 		data = await simnet.getMapEntry(`${deployer}.bme010-0-token-sale`, 'ido-stage-details', Cl.uint(2));
-		expect(data).toMatchObject(Cl.some(Cl.tuple({ price: Cl.uint(6), 'max-supply': Cl.uint(833333000000), 'tokens-sold': Cl.uint(0), cancelled: Cl.bool(false) })));
+		expect(data).toMatchObject(Cl.some(Cl.tuple({ price: Cl.uint(6), 'max-supply': Cl.uint(8333330000000), 'tokens-sold': Cl.uint(0), cancelled: Cl.bool(false) })));
 
 		response = await passProposalByCoreVote('bdp001-advance-stage-3');
 		response1 = await simnet.getDataVar(`${deployer}.bme010-0-token-sale`, 'current-stage');
@@ -109,9 +109,9 @@ describe('initial distribution', () => {
 		let response = simnet.callPublicFn(`${deployer}.bme010-0-token-sale`, 'buy-ido-tokens', [Cl.uint(500000000)], alice);
 		expect(response.result).toEqual(Cl.ok(Cl.uint(500000000 * 5)));
 		let data = await simnet.getMapEntry(`${deployer}.bme010-0-token-sale`, 'ido-stage-details', Cl.uint(1));
-		expect(data).toMatchObject(Cl.some(Cl.tuple({ price: Cl.uint(5), 'max-supply': Cl.uint(600000000000), 'tokens-sold': Cl.uint(2500000000), cancelled: Cl.bool(false) })));
+		expect(data).toMatchObject(Cl.some(Cl.tuple({ price: Cl.uint(5), 'max-supply': Cl.uint(6000000000000), 'tokens-sold': Cl.uint(2500000000), cancelled: Cl.bool(false) })));
 
-		response = simnet.callPublicFn(`${deployer}.bme010-0-token-sale`, 'buy-ido-tokens', [Cl.uint(5 * 600000000000)], bob);
+		response = simnet.callPublicFn(`${deployer}.bme010-0-token-sale`, 'buy-ido-tokens', [Cl.uint(5 * 6000000000000)], bob);
 		expect(response.result).toEqual(Cl.error(Cl.uint(5010)));
 	});
 
@@ -125,7 +125,7 @@ describe('initial distribution', () => {
 		let response = simnet.callPublicFn(`${deployer}.bme010-0-token-sale`, 'buy-ido-tokens', [Cl.uint(500000000)], alice);
 		expect(response.result).toEqual(Cl.ok(Cl.uint(500000000 * 5)));
 		let data = await simnet.getMapEntry(`${deployer}.bme010-0-token-sale`, 'ido-stage-details', Cl.uint(1));
-		expect(data).toMatchObject(Cl.some(Cl.tuple({ price: Cl.uint(5), 'max-supply': Cl.uint(600000000000), 'tokens-sold': Cl.uint(2500000000n), cancelled: Cl.bool(false) })));
+		expect(data).toMatchObject(Cl.some(Cl.tuple({ price: Cl.uint(5), 'max-supply': Cl.uint(6000000000000), 'tokens-sold': Cl.uint(2500000000n), cancelled: Cl.bool(false) })));
 
 		response = await passProposalByCoreVote('bdp001-advance-stage-2');
 		response = simnet.callPublicFn(`${deployer}.bme010-0-token-sale`, 'buy-ido-tokens', [Cl.uint(500000000)], alice);

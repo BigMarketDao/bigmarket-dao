@@ -18,8 +18,10 @@
 (define-constant err-claims-zero-rep (err u30007))
 (define-constant err-claims-zero-total (err u30008))
 (define-constant err-invalid-tier (err u30009))
+(define-constant err-too-high (err u30010))
 
 (define-constant max-tier u20)
+(define-constant epoch-duration u1000)
 
 (define-fungible-token bigr-token)
 (define-non-fungible-token bigr-id { token-id: uint, owner: principal })
@@ -29,7 +31,7 @@
 (define-map last-claimed-epoch { who: principal } uint)
 (define-map tier-weights uint uint)
 
-(define-data-var reward-per-epoch uint u1000000000) ;; 1000 BIG (in micro units)
+(define-data-var reward-per-epoch uint u10000000000) ;; 10,000 BIG per epoch (in micro units)
 (define-data-var overall-supply uint u0)
 (define-data-var token-name (string-ascii 32) "BigMarket Reputation Token")
 (define-data-var token-symbol (string-ascii 10) "BIGR")
@@ -43,7 +45,7 @@
 )
 
 (define-read-only (get-epoch)
-	 (/ burn-block-height u4000)
+	 (/ burn-block-height epoch-duration)
 )
 
 (define-read-only (get-last-claimed-epoch (user principal))
@@ -95,6 +97,7 @@
 (define-public (set-reward-per-epoch (new-reward uint))
   (begin
     (try! (is-dao-or-extension))
+    (asserts! (<= new-reward u100000000000) err-too-high) ;; cap at 100k BIG
     (var-set reward-per-epoch new-reward)
     (print { event: "set-reward-per-epoch", new-reward: new-reward })
     (ok true)
@@ -214,7 +217,7 @@
 
 (define-private (claim-big-reward-for-user (user principal)) ;; returns share or u0
   (let (
-        (epoch (/ burn-block-height u4000))
+        (epoch (/ burn-block-height epoch-duration))
         (last (default-to u0 (map-get? last-claimed-epoch { who: user })))
       )
     (if (< last epoch)
@@ -260,7 +263,7 @@
 ;; dynamic weighted totals for user
 (define-read-only (get-weighted-rep (user principal))
   (let (
-        (tiers (list u1 u2 u3 u4 u5 u6 u7 u8 u9 u10))
+    (tiers (list u1 u2 u3 u4 u5 u6 u7 u8 u9 u10 u11 u12 u13 u14 u15 u16 u17 u18 u19 u20))
         (result (fold add-weighted-rep-for-user tiers (tuple (acc u0) (user user))))
   )
     (ok (get acc result))
@@ -281,7 +284,7 @@
 ;; dynamic weighted totals for overall supply pool
 (define-read-only (get-weighted-supply)
   (let (
-    (tiers (list u1 u2 u3 u4 u5 u6 u7 u8 u9 u10))
+    (tiers (list u1 u2 u3 u4 u5 u6 u7 u8 u9 u10 u11 u12 u13 u14 u15 u16 u17 u18 u19 u20))
     (result (fold add-weighted-supply-for-tier tiers u0))
   )
     (ok result)

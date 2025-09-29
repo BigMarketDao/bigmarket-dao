@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest';
 import { Cl } from '@stacks/transactions';
+import { describe, expect, it } from 'vitest';
 import { alice, bob, constructDao, deployer, isValidExtension, passProposalByExecutiveSignals, reputationSft, setupSimnet, tom, treasury } from '../helpers';
 
 const simnet = await setupSimnet();
@@ -130,7 +130,7 @@ describe('claiming', () => {
 		expect(bal.result).toEqual(Cl.ok(Cl.uint(1010 * 2)));
 
 		let response = await simnet.callPublicFn(reputationSft, 'claim-big-reward', [], alice);
-		expect(response.result).toEqual(Cl.ok(Cl.uint(500000000)));
+		expect(response.result).toEqual(Cl.ok(Cl.uint(5000000000)));
 
 		response = await simnet.callPublicFn(reputationSft, 'claim-big-reward', [], alice);
 		expect(response.result).toEqual(Cl.ok(Cl.uint(0)));
@@ -153,10 +153,10 @@ describe('claiming', () => {
 		expect(bal.result).toEqual(Cl.ok(Cl.uint(1010 * 2)));
 
 		let response = await simnet.callPublicFn(reputationSft, 'claim-big-reward', [], alice);
-		expect(response.result).toEqual(Cl.ok(Cl.uint(500000000)));
+		expect(response.result).toEqual(Cl.ok(Cl.uint(5000000000)));
 
 		response = await simnet.callPublicFn(reputationSft, 'claim-big-reward', [], bob);
-		expect(response.result).toEqual(Cl.ok(Cl.uint(500000000)));
+		expect(response.result).toEqual(Cl.ok(Cl.uint(5000000000)));
 	});
 
 	it('alice and bob can claim subsequent epochs', async () => {
@@ -183,30 +183,30 @@ describe('claiming', () => {
 		expect(bal.result).toEqual(Cl.ok(Cl.uint(1010 * 2)));
 
 		let response = await simnet.callPublicFn(reputationSft, 'claim-big-reward', [], alice);
-		expect(response.result).toEqual(Cl.ok(Cl.uint(500000000)));
+		expect(response.result).toEqual(Cl.ok(Cl.uint(5000000000)));
 
 		response = await simnet.callPublicFn(reputationSft, 'claim-big-reward', [], bob);
-		expect(response.result).toEqual(Cl.ok(Cl.uint(500000000)));
+		expect(response.result).toEqual(Cl.ok(Cl.uint(5000000000)));
 
 		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-epoch', [], bob);
-		expect(bal.result).toEqual(Cl.uint(1));
+		expect(bal.result).toEqual(Cl.uint(4));
 
 		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(alice)], bob);
-		expect(bal.result).toEqual(Cl.uint(1));
+		expect(bal.result).toEqual(Cl.uint(4));
 
-		await simnet.mineEmptyBlocks(4000);
+		await simnet.mineEmptyBlocks(1000);
 
 		response = await simnet.callPublicFn(reputationSft, 'claim-big-reward', [], alice);
-		expect(response.result).toEqual(Cl.ok(Cl.uint(500000000)));
+		expect(response.result).toEqual(Cl.ok(Cl.uint(5000000000)));
 
 		response = await simnet.callPublicFn(reputationSft, 'claim-big-reward', [], bob);
-		expect(response.result).toEqual(Cl.ok(Cl.uint(500000000)));
+		expect(response.result).toEqual(Cl.ok(Cl.uint(5000000000)));
 
 		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-epoch', [], bob);
-		expect(bal.result).toEqual(Cl.uint(2));
+		expect(bal.result).toEqual(Cl.uint(5));
 
 		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(alice)], bob);
-		expect(bal.result).toEqual(Cl.uint(2));
+		expect(bal.result).toEqual(Cl.uint(5));
 	});
 
 	it('alice and bobs shares decrease proportionally when tom creates a market', async () => {
@@ -226,9 +226,9 @@ describe('claiming', () => {
 		expect(bal.result).toEqual(Cl.ok(Cl.uint(1010 * 2)));
 
 		let response = await simnet.callPublicFn(reputationSft, 'claim-big-reward', [], alice);
-		expect(response.result).toEqual(Cl.ok(Cl.uint(500000000)));
+		expect(response.result).toEqual(Cl.ok(Cl.uint(5000000000)));
 
 		response = await simnet.callPublicFn(reputationSft, 'claim-big-reward', [], bob);
-		expect(response.result).toEqual(Cl.ok(Cl.uint(500000000)));
+		expect(response.result).toEqual(Cl.ok(Cl.uint(5000000000)));
 	});
 });
