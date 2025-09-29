@@ -1,48 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuites name="vitest tests" tests="2" failures="2" errors="0" time="591.443">
-    <testsuite name="tests/cpmm/scalar.test.ts" timestamp="2025-09-28T16:06:25.278Z" hostname="Mikes-MacBook-Pro.local" tests="2" failures="2" errors="0" skipped="0" time="0.216">
-        <testcase classname="tests/cpmm/scalar.test.ts" name="claiming errors &gt; err too few categories" time="0.116">
-            <failure message="expected { type: 8, …(1) } to deeply equal { type: 7, value: { type: 1, …(1) } }" type="AssertionError">
-AssertionError: expected { type: 8, …(1) } to deeply equal { type: 7, value: { type: 1, …(1) } }
-
-- Expected
-+ Received
-
-  Object {
--   &quot;type&quot;: 7,
-+   &quot;type&quot;: 8,
-    &quot;value&quot;: Object {
-      &quot;type&quot;: 1,
--     &quot;value&quot;: 0n,
-+     &quot;value&quot;: 10039n,
-    },
-  }
-
- ❯ tests/cpmm/scalar.test.ts:41:27
-
-            </failure>
+<testsuites name="vitest tests" tests="7" failures="0" errors="0" time="208.327">
+    <testsuite name="tests/scalar/scalar-market-pyth.test.ts" timestamp="2025-09-29T03:13:52.888Z" hostname="Mikes-MacBook-Pro.local" tests="7" failures="0" errors="0" skipped="0" time="0.778">
+        <testcase classname="tests/scalar/scalar-market-pyth.test.ts" name="claiming errors &gt; create binary market ok" time="0.113">
         </testcase>
-        <testcase classname="tests/cpmm/scalar.test.ts" name="claiming errors &gt; create binary market ok" time="0.099">
-            <failure message="expected { type: 8, …(1) } to deeply equal { type: 7, value: { type: 1, …(1) } }" type="AssertionError">
-AssertionError: expected { type: 8, …(1) } to deeply equal { type: 7, value: { type: 1, …(1) } }
-
-- Expected
-+ Received
-
-  Object {
--   &quot;type&quot;: 7,
-+   &quot;type&quot;: 8,
-    &quot;value&quot;: Object {
-      &quot;type&quot;: 1,
--     &quot;value&quot;: 0n,
-+     &quot;value&quot;: 10039n,
-    },
-  }
-
- ❯ createBinaryMarket tests/cpmm/scalar.test.ts:368:26
- ❯ tests/cpmm/scalar.test.ts:46:3
-
-            </failure>
+        <testcase classname="tests/scalar/scalar-market-pyth.test.ts" name="claiming errors &gt; create ok" time="0.096">
+        </testcase>
+        <testcase classname="tests/scalar/scalar-market-pyth.test.ts" name="claiming errors &gt; create and stake not ok on unknown category" time="0.114">
+        </testcase>
+        <testcase classname="tests/scalar/scalar-market-pyth.test.ts" name="claiming errors &gt; create and stake ok" time="0.109">
+        </testcase>
+        <testcase classname="tests/scalar/scalar-market-pyth.test.ts" name="claiming errors &gt; res agent cannot stake" time="0.108">
+        </testcase>
+        <testcase classname="tests/scalar/scalar-market-pyth.test.ts" name="claiming errors &gt; create and stake spread ok" time="0.112">
+        </testcase>
+        <testcase classname="tests/scalar/scalar-market-pyth.test.ts" name="claiming errors &gt; resolve to category 5 for STX/USD/0" time="0.126">
         </testcase>
     </testsuite>
 </testsuites>

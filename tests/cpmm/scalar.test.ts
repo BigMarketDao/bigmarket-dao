@@ -351,7 +351,7 @@ export async function createBinaryMarket(marketId: number, creator?: string, tok
 		marketScalingCPMM,
 		'create-market',
 		[
-			// Cl.list([Cl.tuple({ min: Cl.uint(100), max: Cl.uint(110) }), Cl.tuple({ min: Cl.uint(110), max: Cl.uint(120) })]),
+			// Cl.list([Cl.tuple({ min: Cl.uint( 100), max: Cl.uint(110) }), Cl.tuple({ min: Cl.uint(110), max: Cl.uint(120) })]),
 			Cl.none(),
 			Cl.principal(token ? token : stxToken),
 			Cl.bufferFromHex(metadataHash()),

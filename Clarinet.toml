@@ -141,6 +141,12 @@ path = 'contracts/proposals/devnet/unit-tests/reputation/bdp001-sft-tokens-1.cla
 clarity_version = 3
 epoch = 3.0
 
+[contracts.bdbp001-set-manual-fallback]
+path = 'contracts/proposals/devnet/unit-tests/bdbp001-set-manual-fallback.clar'
+clarity_version = 3
+epoch = 3.0
+
+
 [contracts.bdp001-sft-tokens-2]
 path = 'contracts/proposals/devnet/unit-tests/reputation/bdp001-sft-tokens-2.clar'
 clarity_version = 3

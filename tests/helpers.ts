@@ -1,8 +1,8 @@
 import { initSimnet } from '@hirosystems/clarinet-sdk';
 import { sha256 } from '@noble/hashes/sha256';
 import { bytesToHex } from '@noble/hashes/utils';
-import { Cl, uintCV } from '@stacks/transactions';
-import { assert, expect } from 'vitest';
+import { Cl } from '@stacks/transactions';
+import { expect } from 'vitest';
 import { contractId2Key, generateMerkleProof, generateMerkleTreeUsingStandardPrincipal } from './gating/gating';
 
 export const simnet = await setupSimnet();

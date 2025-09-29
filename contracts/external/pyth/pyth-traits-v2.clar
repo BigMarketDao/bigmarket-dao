@@ -12,7 +12,7 @@
 
 (define-trait storage-trait
 	(
-		(read ((buff 32)) (response {
+		(read-price-with-staleness-check ((buff 32)) (response {
 			price: int,
 			conf: uint,
 			expo: int,

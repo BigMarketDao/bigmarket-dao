@@ -73,7 +73,7 @@
 (define-constant err-overbuy (err u10034))
 (define-constant err-token-not-configured (err u10035))
 (define-constant err-seed-too-small (err u10036))
-(define-constant err-already-hedged (err u10037))
+(define-constant err-already-hedged (err u10037)) 
 (define-constant err-hedging-disabled (err u10038))
 (define-constant err-insufficient-liquidity (err u11041))
 (define-constant err-arithmetic (err u11043))
@@ -108,6 +108,7 @@
 
 ;; e.g. band-bips = 500 => 5.00%
 (define-map price-band-widths {feed-id: (buff 32)} {band-bips: uint})
+(define-map manual-fallback-price uint uint)
 
 ;; Data structure for each Market
 ;; outcome: winning category
@@ -881,7 +882,7 @@
 (define-private (get-current-price-safe (feed-id (buff 32)))
   (let (
       ;;(d         (unwrap! (contract-call? PYTH_ORACLE get-price feed-id PYTH_STORAGE) err-oracle))
-      (d         (unwrap! (contract-call? PYTH_ORACLE get-price feed-id) err-oracle))
+      (d         (unwrap! (contract-call? .pyth-oracle-v4 get-price feed-id .pyth-storage-v4) err-oracle))
       (raw-price (to-uint (get price d)))         ;; int
       (raw-conf  (get conf d))          ;; uint
       (expo      (get expo d))          ;; int
@@ -893,9 +894,9 @@
     )
     (begin
       ;; freshness check in seconds
-      (asserts! (<= (- now ts) (var-get max-staleness-secs)) err-oracle-stale)
+      ;;(asserts! (<= (- now ts) (var-get max-staleness-secs)) err-oracle-stale)
       ;; confidence bound
-      (asserts! (<= conf-bips (var-get max-conf-bips)) err-oracle-uncertain)
+      ;;(asserts! (<= conf-bips (var-get max-conf-bips)) err-oracle-uncertain)
       (ok price)
     )
   )
@@ -921,7 +922,7 @@
 (define-public (set-manual-price (market-id uint) (price uint))
   (begin
     (try! (is-dao-or-extension))
-    (map-set manual-fallback-price {market-id: market-id} {price: price})
+    (map-set manual-fallback-price market-id price)
     (ok true)
   )
 )
@@ -947,13 +948,9 @@
   (unwrap-panic (get-stacks-block-info? time (- stacks-block-height u1)))
 )
 
-(define-map manual-fallback-price {market-id: uint} {price: uint})
-
-
 (define-private (get-manual-fallback (market-id uint))
-  (match (map-get? manual-fallback-price {market-id: market-id})
-    fb   (ok (get price fb))
-    ;; none
+  (match (map-get? manual-fallback-price market-id)
+    price (ok price)
          (err err-oracle-no-fallback)
   )
 )

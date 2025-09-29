@@ -78,6 +78,11 @@ path = 'contracts/proposals/devnet/unit-tests/bdp001-advance-stage-1.clar'
 clarity_version = 3
 epoch = 3.0
 
+[contracts.bdbp001-set-manual-fallback]
+path = 'contracts/proposals/devnet/unit-tests/bdbp001-set-manual-fallback.clar'
+clarity_version = 3
+epoch = 3.0
+
 [contracts.bdp001-advance-stage-2]
 path = 'contracts/proposals/devnet/unit-tests/bdp001-advance-stage-2.clar'
 clarity_version = 3
