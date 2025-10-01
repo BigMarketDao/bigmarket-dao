@@ -11,9 +11,13 @@
 ;; Constants and Errors
 (define-constant err-unauthorised (err u5000))
 (define-constant err-zero-amount (err u5001))
+(define-constant err-minimum-stx (err u5002))
 
-;; Contract variables
-(define-data-var stx-to-bigr-rate uint u10) ;; Default: 1 STX = 1 BIGR
+(define-constant MICROSTX u1000000)
+
+;; 10,10 -- > 1 STX = 1 BIGR, 10 STX = 3 BIGR, 100 STX = 10 BIGR
+(define-data-var stx-to-bigr-rate uint u10)
+(define-data-var stx-to-bigr-dampener uint u10)
 
 (define-map stx-contributions {who: principal} uint)
 
@@ -23,34 +27,38 @@
 )
 
 ;; DAO can update the reward rate
-(define-public (set-liquidity-reward-rate (new-rate uint))
+(define-public (set-liquidity-reward-params (params {rate: uint, dampener: uint}))
   (begin
     (try! (is-dao-or-extension))
-    (var-set stx-to-bigr-rate new-rate)
+    (var-set stx-to-bigr-rate (get rate params))
+    (var-set stx-to-bigr-dampener (get dampener params))
     (ok true)
   )
 )
-(define-read-only (get-liquidity-reward-rate)
-	(var-get stx-to-bigr-rate)
+;; DAO can update the reward dampener
+(define-read-only (get-liquidity-reward-params)
+  {
+    rate: (var-get stx-to-bigr-rate),
+    dampener: (var-get stx-to-bigr-dampener)
+  }
 )
 
 (define-public (contribute-stx (amount uint))
   (let (
         (user tx-sender)
         (rate (var-get stx-to-bigr-rate))
-        (bigr-earned (* (sqrti amount) rate))
+        (dampener (var-get stx-to-bigr-dampener))
+        (amount-stx (/ amount MICROSTX))
+        (bigr-earned (/ (* (sqrti amount-stx) rate) dampener))
         (existing (default-to u0 (map-get? stx-contributions {who: user})))
-    )
-    (asserts! (> amount u0) err-zero-amount)
+      )
+    (asserts! (>= amount MICROSTX) err-minimum-stx)
 
-    ;; Transfer STX to the DAO treasury
     (try! (stx-transfer? amount user .bme006-0-treasury))
-
-    ;; Record contribution
     (map-set stx-contributions {who: user} (+ existing amount))
 
-    ;; Mint BIGR to the contributor
     (try! (contract-call? .bme030-0-reputation-token mint user u4 bigr-earned))
+
     (print {event: "liquidity_contribution", from: user, amount: amount, bigr: bigr-earned})
     (ok bigr-earned)
   )
