@@ -14,7 +14,7 @@
 (define-data-var token-uri (optional (string-utf8 256)) none)
 
 (define-constant max-faucet-amount u1000000000) ;; 1000.000000 PLAY (since 6 decimals)
-(define-constant seed-amount u10000000000000) ;; 10_000_000.000000 PLAY (for simulating market depth)
+(define-constant seed-amount u10000000000000) ;; 100_000_000.000000 PLAY (for simulating market depth)
 (define-data-var seeded bool false)
 
 (define-public (get-name) (ok (var-get token-name)))

@@ -10,10 +10,8 @@
 ;; directly. The treasury extension merely adds a bit of separation.
 
 (impl-trait 'SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z.extension-trait.extension-trait)
-(use-trait prediction-market-trait .prediction-market-trait.prediction-market-trait)
+(use-trait prediction-market-trait 'SP22NW0RYCW4GFZRPE8VGJRCKGQMRMMX4903A2TRG.prediction-market-trait.prediction-market-trait)
 (use-trait ft-velar-token 'SP2AKWJYC7BNY18W1XXKPGP0YVEK63QJG4793Z2D4.sip-010-trait-ft-standard.sip-010-trait)
-
-;; SP1Y5YSTAHZ88XYK1VPDH24GY0HPX5J4JECTMY4A1.univ2-router
 
 (define-constant err-unauthorised (err u3000))
 (define-constant err-invalid-amount (err u3001))

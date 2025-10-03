@@ -7,8 +7,7 @@
 ;; the treasury with the form/to token contracts and works out the direction bearish/bullish
 ;; of the signal together with the signal strength strong/medium/weak. 
 
-(impl-trait .hedge-trait.hedge-trait)
-;;(use-trait ft-token 'SP2AKWJYC7BNY18W1XXKPGP0YVEK63QJG4793Z2D4.sip-010-trait-ft-standard.sip-010-trait)
+(impl-trait 'SP22NW0RYCW4GFZRPE8VGJRCKGQMRMMX4903A2TRG.hedge-trait.hedge-trait)
 (use-trait ft-velar-token 'SP2AKWJYC7BNY18W1XXKPGP0YVEK63QJG4793Z2D4.sip-010-trait-ft-standard.sip-010-trait)
 
 (define-constant err-unauthorised (err u32000))
