@@ -49,7 +49,6 @@ contract_id = 'SP22NW0RYCW4GFZRPE8VGJRCKGQMRMMX4903A2TRG.governance-token-trait'
 
 [[project.requirements]]
 contract_id = 'SP22NW0RYCW4GFZRPE8VGJRCKGQMRMMX4903A2TRG.prediction-market-trait'
-
 [contracts.bdbp001-set-manual-fallback]
 path = 'contracts/proposals/devnet/unit-tests/bdbp001-set-manual-fallback.clar'
 clarity_version = 3
