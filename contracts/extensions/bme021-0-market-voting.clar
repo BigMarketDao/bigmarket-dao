@@ -241,7 +241,6 @@
       )
 
       ;; Emit an event for the vote
-      (try! (contract-call? .bme030-0-reputation-token mint voter u3 u7))
       (print {event: "market-vote", market-id: market-id, voter: voter, category-for: category-for, sip18: sip18, amount: amount, prev-market-id: prev-market-id})
 
 		  (contract-call? .bme000-0-governance-token bmg-lock amount voter)

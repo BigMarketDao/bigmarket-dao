@@ -11,11 +11,11 @@
 		(try! (contract-call? .bigmarket-dao set-extensions
 			(list
 				{extension: .bme024-0-market-scalar-pyth, enabled: false}
-				{extension: .bme024-1-market-scalar-pyth, enabled: true}
+				{extension: .bme024-0-market-scalar-pyth, enabled: true}
 			)
 		))
 		(try! (contract-call? .bme010-0-liquidity-contribution set-liquidity-reward-rate u1))
-		(try! (contract-call? .bme032-0-scalar-strategy-hedge set-hedge-scalar-contract .bme024-1-market-scalar-pyth))
+		(try! (contract-call? .bme032-0-scalar-strategy-hedge set-hedge-scalar-contract .bme024-0-market-scalar-pyth))
 		(ok true)
 	)
 )

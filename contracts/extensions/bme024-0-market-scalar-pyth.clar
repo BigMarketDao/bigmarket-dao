@@ -29,8 +29,8 @@
 (define-constant MARKET_TYPE u2)
 
 ;; TODO Update resolve-market to reference correct pyth contract and remove local pyth from deployment
-;; PYTH_ORACLE 'ST20M5GABDT6WYJHXBT5CDH4501V1Q65242SPRMXH.pyth-storage-v3
-;; PYTH_ORACLE 'SP3R4F6C1J3JQWWCVZ3S7FRRYPMYG6ZW6RZK31FXY.pyth-storage-v3
+;; PYTH_ORACLE 'STR738QQX1PVTM6WTDF833Z18T8R0ZB791TCNEFM.pyth-storage-v4
+;; PYTH_ORACLE 'SP1CGXWEAMG6P6FT04W66NVGJ7PQWMDAC19R7PJ0Y.pyth-oracle-v4
 
 (define-constant DEFAULT_MARKET_DURATION u144) ;; ~1 day in Bitcoin blocks
 (define-constant DEFAULT_COOL_DOWN_PERIOD u144) ;; ~1 day in Bitcoin blocks
@@ -86,8 +86,6 @@
 
 (define-constant marketplace .bme040-0-shares-marketplace)
 (define-constant MIN_POOL u1)
-(define-constant PYTH_ORACLE .pyth-oracle-v4)
-(define-constant PYTH_STORAGE .pyth-storage-v4)
 
 (define-data-var market-counter uint u0)
 (define-data-var dispute-window-length uint u144)
@@ -517,7 +515,6 @@
     )
       (map-set stake-balances {market-id: market-id, user: tx-sender} user-stake-updated)
       (map-set token-balances {market-id: market-id, user: tx-sender} user-token-updated)
-      (try! (contract-call? .bme030-0-reputation-token mint tx-sender u5 u6))
       (print {event: "market-stake", market-id: market-id, index: index, amount: amount-shares, cost: cost-of-shares, fee: fee, voter: tx-sender, max-cost: max-cost})
       (ok index)
     )
@@ -824,8 +821,6 @@
         )
         (try! (contract-call? token transfer net-price buyer seller none))
       )
-      (try! (contract-call? .bme030-0-reputation-token mint buyer u7 u4))
-      (try! (contract-call? .bme030-0-reputation-token mint seller u8 u4))
       (print {event: "transfer-shares", market-id: market-id, outcome: outcome, buyer: buyer, seller: seller, amount: amount, price: net-price, fee: fee })
       (ok price)
     )
