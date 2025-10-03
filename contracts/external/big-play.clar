@@ -1,6 +1,8 @@
 ;; BigMarket play-token
 ;; A SIP-010 test token with unlimited faucet mint
 ;; Allows users to earn reputation BIGR while playing!
+;; Allows the deployer to mint a pool for market liquidity - ie
+;; allows us to simulate stable CPMM curve behaviour.
 
 (impl-trait 'SP2AKWJYC7BNY18W1XXKPGP0YVEK63QJG4793Z2D4.sip-010-trait-ft-standard.sip-010-trait)
 
@@ -11,7 +13,9 @@
 (define-data-var token-decimals uint u6)
 (define-data-var token-uri (optional (string-utf8 256)) none)
 
-(define-constant max-faucet-amount u10000000000) ;; 10000.000000 PLAY (since 6 decimals)
+(define-constant max-faucet-amount u1000000000) ;; 1000.000000 PLAY (since 6 decimals)
+(define-constant seed-amount u10000000000000) ;; 10_000_000.000000 PLAY (for simulating market depth)
+(define-data-var seeded bool false)
 
 (define-public (get-name) (ok (var-get token-name)))
 (define-public (get-symbol) (ok (var-get token-symbol)))
@@ -43,5 +47,14 @@
   (begin
     (asserts! (<= amount max-faucet-amount) (err u101)) ;; prevent silly mint requests
     (ft-mint? bmg-play amount tx-sender)
+  )
+)
+
+(define-public (seed-once)
+  (begin
+    (asserts! (not (var-get seeded)) (err u201)) 
+    ;; freeze!
+    (var-set seeded true)
+    (ft-mint? bmg-play seed-amount tx-sender)
   )
 )
