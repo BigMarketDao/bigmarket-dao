@@ -1,13 +1,12 @@
-import * as btc from '@scure/btc-signer';
-import { base58check, hex } from '@scure/base';
-import { Cl } from '@stacks/transactions';
-import { schnorr, secp256k1 } from '@noble/curves/secp256k1';
-import { TransactionInputUpdate } from '@scure/btc-signer/psbt';
-import { Signer } from '@scure/btc-signer/transaction';
 import { ripemd160 } from '@noble/hashes/ripemd160';
 import { sha256 } from '@noble/hashes/sha256';
 import { concatBytes } from '@noble/hashes/utils';
+import * as secp256k1 from '@noble/secp256k1';
+import { hex } from '@scure/base';
+import * as btc from '@scure/btc-signer';
+import { Signer } from '@scure/btc-signer/transaction.js';
 import { base58CheckEncode } from '@stacks/encryption';
+import { Cl } from '@stacks/transactions';
 
 export const btcAddress = 'bcrt1q3tj2fr9scwmcw3rq5m6jslva65f2rqjxfrjz47';
 export const REGTEST_NETWORK: typeof btc.NETWORK = {
@@ -38,7 +37,7 @@ export function getWif(version: string) {
 	// Encode to WIF format using Base58Check
 	const wifKey = base58CheckEncode(1, compressedKey);
 
-	console.log('Bitcoin Regtest WIF Private Key:', wifKey);
+	//silence: console.log('Bitcoin Regtest WIF Private Key:', wifKey);
 }
 
 export function buildMockBitcoinSegwitTransaction(): btc.Transaction {
@@ -54,7 +53,7 @@ export function buildMockBitcoinSegwitTransaction(): btc.Transaction {
 		})
 	);
 	const encodedData = hex.encode(data);
-	console.log('buildMockBitcoinSegwitTransaction: encodedData: ' + encodedData);
+	//silence: console.log('buildMockBitcoinSegwitTransaction: encodedData: ' + encodedData);
 	transaction.addOutput({
 		script: btc.Script.encode(['RETURN', hex.decode(encodedData)]),
 		amount: BigInt(0)
@@ -85,7 +84,7 @@ export function buildMockBitcoinSegwitTransaction(): btc.Transaction {
 
 	transaction.signIdx(privateKey, 0);
 	transaction.finalize();
-	console.log('buildMockBitcoinSegwitTransaction: signed: ' + hex.encode(transaction.toBytes(true, true)));
+	//silence: console.log('buildMockBitcoinSegwitTransaction: signed: ' + hex.encode(transaction.toBytes(true, true)));
 
 	return transaction;
 }

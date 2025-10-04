@@ -1,10 +1,10 @@
-import { describe, expect, it } from 'vitest';
-import { boolCV, Cl, listCV, noneCV, principalCV, someCV, stringAsciiCV, uintCV } from '@stacks/transactions';
-import { alice, annie, betty, bob, constructDao, deployer, developer, metadataHash, passProposalByCoreVote, setupSimnet, stxToken, tom, wallace } from '../helpers';
+import { boolCV, Cl, listCV, principalCV, someCV, stringAsciiCV, uintCV } from '@stacks/transactions';
 import { bufferFromHex } from '@stacks/transactions/dist/cl';
-import { resolveUndisputed } from './helpers_staking';
-import { generateMerkleProof, generateMerkleTreeUsingStandardPrincipal, proofToClarityValue } from '../gating/gating';
+import { describe, expect, it } from 'vitest';
 import { createBinaryMarket, createBinaryMarketWithGating, predictCategory } from '../categorical/categorical.test';
+import { generateMerkleProof, generateMerkleTreeUsingStandardPrincipal, proofToClarityValue } from '../gating/gating';
+import { alice, annie, betty, bob, constructDao, deployer, developer, metadataHash, passProposalByCoreVote, setupSimnet, stxToken, tom, wallace } from '../helpers';
+import { resolveUndisputed } from './helpers_staking';
 
 const simnet = await setupSimnet();
 
@@ -57,14 +57,14 @@ describe('check actual claims vs expected for some scenarios', () => {
 		expect(response.result).toEqual(Cl.error(Cl.uint(10006)));
 		response = await simnet.callPublicFn('bme024-0-market-predicting', 'claim-winnings', [Cl.uint(0), Cl.principal(stxToken)], bob);
 		let stxBalances = simnet.getAssetsMap().get('STX'); // Replace if contract's principal
-		console.log('contractBalance: ' + stxBalances?.get(deployer + '.bme024-0-market-predicting'));
+		//silence: console.log('contractBalance: ' + stxBalances?.get(deployer + '.bme024-0-market-predicting'));
 		expect(response.result).toEqual(Cl.error(Cl.uint(10006)));
 		response = await simnet.callPublicFn('bme024-0-market-predicting', 'claim-winnings', [Cl.uint(0), Cl.principal(stxToken)], developer);
 		expect(response.result).toEqual(Cl.ok(Cl.uint(79146n)));
 		response = await simnet.callPublicFn('bme024-0-market-predicting', 'claim-winnings', [Cl.uint(0), Cl.principal(stxToken)], annie);
 		expect(response.result).toEqual(Cl.ok(Cl.uint(79082n)));
 		stxBalances = simnet.getAssetsMap().get('STX'); // Replace if contract's principal
-		console.log('contractBalance: ' + stxBalances?.get(deployer + '.bme024-0-market-predicting'));
+		//silence: console.log('contractBalance: ' + stxBalances?.get(deployer + '.bme024-0-market-predicting'));
 	});
 });
 
@@ -82,14 +82,14 @@ it('Alice stakes 100 STX on YES, Bob stakes 50 STX on YES, Tom stakes 200 STX on
 	expect(response.result).toEqual(Cl.ok(Cl.uint(370014n)));
 	response = await simnet.callPublicFn('bme024-0-market-predicting', 'claim-winnings', [Cl.uint(0), Cl.principal(stxToken)], bob);
 	let stxBalances = simnet.getAssetsMap().get('STX'); // Replace if contract's principal
-	console.log('contractBalance: ' + stxBalances?.get(deployer + '.bme024-0-market-predicting'));
+	//silence: console.log('contractBalance: ' + stxBalances?.get(deployer + '.bme024-0-market-predicting'));
 	expect(response.result).toEqual(Cl.ok(Cl.uint(15453196n)));
 	response = await simnet.callPublicFn('bme024-0-market-predicting', 'claim-winnings', [Cl.uint(0), Cl.principal(stxToken)], developer);
 	expect(response.result).toEqual(Cl.ok(Cl.uint(631444n)));
 	response = await simnet.callPublicFn('bme024-0-market-predicting', 'claim-winnings', [Cl.uint(0), Cl.principal(stxToken)], annie);
 	expect(response.result).toEqual(Cl.ok(Cl.uint(627853n)));
 	stxBalances = simnet.getAssetsMap().get('STX'); // Replace if contract's principal
-	console.log('contractBalance: ' + stxBalances?.get(deployer + '.bme024-0-market-predicting'));
+	//silence: console.log('contractBalance: ' + stxBalances?.get(deployer + '.bme024-0-market-predicting'));
 });
 
 it('Alice stakes 100 STX on YES, Bob stakes 50 STX on YES, Tom stakes 200 STX on NO, Annie stakes 20 STX on NO, market resolves NO', async () => {
@@ -113,20 +113,20 @@ it('Alice stakes 100 STX on YES, Bob stakes 50 STX on YES, Tom stakes 200 STX on
 	expect(response.result).toEqual(Cl.ok(Cl.uint(370014n)));
 	response = await simnet.callPublicFn('bme024-0-market-predicting', 'claim-winnings', [Cl.uint(0), Cl.principal(stxToken)], bob);
 	let stxBalances = simnet.getAssetsMap().get('STX'); // Replace if contract's principal
-	console.log('contractBalance: ' + stxBalances?.get(deployer + '.bme024-0-market-predicting'));
+	//silence: console.log('contractBalance: ' + stxBalances?.get(deployer + '.bme024-0-market-predicting'));
 	expect(response.result).toEqual(Cl.ok(Cl.uint(15453196n)));
 	response = await simnet.callPublicFn('bme024-0-market-predicting', 'claim-winnings', [Cl.uint(0), Cl.principal(stxToken)], developer);
 	expect(response.result).toEqual(Cl.ok(Cl.uint(631444n)));
 	response = await simnet.callPublicFn('bme024-0-market-predicting', 'claim-winnings', [Cl.uint(0), Cl.principal(stxToken)], annie);
 	expect(response.result).toEqual(Cl.ok(Cl.uint(627853n)));
 	stxBalances = simnet.getAssetsMap().get('STX'); // Replace if contract's principal
-	console.log('contractBalance: ' + stxBalances?.get(deployer + '.bme024-0-market-predicting'));
+	//silence: console.log('contractBalance: ' + stxBalances?.get(deployer + '.bme024-0-market-predicting'));
 
 	response = await simnet.callPublicFn('bme024-0-market-predicting', 'claim-winnings', [Cl.uint(1), Cl.principal(stxToken)], alice);
 	expect(response.result).toEqual(Cl.ok(Cl.uint(371n)));
 	response = await simnet.callPublicFn('bme024-0-market-predicting', 'claim-winnings', [Cl.uint(1), Cl.principal(stxToken)], bob);
 	stxBalances = simnet.getAssetsMap().get('STX'); // Replace if contract's principal
-	console.log('contractBalance: ' + stxBalances?.get(deployer + '.bme024-0-market-predicting'));
+	//silence: console.log('contractBalance: ' + stxBalances?.get(deployer + '.bme024-0-market-predicting'));
 	expect(response.result).toEqual(Cl.ok(Cl.uint(15520484n)));
 	response = await simnet.callPublicFn('bme024-0-market-predicting', 'claim-winnings', [Cl.uint(1), Cl.principal(stxToken)], developer);
 	let data = await simnet.callReadOnlyFn('bme024-0-market-predicting', 'get-market-data', [Cl.uint(0)], alice);
@@ -146,11 +146,11 @@ it('Alice stakes 100 STX on YES, Bob stakes 50 STX on YES, Tom stakes 200 STX on
 	data = await simnet.callReadOnlyFn('bme024-0-market-predicting', 'get-stake-balances', [Cl.uint(1), Cl.principal(annie)], annie);
 	expect(data.result).toEqual(Cl.ok(Cl.list([Cl.uint(335608n), Cl.uint(0), Cl.uint(0), Cl.uint(0), Cl.uint(0), Cl.uint(0), Cl.uint(0), Cl.uint(0), Cl.uint(0), Cl.uint(0)])));
 	stxBalances = simnet.getAssetsMap().get('STX'); // Replace if contract's principal
-	console.log('contractBalance 32: ' + stxBalances?.get(deployer + '.bme024-0-market-predicting'));
+	//silence: console.log('contractBalance 32: ' + stxBalances?.get(deployer + '.bme024-0-market-predicting'));
 
 	expect(response.result).toEqual(Cl.ok(Cl.uint(633946n)));
 	response = await simnet.callPublicFn('bme024-0-market-predicting', 'claim-winnings', [Cl.uint(1), Cl.principal(stxToken)], annie);
 	expect(response.result).toEqual(Cl.ok(Cl.uint(630319n)));
 	stxBalances = simnet.getAssetsMap().get('STX'); // Replace if contract's principal
-	console.log('contractBalance 32: ' + stxBalances?.get(deployer + '.bme024-0-market-predicting'));
+	//silence: console.log('contractBalance 32: ' + stxBalances?.get(deployer + '.bme024-0-market-predicting'));
 });

@@ -4,7 +4,7 @@
 
 (impl-trait  'SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z.proposal-trait.proposal-trait)
 
-(define-constant token-supply u100000000000000) ;; 100M in line with aave / 
+(define-constant token-supply u100000000000000)
 
 (define-public (execute (sender principal))
 	(begin

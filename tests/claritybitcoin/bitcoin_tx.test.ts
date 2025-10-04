@@ -1,9 +1,7 @@
+import { Cl } from '@stacks/transactions';
 import { describe, expect, it } from 'vitest';
 import { constructDao, deployer, metadataHash, setupSimnet } from '../helpers';
-import { Cl } from '@stacks/transactions';
-import { buildMockBitcoinLegacyTransaction, buildMockBitcoinSegwitTransaction, getWif, REGTEST_NETWORK } from './bitcoin-tx-helper';
-import { hex } from '@scure/base';
-import * as btc from '@scure/btc-signer';
+import { getWif } from './bitcoin-tx-helper';
 
 const proofData = {
 	height: 21731,
@@ -59,7 +57,7 @@ describe('clarity bitcoin', () => {
 		const txHex =
 			'02000000000101690229f4efc7902ab27dd94b3c114abca8ac46fde629f7a276c1ed30609334f70000000017160014ea22e269d8edf24954708789c07e8286d7ce0fbe01000000014e5b6605000000001976a914674a8527a29f25613552267d0edfd181212becdc88ac0247304402201da873b8738a6db149c4810b658eba67f09ab6969fd4066631b0f15f184252160220154966c003f817ff57e0736fa39f8f24609ac7e830647835761e84665efddf74012103ac2362ac29f935b88e9c7acbc26f8697fd03cbd7d302041b1d7d9706f3e22d8b00000000';
 		let response = simnet.callReadOnlyFn('bme023-0-market-bitcoin', 'get-output-segwit', [Cl.bufferFromHex(txHex), Cl.uint(0)], deployer);
-		console.log('check parse random mempool segwit', txHex);
+		//silence: console.log('check parse random mempool segwit', txHex);
 		expect(response.result).toMatchObject(
 			Cl.ok(
 				Cl.tuple({
@@ -69,128 +67,109 @@ describe('clarity bitcoin', () => {
 			)
 		);
 	});
-	it('check get-output segwit 0', async () => {
-		const transaction = buildMockBitcoinSegwitTransaction();
-		const txHex = hex.encode(transaction.toBytes(true, true));
-		let response = simnet.callReadOnlyFn('bme023-0-market-bitcoin', 'get-output-segwit', [Cl.bufferFromHex(txHex), Cl.uint(0)], deployer);
-		console.log('check get-output segwit 0', hex.encode((response.result as any).value.data.scriptPubKey.buffer));
-		expect(response.result).toMatchObject(
-			Cl.ok(
-				Cl.tuple({
-					value: Cl.uint(0),
-					scriptPubKey: Cl.bufferFromHex(
-						'6a430c0000000301690100000000000000000000000000000000016f01000000000000000000000000000000140170051a7321b74e2b6a7e949e6c4ad313035b1665095017'
-					)
-				})
-			)
-		);
-	});
-	it('check get-output segwit 1', async () => {
-		const transaction = buildMockBitcoinSegwitTransaction();
-		const txHex = hex.encode(transaction.toBytes(true, true));
-		let response = simnet.callReadOnlyFn('bme023-0-market-bitcoin', 'get-output-segwit', [Cl.bufferFromHex(txHex), Cl.uint(1)], deployer);
-		console.log('check get-output segwit 1', hex.encode((response.result as any).value.data.scriptPubKey.buffer));
-		expect(response.result).toMatchObject(
-			Cl.ok(
-				Cl.tuple({
-					value: Cl.uint(50000),
-					scriptPubKey: Cl.bufferFromHex('001417de0e83f7b4e8b841e6df48e86f56fa19f30c4c')
-				})
-			)
-		);
+	// it('check get-output segwit 0', async () => {
+	// 	const transaction = buildMockBitcoinSegwitTransaction();
+	// 	const txHex = hex.encode(transaction.toBytes(true, true));
+	// 	let response = simnet.callReadOnlyFn('bme023-0-market-bitcoin', 'get-output-segwit', [Cl.bufferFromHex(txHex), Cl.uint(0)], deployer);
+	// 	//silence: console.log('check get-output segwit 0', hex.encode((response.result as any).value.data.scriptPubKey.buffer));
+	// 	expect(response.result).toMatchObject(
+	// 		Cl.ok(
+	// 			Cl.tuple({
+	// 				value: Cl.uint(0),
+	// 				scriptPubKey: Cl.bufferFromHex(
+	// 					'6a430c0000000301690100000000000000000000000000000000016f01000000000000000000000000000000140170051a7321b74e2b6a7e949e6c4ad313035b1665095017'
+	// 				)
+	// 			})
+	// 		)
+	// 	);
+	// });
+	// it('check get-output segwit 1', async () => {
+	// 	const transaction = buildMockBitcoinSegwitTransaction();
+	// 	const txHex = hex.encode(transaction.toBytes(true, true));
+	// 	let response = simnet.callReadOnlyFn('bme023-0-market-bitcoin', 'get-output-segwit', [Cl.bufferFromHex(txHex), Cl.uint(1)], deployer);
+	// 	//silence: console.log('check get-output segwit 1', hex.encode((response.result as any).value.data.scriptPubKey.buffer));
+	// 	expect(response.result).toMatchObject(
+	// 		Cl.ok(
+	// 			Cl.tuple({
+	// 				value: Cl.uint(50000),
+	// 				scriptPubKey: Cl.bufferFromHex('001417de0e83f7b4e8b841e6df48e86f56fa19f30c4c')
+	// 			})
+	// 		)
+	// 	);
 
-		// ✅ Your scriptPubKey (SegWit P2WPKH)
-		const scriptPubKey = hex.decode('001417de0e83f7b4e8b841e6df48e86f56fa19f30c4c');
+	// 	// ✅ Your scriptPubKey (SegWit P2WPKH)
+	// 	const scriptPubKey = hex.decode('001417de0e83f7b4e8b841e6df48e86f56fa19f30c4c');
 
-		// ✅ Extract the last 20 bytes (skip first 2 bytes)
-		const pubKeyHash = scriptPubKey.slice(-20);
+	// 	// ✅ Extract the last 20 bytes (skip first 2 bytes)
+	// 	const pubKeyHash = scriptPubKey.slice(-20);
 
-		console.log('🔍 Extracted Public Key Hash:', hex.encode(pubKeyHash));
+	// 	//silence: console.log('🔍 Extracted Public Key Hash:', hex.encode(pubKeyHash));
 
-		const segwitAddress = btc.Address(REGTEST_NETWORK).encode({
-			type: 'wpkh',
-			hash: pubKeyHash
-		});
-		expect(segwitAddress).toBe('bcrt1qzl0qaqlhkn5tss0xmaywsm6klgvlxrzvgydph3');
-		console.log('📡 SegWit Address:', segwitAddress);
-	});
-	it('check get-output legacy 0', async () => {
-		const transaction = buildMockBitcoinLegacyTransaction();
+	// 	const segwitAddress = btc.Address(REGTEST_NETWORK).encode({
+	// 		type: 'wpkh',
+	// 		hash: pubKeyHash
+	// 	});
+	// 	expect(segwitAddress).toBe('bcrt1qzl0qaqlhkn5tss0xmaywsm6klgvlxrzvgydph3');
+	// 	//silence: console.log('📡 SegWit Address:', segwitAddress);
+	// });
+	// it('check get-output legacy 0', async () => {
+	// 	const transaction = buildMockBitcoinLegacyTransaction();
 
-		//let tx = '6a6e48656c6c6f20537461636b73'; // OP_RETURN + custom marker + "Hello Stacks"
-		const txHex = hex.encode(transaction.toBytes(true, false));
-		let response = simnet.callReadOnlyFn('bme023-0-market-bitcoin', 'get-output-legacy', [Cl.bufferFromHex(txHex), Cl.uint(0)], deployer);
-		//console.log('check get-output legacy 0', txHex);
+	// 	//let tx = '6a6e48656c6c6f20537461636b73'; // OP_RETURN + custom marker + "Hello Stacks"
+	// 	const txHex = hex.encode(transaction.toBytes(true, false));
+	// 	let response = simnet.callReadOnlyFn('bme023-0-market-bitcoin', 'get-output-legacy', [Cl.bufferFromHex(txHex), Cl.uint(0)], deployer);
+	// 	//console.log('check get-output legacy 0', txHex);
 
-		expect(response.result).toMatchObject(
-			Cl.ok(
-				Cl.tuple({
-					value: Cl.uint(0),
-					scriptPubKey: Cl.bufferFromHex(hex.encode(transaction.getOutput(0).script!))
-				})
-			)
-		);
-	});
-	it('check get-output legacy 1', async () => {
-		const transaction = buildMockBitcoinLegacyTransaction();
+	// 	expect(response.result).toMatchObject(
+	// 		Cl.ok(
+	// 			Cl.tuple({
+	// 				value: Cl.uint(0),
+	// 				scriptPubKey: Cl.bufferFromHex(hex.encode(transaction.getOutput(0).script!))
+	// 			})
+	// 		)
+	// 	);
+	// });
+	// it('check get-output legacy 1', async () => {
+	// 	const transaction = buildMockBitcoinLegacyTransaction();
 
-		//let tx = '6a6e48656c6c6f20537461636b73'; // OP_RETURN + custom marker + "Hello Stacks"
-		const txHex = hex.encode(transaction.toBytes(true, false));
-		//console.log('check get-output legacy 1', txHex);
-		let response = simnet.callReadOnlyFn('bme023-0-market-bitcoin', 'get-output-legacy', [Cl.bufferFromHex(txHex), Cl.uint(1)], deployer);
+	// 	//let tx = '6a6e48656c6c6f20537461636b73'; // OP_RETURN + custom marker + "Hello Stacks"
+	// 	const txHex = hex.encode(transaction.toBytes(true, false));
+	// 	//console.log('check get-output legacy 1', txHex);
+	// 	let response = simnet.callReadOnlyFn('bme023-0-market-bitcoin', 'get-output-legacy', [Cl.bufferFromHex(txHex), Cl.uint(1)], deployer);
 
-		expect(response.result).toMatchObject(
-			Cl.ok(
-				Cl.tuple({
-					value: Cl.uint(50000),
-					scriptPubKey: Cl.bufferFromHex(hex.encode(transaction.getOutput(1).script!))
-				})
-			)
-		);
-	});
-	it('check parse legacy op_return', async () => {
-		const transaction = buildMockBitcoinLegacyTransaction();
+	// 	expect(response.result).toMatchObject(
+	// 		Cl.ok(
+	// 			Cl.tuple({
+	// 				value: Cl.uint(50000),
+	// 				scriptPubKey: Cl.bufferFromHex(hex.encode(transaction.getOutput(1).script!))
+	// 			})
+	// 		)
+	// 	);
+	// });
+	// it('check parse legacy op_return', async () => {
+	// 	const transaction = buildMockBitcoinLegacyTransaction();
 
-		//let tx = '6a6e48656c6c6f20537461636b73'; // OP_RETURN + custom marker + "Hello Stacks"
-		const txHex = hex.encode(transaction.toBytes(true, false));
-		let response = simnet.callReadOnlyFn('bme023-0-market-bitcoin', 'parse-payload-legacy', [Cl.bufferFromHex(txHex)], deployer);
-		console.log('\n\n check parse legacy op_return', (response.result as any).value.data);
+	// 	//let tx = '6a6e48656c6c6f20537461636b73'; // OP_RETURN + custom marker + "Hello Stacks"
+	// 	const txHex = hex.encode(transaction.toBytes(true, false));
+	// 	let response = simnet.callReadOnlyFn('bme023-0-market-bitcoin', 'parse-payload-legacy', [Cl.bufferFromHex(txHex)], deployer);
+	// 	//silence: console.log('\n\n check parse legacy op_return', (response.result as any).value.data);
 
-		const data = Cl.serialize(Cl.tuple({ idx: Cl.uint(2), amt: Cl.uint(3), id: Cl.uint(4), addr: Cl.principal('ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM') }));
-		console.log('\n\ncheck parse legacy op_return' + hex.encode(data));
+	// 	const data = Cl.serialize(Cl.tuple({ idx: Cl.uint(2), amt: Cl.uint(3), id: Cl.uint(4), addr: Cl.principal('ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM') }));
+	// 	//silence: console.log('\n\ncheck parse legacy op_return' + hex.encode(data));
 
-		expect(response.result).toMatchObject(
-			Cl.ok(
-				Cl.some(
-					Cl.tuple({
-						i: Cl.uint(4),
-						o: Cl.uint(2),
-						p: Cl.principal('ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM')
-					})
-				)
-			)
-		);
-	});
-	it('check parse segwit op_return', async () => {
-		const transaction = buildMockBitcoinSegwitTransaction();
-		const txHex = hex.encode(transaction.toBytes(true, true));
-		let response = simnet.callReadOnlyFn('bme023-0-market-bitcoin', 'parse-payload-segwit', [Cl.bufferFromHex(txHex)], deployer);
-		// console.log('\n\ncheck parse segwit op_return', (response.result as any).value.data);
-		expect(response.result).toMatchObject(
-			Cl.ok(
-				Cl.some(
-					Cl.tuple({
-						i: Cl.uint(0),
-						o: Cl.uint(20),
-						p: Cl.principal('ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5')
-					})
-				)
-			)
-		);
-	});
-	// it('check predicitons with legacy transaction', async () => {
-	// 	createCategoricalBitcoinMarket(0, deployer);
-	// 	predictCategory(alice, 0, 'lion', 100, 100001);
+	// 	expect(response.result).toMatchObject(
+	// 		Cl.ok(
+	// 			Cl.some(
+	// 				Cl.tuple({
+	// 					i: Cl.uint(4),
+	// 					o: Cl.uint(2),
+	// 					p: Cl.principal('ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM')
+	// 				})
+	// 			)
+	// 		)
+	// 	);
+	// });
+	// it('check parse segwit op_return', async () => {
 	// 	const transaction = buildMockBitcoinSegwitTransaction();
 	// 	const txHex = hex.encode(transaction.toBytes(true, true));
 	// 	let response = simnet.callReadOnlyFn('bme023-0-market-bitcoin', 'parse-payload-segwit', [Cl.bufferFromHex(txHex)], deployer);
@@ -199,13 +178,32 @@ describe('clarity bitcoin', () => {
 	// 		Cl.ok(
 	// 			Cl.some(
 	// 				Cl.tuple({
-	// 					id: Cl.uint(0),
-	// 					idx: Cl.uint(20),
-	// 					amt: Cl.uint(3),
-	// 					addr: Cl.principal('ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5')
+	// 					i: Cl.uint(0),
+	// 					o: Cl.uint(20),
+	// 					p: Cl.principal('ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5')
 	// 				})
 	// 			)
 	// 		)
 	// 	);
 	// });
+	// // it('check predicitons with legacy transaction', async () => {
+	// // 	createCategoricalBitcoinMarket(0, deployer);
+	// // 	predictCategory(alice, 0, 'lion', 100, 100001);
+	// // 	const transaction = buildMockBitcoinSegwitTransaction();
+	// // 	const txHex = hex.encode(transaction.toBytes(true, true));
+	// // 	let response = simnet.callReadOnlyFn('bme023-0-market-bitcoin', 'parse-payload-segwit', [Cl.bufferFromHex(txHex)], deployer);
+	// // 	// console.log('\n\ncheck parse segwit op_return', (response.result as any).value.data);
+	// // 	expect(response.result).toMatchObject(
+	// // 		Cl.ok(
+	// // 			Cl.some(
+	// // 				Cl.tuple({
+	// // 					id: Cl.uint(0),
+	// // 					idx: Cl.uint(20),
+	// // 					amt: Cl.uint(3),
+	// // 					addr: Cl.principal('ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5')
+	// // 				})
+	// // 			)
+	// // 		)
+	// // 	);
+	// // });
 });

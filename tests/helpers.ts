@@ -1,6 +1,6 @@
 import { initSimnet } from '@hirosystems/clarinet-sdk';
 import { sha256 } from '@noble/hashes/sha256';
-import { bytesToHex } from '@noble/hashes/utils';
+import { bytesToHex, utf8ToBytes } from '@noble/hashes/utils';
 import { Cl } from '@stacks/transactions';
 import { expect } from 'vitest';
 import { contractId2Key, generateMerkleProof, generateMerkleTreeUsingStandardPrincipal } from './gating/gating';
@@ -26,6 +26,7 @@ export const marketPredicting = 'bme024-0-market-predicting';
 export const marketPredictingCPMM = 'bme024-0-market-predicting';
 export const marketScalingCPMM = 'bme024-0-market-scalar-pyth';
 export const reputationSft = 'bme030-0-reputation-token';
+export const liquidityCont = 'bme010-0-liquidity-contribution';
 export const treasury = 'bme006-0-treasury';
 
 export const STXUSD = '0xec7a775f46379b5e943c3526b1c8d54cd49749176b0b98e02dde68d1bd335c17';
@@ -42,12 +43,12 @@ export const sbtcToken = `${deployer}.sbtc`;
 
 export function metadataHash() {
 	const metadata = 'example metadata';
-	const metadataHash = sha256(metadata);
+	const metadataHash = sha256(utf8ToBytes(metadata));
 	return bytesToHex(metadataHash);
 }
 
 export function dataHash(message: string) {
-	const metadataHash = sha256(message);
+	const metadataHash = sha256(utf8ToBytes(message));
 	return bytesToHex(metadataHash);
 }
 
@@ -81,7 +82,7 @@ export function assertContractBalance(contract: string, value: bigint | undefine
 
 export async function assertUserBalance(user: string, value: bigint) {
 	let stxBalances = simnet.getAssetsMap().get('STX'); // Replace if contract's principal
-	console.log('assertUserBalance: ' + user + stxBalances?.get(`${user}`));
+	// console.log('assertUserBalance: ' + user + stxBalances?.get(`${user}`));
 	expect(stxBalances?.get(`${user}`)).toEqual(value);
 }
 
@@ -90,8 +91,8 @@ export async function allowMarketCreators(user: string) {
 	const { tree, root } = generateMerkleTreeUsingStandardPrincipal(allowedCreators);
 	// console.log('Leaves (Tree):', tree.getLeaves().map(bytesToHex));
 	const lookupRootKey = contractId2Key('ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-predicting');
-	console.log('root=' + root);
-	console.log('lookupRootKey=' + lookupRootKey);
+	// console.log('root=' + root);
+	// console.log('lookupRootKey=' + lookupRootKey);
 	const proposal = `bdp001-gating`;
 	await passProposalByCoreVote(proposal);
 	let merdat = generateMerkleProof(tree, user);

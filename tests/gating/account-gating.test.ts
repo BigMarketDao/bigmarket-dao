@@ -144,10 +144,10 @@ describe('gating market  creation', () => {
 		//merklProof = generateMerkleProof(tree, deployer);
 		//assert(merklProof.valid)
 		const lookupRootKey = contractId2Key('ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-predicting');
-		console.log(
-			'bme024-0-market-predicting: 0x' + lookupRootKey + ' root= 0x' + root
-			//tree
-		);
+		// console.log(
+		// 	'bme024-0-market-predicting: 0x' + lookupRootKey + ' root= 0x' + root
+		// 	//tree
+		// );
 		let response = await createBinaryMarketWithGating(0, proofToClarityValue(merklProof.proof), metadataHash(), deployer, stxToken);
 	});
 
@@ -161,7 +161,7 @@ describe('gating market  creation', () => {
 		//merklProof = generateMerkleProof(tree, deployer);
 		//assert(merklProof.valid)
 		const lookupRootKey = contractId2Key('ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-predicting');
-		console.log('bme024-0-market-predicting: 0x' + lookupRootKey + ' root= 0x' + root);
+		// console.log('bme024-0-market-predicting: 0x' + lookupRootKey + ' root= 0x' + root);
 		let response = await createBinaryMarketWithGating(2214, proofToClarityValue(merklProof.proof), metadataHash(), alice, stxToken);
 	});
 
@@ -169,8 +169,8 @@ describe('gating market  creation', () => {
 		await constructDao(simnet);
 		await passProposalByExecutiveSignals(simnet, 'bdp001-gating');
 		let allowedCreators = [
-			'ST2TQ069HEM31JMBNSMBP7MQDKDTB56F6M0AKT00W',
-			'ST2XHA15V40FAP9QZ0KMR7KBZ4NREV937QHZNT6B4',
+			'ST3Y12HJYP2NMNAFHWBPM2CMYDHYXME1F46VC5SPJ',
+			'ST31WZCAZB0B1Q6WGC6ZYCWRGCBRP3KC7HJQ2QQ1K',
 			'ST167Z6WFHMV0FZKFCRNWZ33WTB0DFBCW9M1FW3AY',
 			'ST105HCS1RTR7D61EZET8CWNEF24ENEN3V6ARBYBJ',
 			'ST3SJD6KV86N90W0MREGRTM1GWXN8Z91PF6W0BQKM',
@@ -178,13 +178,13 @@ describe('gating market  creation', () => {
 		];
 		let { tree, root } = generateMerkleTreeUsingStandardPrincipal(allowedCreators);
 		let merklProof = generateMerkleProof(tree, 'ST3RR3HF25CQ9A5DEWS4R1WKJSBCFKQXFBYPJK3WV');
-		const lookupRootKey = contractId2Key('ST2TQ069HEM31JMBNSMBP7MQDKDTB56F6M0AKT00W.bme023-0-market-scalar-pyth');
+		const lookupRootKey = contractId2Key('ST3Y12HJYP2NMNAFHWBPM2CMYDHYXME1F46VC5SPJ.bme023-0-market-scalar-pyth');
 		console.log(
-			'ST2TQ069HEM31JMBNSMBP7MQDKDTB56F6M0AKT00W, ST2XHA15V40FAP9QZ0KMR7KBZ4NREV937QHZNT6B4, ST167Z6WFHMV0FZKFCRNWZ33WTB0DFBCW9M1FW3AY, ST105HCS1RTR7D61EZET8CWNEF24ENEN3V6ARBYBJ, ST3SJD6KV86N90W0MREGRTM1GWXN8Z91PF6W0BQKM, STEZD95XQ194X67C1QJW4PHKDG8F5D66ZCYFX27A '
+			'ST3Y12HJYP2NMNAFHWBPM2CMYDHYXME1F46VC5SPJ, ST31WZCAZB0B1Q6WGC6ZYCWRGCBRP3KC7HJQ2QQ1K, ST167Z6WFHMV0FZKFCRNWZ33WTB0DFBCW9M1FW3AY, ST105HCS1RTR7D61EZET8CWNEF24ENEN3V6ARBYBJ, ST3SJD6KV86N90W0MREGRTM1GWXN8Z91PF6W0BQKM, STEZD95XQ194X67C1QJW4PHKDG8F5D66ZCYFX27A '
 		);
 		console.log('--------------------------------------------------------------------------------------------------------------');
 		console.log(
-			'TESTNET: MERKLE ROOTS FOR MARKET CREATION: \nST2TQ069HEM31JMBNSMBP7MQDKDTB56F6M0AKT00W.bme023-0-market-scalar-pyth: \nkey= 0x' + lookupRootKey + '\nroot= 0x' + root
+			'TESTNET: MERKLE ROOTS FOR MARKET CREATION: \nST3Y12HJYP2NMNAFHWBPM2CMYDHYXME1F46VC5SPJ.bme023-0-market-scalar-pyth: \nkey= 0x' + lookupRootKey + '\nroot= 0x' + root
 			//tree
 		);
 		console.log('--------------------------------------------------------------------------------------------------------------');
@@ -197,7 +197,7 @@ describe('gating market  creation', () => {
 		];
 		let newRoot = generateMerkleTreeUsingStandardPrincipal(allowedCreators);
 		//let merklProof1 = generateMerkleProof(newRoot.tree, 'ST3RR3HF25CQ9A5DEWS4R1WKJSBCFKQXFBYPJK3WV');
-		const lookupRootKey1 = contractId2Key('ST2TQ069HEM31JMBNSMBP7MQDKDTB56F6M0AKT00W.bme023-0-market-scalar-pyth');
+		const lookupRootKey1 = contractId2Key('ST3Y12HJYP2NMNAFHWBPM2CMYDHYXME1F46VC5SPJ.bme023-0-market-scalar-pyth');
 		console.log('--------------------------------------------------------------------------------------------------------------');
 		console.log(
 			'MAINNET: MERKLE ROOTS FOR MARKET CREATION: \nSP2TQ069HEM31JMBNSMBP7MQDKDTB56F6M2B632JJ.bme023-0-market-scalar-pyth: \nkey= 0x' +
@@ -206,7 +206,7 @@ describe('gating market  creation', () => {
 				newRoot.root
 			//tree
 		);
-		console.log('--------------------------------------------------------------------------------------------------------------');
+		//silence: console.log('--------------------------------------------------------------------------------------------------------------');
 		//assert(merklProof.valid)
 		//merklProof = generateMerkleProof(tree, deployer);
 		//assert(merklProof.valid)
@@ -224,8 +224,8 @@ describe('gating market  creation', () => {
 		const disallowedCreators = [wallace, fred];
 		const { tree, root } = generateMerkleTreeUsingStandardPrincipal(allowedCreators);
 		// console.log('Leaves (Tree):', tree.getLeaves().map(bytesToHex));
-		console.log('lookupRootKey=' + lookupRootKey);
-		console.log('RooT=' + root);
+		//silence: console.log('lookupRootKey=' + lookupRootKey);
+		//silence: console.log('RooT=' + root);
 
 		let data = await simnet.callReadOnlyFn('bme022-0-market-gating', 'get-merkle-root', [Cl.bufferFromHex(lookupRootKey)], alice);
 		expect(data.result).toEqual(Cl.some(Cl.tuple({ 'merkle-root': Cl.bufferFromHex(root!) })));
@@ -289,7 +289,7 @@ async function assertContractData(marketId: number, lookupRootKey: string, leaf:
 	//console.log('response.events[0].data.value', response.events[0].data.value)
 	//console.log('response.events[1].data.value', response.events[1]?.data.value)
 	const ddv = (response.events[0].data as any)?.data;
-	console.log('ddv: ', ddv);
+	//silence: console.log('ddv: ', ddv);
 	if (!ddv) return;
 
 	//expect(ddv['proof-valid']).toMatchObject(Cl.tuple({"proof-valid":Cl.bool(true)}));
@@ -301,7 +301,7 @@ async function assertContractData(marketId: number, lookupRootKey: string, leaf:
 		'contract-name returned from contract is unexpected ' + user
 	);
 
-	console.log('lookupRootKey2=' + bytesToHex(ddv['contract-name'].buffer));
+	//silence: console.log('lookupRootKey2=' + bytesToHex(ddv['contract-name'].buffer));
 
 	assert(
 		bytesToHex(ddv['contract-name'].buffer) === '0d000000186264653032332d6d61726b65742d70726564696374696e67',

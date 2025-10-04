@@ -171,12 +171,12 @@ describe('initial distribution', () => {
 		expect(response.result).toEqual(Cl.ok(Cl.uint(5000n * 5n)));
 
 		const bal = simnet.callReadOnlyFn(`${deployer}.bme000-0-governance-token`, 'get-balance', [Cl.principal(alice)], alice);
-		console.log('balance: bdg: ', bal.result.value?.value);
+		//silence: console.log('balance: bdg: ', bal.result.value?.value);
 		let idoPurchase = simnet.getMapEntry(`${deployer}.bme010-0-token-sale`, 'ido-purchases', Cl.tuple({ stage: Cl.uint(1), buyer: Cl.principal(alice) }));
-		console.log('balance: idoPurchase: ', idoPurchase);
-		console.log('balance: stx: ' + simnet.getAssetsMap().get('STX')?.get(alice));
+		//silence: console.log('balance: idoPurchase: ', idoPurchase);
+		//silence: console.log('balance: stx: ' + simnet.getAssetsMap().get('STX')?.get(alice));
 		idoPurchase = simnet.getMapEntry(`${deployer}.bme010-0-token-sale`, 'ido-purchases', Cl.tuple({ stage: Cl.uint(1), buyer: Cl.principal(alice) }));
-		console.log('balance: idoPurchase: ', idoPurchase);
+		//silence: console.log('balance: idoPurchase: ', idoPurchase);
 
 		response = simnet.callPublicFn(`${deployer}.bme010-0-token-sale`, 'buy-ido-tokens', [Cl.uint(300000)], bob);
 		expect(response.result).toEqual(Cl.ok(Cl.uint(300000n * 5n)));

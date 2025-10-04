@@ -54,10 +54,10 @@ describe('claiming errors', () => {
 
 	it('create ok', async () => {
 		let response = await createCategoricalMarket(0);
-		console.log('=======createCategoricalMarket===========================================');
-		console.log(response.result);
-		console.log(simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(6), Cl.principal(deployer)], deployer));
-		console.log('=======createCategoricalMarket===========================================');
+		//silence: console.log('=======createCategoricalMarket===========================================');
+		//silence: console.log(response.result);
+		//silence: console.log(simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(6), Cl.principal(deployer)], deployer));
+		//silence: console.log('=======createCategoricalMarket===========================================');
 
 		//await assertBalance(deployer, 6, 4);
 	});

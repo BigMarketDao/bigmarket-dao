@@ -1,5 +1,5 @@
-import { describe, expect, it } from 'vitest';
 import { Cl } from '@stacks/transactions';
+import { describe, expect, it } from 'vitest';
 import { alice, assertContractBalance, bob, claimDao, constructDao, deployer, fred, marketPredictingCPMM, metadataHash, setupSimnet, stxToken } from '../helpers';
 
 const simnet = await setupSimnet();
@@ -124,7 +124,7 @@ async function printMarketBalances(user: string, marketId: number) {
 
 async function printStakeBalances(user: string, marketId: number) {
 	let data = await simnet.callReadOnlyFn('bme024-0-market-predicting', 'get-stake-balances', [Cl.uint(marketId), Cl.principal(user)], alice);
-	console.log('get-stake-balances: ' + user, (data.result as any).value);
+	//silence: console.log('get-stake-balances: ' + user, (data.result as any).value);
 }
 export async function createBinaryMarketWithGating(marketId: number, proof: any, key?: any, creator?: string, token?: string, fee?: number) {
 	let response = await simnet.callPublicFn(
