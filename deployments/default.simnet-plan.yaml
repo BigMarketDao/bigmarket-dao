@@ -390,16 +390,6 @@ plan:
             path: contracts/proposals/devnet/unit-tests/reputation/bdp001-sft-tokens-5.clar
             clarity-version: 3
         - emulated-contract-publish:
-            contract-name: bdp005-update-liquidity-ext
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/proposals/testnet/bdp005-update-liquidity-ext.clar
-            clarity-version: 3
-        - emulated-contract-publish:
-            contract-name: big-play
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/external/big-play.clar
-            clarity-version: 3
-        - emulated-contract-publish:
             contract-name: bme010-0-liquidity-contribution
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/extensions/bme010-0-liquidity-contribution.clar
@@ -408,6 +398,16 @@ plan:
             contract-name: bme032-0-scalar-strategy-hedge
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/extensions/bme032-0-scalar-strategy-hedge.clar
+            clarity-version: 3
+        - emulated-contract-publish:
+            contract-name: bdp005-update-liquidity-ext
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/proposals/testnet/bdp005-update-liquidity-ext.clar
+            clarity-version: 3
+        - emulated-contract-publish:
+            contract-name: big-play
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/external/big-play.clar
             clarity-version: 3
         - emulated-contract-publish:
             contract-name: bme040-0-shares-marketplace
