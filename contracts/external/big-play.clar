@@ -12,7 +12,7 @@
 (define-data-var token-symbol (string-ascii 10) "BIGPLAY")
 (define-data-var token-decimals uint u6)
 (define-data-var token-uri (optional (string-utf8 256)) none)
-                                   u10000000000
+(define-constant contract-owner tx-sender)
 (define-constant max-faucet-amount u1000000000) ;; 1000.000000 PLAY (since 6 decimals)
 (define-constant seed-amount u10000000000000) ;; 100_000_000.000000 PLAY (for simulating market depth)
 (define-data-var seeded bool false)
@@ -55,6 +55,6 @@
     (asserts! (not (var-get seeded)) (err u201)) 
     ;; freeze!
     (var-set seeded true)
-    (ft-mint? bmg-play seed-amount tx-sender)
+    (ft-mint? bmg-play seed-amount contract-owner)
   )
 )
