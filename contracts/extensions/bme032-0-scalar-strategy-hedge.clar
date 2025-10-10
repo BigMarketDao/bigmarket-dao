@@ -21,6 +21,8 @@
 (define-constant err-slippage (err u32008))
 (define-constant err-invalid-amount (err u32009))
 
+(define-constant SCALE u1000000)
+
 (define-data-var hedge-market-contract principal .bme024-0-market-predicting)
 (define-data-var hedge-scalar-contract principal .bme024-0-market-scalar-pyth)
 (define-data-var hedge-multipliers (list 6 uint) (list u750 u500 u250 u250 u500 u750))
@@ -162,7 +164,9 @@
       (bips-mult (unwrap! (element-at? (var-get hedge-multipliers) predicted-index) err-token-incorrect)) ;; e.g., 750 = 7.5%
       (cap-bips (var-get max-hedge-bips))
       (bips (if (> bips-mult cap-bips) cap-bips bips-mult))
-      (raw (/ (* balance bips) u10000))
+      (raw-scaled (/ (* (* balance bips) SCALE) u10000))
+      (raw (/ raw-scaled SCALE))
+
       (abs-cap (var-get max-hedge-abs))
       (amt (if (and (> abs-cap u0) (> raw abs-cap)) abs-cap raw))
       (min-size (var-get min-trade))
@@ -201,7 +205,8 @@
   (let (
       (balance (unwrap! (contract-call? token get-balance .bme006-0-treasury) err-unauthorised))
       (bips (unwrap! (element-at? (var-get hedge-multipliers) index) err-token-incorrect))
-      (amt (/ (* balance bips) u10000))
+      (amt-scaled (/ (* (* balance bips) SCALE) u10000))
+      (amt (/ amt-scaled SCALE))
     )
     (ok amt)
   )

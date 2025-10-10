@@ -14,6 +14,7 @@
 (define-constant err-minimum-stx (err u5002))
 
 (define-constant MICROSTX u1000000)
+(define-constant SCALE u1000000)
 
 ;; 10,10 -- > 1 STX = 1 BIGR, 10 STX = 3 BIGR, 100 STX = 10 BIGR
 (define-data-var stx-to-bigr-rate uint u10)
@@ -49,7 +50,12 @@
         (rate (var-get stx-to-bigr-rate))
         (dampener (var-get stx-to-bigr-dampener))
         (amount-stx (/ amount MICROSTX))
-        (bigr-earned (/ (* (sqrti amount-stx) rate) dampener))
+        ;;(bigr-earned (/ (* (sqrti amount-stx) rate) dampener))
+
+        (sqrt-amount (sqrti amount-stx))
+        (bigr-earned-scaled (/ (* (* sqrt-amount rate) SCALE) dampener))
+        (bigr-earned (/ bigr-earned-scaled SCALE))
+
         (existing (default-to u0 (map-get? stx-contributions {who: user})))
       )
     (asserts! (>= amount MICROSTX) err-minimum-stx)

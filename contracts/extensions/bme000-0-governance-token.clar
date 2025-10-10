@@ -17,6 +17,7 @@
 (define-fungible-token bmg-token-locked)
 
 (define-constant core-team-max-vesting u1500000000000) ;; 15% of total supply (10,000,000 BIG)
+(define-constant SCALE u1000000)
 
 (define-constant err-unauthorised (err u3000))
 (define-constant err-not-token-owner (err u3001))
@@ -85,7 +86,8 @@
 	(begin
 		(try! previous-result)
 		(let (
-				(amount (/ core-team-max-vesting (var-get core-team-size)))
+				(amount-scaled (/ (* core-team-max-vesting SCALE) (var-get core-team-size)))
+				(amount (/ amount-scaled SCALE))
 			)
 			(map-set core-team-vesting {current-key: (var-get current-key), recipient: (get recipient item)}
 				{total-amount: amount, start-block: (get start-block item), duration: (get duration item), claimed: u0})
@@ -100,13 +102,16 @@
   (let
     (
       	(vesting (unwrap! (map-get? core-team-vesting {current-key: (var-get current-key), recipient: tx-sender}) err-no-vesting-schedule))
-      	(current-block burn-block-height)
+		(current-block burn-block-height)
 		(start-block (get start-block vesting))
 		(duration (get duration vesting))
 		(total-amount (get total-amount vesting))
 		(claimed (get claimed vesting))
 		(elapsed (if (> current-block start-block) (- current-block start-block) u0))
-		(vested (if (> elapsed duration) total-amount (/ (* total-amount elapsed) duration)))
+		(vested-scaled (if (> elapsed duration)
+				(* total-amount SCALE)
+				(/ (* (* total-amount elapsed) SCALE) duration)))
+		(vested (/ vested-scaled SCALE))
 		(claimable (- vested claimed))
 		(midpoint (+ start-block (/ duration u2)))
     )

@@ -28,6 +28,7 @@
 (define-constant MARKET_TYPE u1)
 (define-constant DEFAULT_MARKET_DURATION u144) ;; ~1 day in Bitcoin blocks
 (define-constant DEFAULT_COOL_DOWN_PERIOD u144) ;; ~1 day in Bitcoin blocks
+(define-constant SCALE u1000000)
 
 (define-constant RESOLUTION_OPEN u0)
 (define-constant RESOLUTION_RESOLVING u1)
@@ -272,7 +273,7 @@
         (current-block burn-block-height)
         (num-categories (len categories))
         ;; NOTE: seed is evenly divided with rounding error discarded
-        (seed (/ seed-amount num-categories))
+        (seed (/ (* seed-amount SCALE) (* num-categories SCALE)))
         (user-stake-list (list seed seed seed seed seed seed seed seed seed seed))
         (share-list (zero-after-n user-stake-list num-categories))
       )
@@ -361,8 +362,8 @@
       (let (
             (new-y (- other-pool amount-shares))
             (numerator (* selected-pool other-pool))
-            (new-x (/ numerator new-y))
-            (cost   (if (> new-x selected-pool) (- new-x selected-pool) u0))
+            (new-x (/ (* numerator SCALE) new-y))
+            (cost (/ (- new-x (* selected-pool SCALE)) SCALE))
            )
         (ok cost)
       )
@@ -373,7 +374,8 @@
 ;; Read-only: get current price to buy `amount` shares in a category
 (define-read-only (get-max-shares (market-id uint) (index uint) (total-cost uint))
   (let (
-        (fee (/ (* total-cost (var-get dev-fee-bips)) u10000))
+        (fee-scaled (/ (* (* total-cost (var-get dev-fee-bips)) SCALE) u10000))
+        (fee (/ fee-scaled SCALE))
         (cost-of-shares (if (> total-cost fee) (- total-cost fee) u0))
         (market-data (unwrap-panic (map-get? markets market-id)))
         (stake-list (get stakes market-data))
@@ -398,8 +400,10 @@
         (let (
               (denom (+ selected-pool cost))            ;; > selected-pool, non-zero
               (numerator (* selected-pool other-pool))
-              (new-y (/ numerator denom))               ;; integer division
-              (raw-shares (if (> other-pool new-y) (- other-pool new-y) u0))
+              (new-y (/ (* numerator SCALE) denom))
+              (raw-shares (if (> (* other-pool SCALE) new-y)
+                              (/ (- (* other-pool SCALE) new-y) SCALE)
+                              u0))
               ;; Enforce floor: clamp to keep MIN_POOL on the other side
               (max-by-floor (if (> other-pool MIN_POOL) (- other-pool MIN_POOL) u0))
               (shares (if (> raw-shares max-by-floor) max-by-floor raw-shares))
@@ -671,7 +675,10 @@
     (total-token-pool (fold + staked-tokens u0))
 
     ;; CPMM Payout: the proportion of the total tokens staked to the shares won
-    (gross-refund (if (> winning-pool u0) (/ (* user-shares total-token-pool) winning-pool) u0))
+    (gross-refund-scaled (if (> winning-pool u0)
+        (/ (* (* user-shares total-token-pool) SCALE) winning-pool)
+        u0))
+    (gross-refund (/ gross-refund-scaled SCALE))   
 
     (marketfee (/ (* gross-refund marketfee-bips) u10000))
     (net-refund (- gross-refund marketfee))

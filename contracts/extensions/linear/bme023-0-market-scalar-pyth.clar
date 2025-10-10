@@ -304,7 +304,7 @@
       (resolution-burn-block (+ market-end (get cool-down-period md)))
       (price-feed-id (get price-feed-id md))
       (current-block-height burn-block-height)
-      (price-data (unwrap! (contract-call? .pyth-oracle-v3 read-price-feed price-feed-id .pyth-storage-v3) err-category-not-found))
+      (price-data (unwrap! (contract-call? .pyth-oracle-v4 read-price-feed price-feed-id .pyth-storage-v4) err-category-not-found))
       (parsed-price (to-uint (get price price-data)))
       (categories (get categories md))
       (first-category (unwrap! (element-at? categories u0) err-category-not-found))
