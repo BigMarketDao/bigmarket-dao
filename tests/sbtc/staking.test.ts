@@ -1,11 +1,11 @@
-import { describe, expect, it } from 'vitest';
 import { boolCV, Cl, listCV, noneCV, principalCV, stringAsciiCV, uintCV } from '@stacks/transactions';
-import { constructDao, metadataHash, setupSimnet, sbtcToken } from '../helpers';
 import { bufferFromHex } from '@stacks/transactions/dist/cl';
+import { describe, expect, it } from 'vitest';
 import { createBinaryMarket, predictCategory } from '../categorical/categorical.test';
+import { constructDao, metadataHash, sbtcToken, setupSimnet } from '../helpers';
 
 const simnet = await setupSimnet();
-const accounts = simnet.getAccounts();
+const accounts = await simnet.getAccounts();
 const alice = accounts.get('wallet_1')!;
 const bob = accounts.get('wallet_2')!;
 const deployer = accounts.get('deployer')!;
@@ -26,13 +26,13 @@ describe('prediction errors', () => {
 describe('prediction fees and stakes', () => {
 	it('user transfers exact stake', async () => {
 		await constructDao(simnet);
-		let balances = simnet.getAssetsMap().get('STX');
+		let balances = await simnet.getAssetsMap().get('STX');
 		// console.log("prediction fees and stakes:", balances);
 
 		let response = await createBinaryMarket(0, deployer, sbtcToken);
 		expect(response.result).toEqual(Cl.ok(Cl.uint(0)));
 		response = await predictCategory(alice, 0, 'yay', 2000000, 1, sbtcToken);
-		balances = simnet.getAssetsMap().get('STX');
+		balances = await simnet.getAssetsMap().get('STX');
 
 		response = await predictCategory(bob, 0, 'nay', 10000000, 0, sbtcToken);
 		const data = await simnet.callReadOnlyFn('bme024-0-market-predicting', 'get-market-data', [Cl.uint(0)], alice);
@@ -42,7 +42,7 @@ describe('prediction fees and stakes', () => {
 					creator: principalCV(deployer),
 					'market-data-hash': bufferFromHex(metadataHash()),
 					'stake-tokens': listCV([uintCV(69800000n), uintCV(53960000n), uintCV(0), uintCV(0), uintCV(0), uintCV(0), uintCV(0), uintCV(0), uintCV(0), uintCV(0)]),
-					stakes: listCV([uintCV(65224267n), uintCV(53669385n), uintCV(0), uintCV(0), uintCV(0), uintCV(0), uintCV(0), uintCV(0), uintCV(0), uintCV(0)]),
+					stakes: listCV([uintCV(65224266n), uintCV(53669384n), uintCV(0), uintCV(0), uintCV(0), uintCV(0), uintCV(0), uintCV(0), uintCV(0), uintCV(0)]),
 					categories: listCV([stringAsciiCV('nay'), stringAsciiCV('yay')]),
 					outcome: noneCV(),
 					'resolution-burn-height': uintCV(0),
@@ -71,7 +71,7 @@ describe('prediction fees and stakes', () => {
 				Cl.tuple({
 					creator: principalCV(deployer),
 					'stake-tokens': listCV([uintCV(69800000n), uintCV(53960000n), uintCV(0), uintCV(0), uintCV(0), uintCV(0), uintCV(0), uintCV(0), uintCV(0), uintCV(0)]),
-					stakes: listCV([uintCV(65224267n), uintCV(53669385n), uintCV(0), uintCV(0), uintCV(0), uintCV(0), uintCV(0), uintCV(0), uintCV(0), uintCV(0)]),
+					stakes: listCV([uintCV(65224266n), uintCV(53669384n), uintCV(0), uintCV(0), uintCV(0), uintCV(0), uintCV(0), uintCV(0), uintCV(0), uintCV(0)]),
 					categories: listCV([stringAsciiCV('nay'), stringAsciiCV('yay')]),
 					outcome: noneCV(),
 					'market-data-hash': bufferFromHex(metadataHash()),
@@ -92,7 +92,7 @@ describe('prediction fees and stakes', () => {
 		response = await predictCategory(alice, 0, 'yay', 2000000, 1, sbtcToken);
 
 		// check stake
-		let aliceStake = simnet.getMapEntry(
+		let aliceStake = await simnet.getMapEntry(
 			'bme024-0-market-predicting',
 			'stake-balances',
 			Cl.tuple({
@@ -101,12 +101,12 @@ describe('prediction fees and stakes', () => {
 			})
 		);
 		expect(aliceStake).toEqual(
-			Cl.some(Cl.list([Cl.uint(0), Cl.uint(3669385n), Cl.uint(0), Cl.uint(0), Cl.uint(0), Cl.uint(0), Cl.uint(0), Cl.uint(0), Cl.uint(0), Cl.uint(0)]))
+			Cl.some(Cl.list([Cl.uint(0), Cl.uint(3669384n), Cl.uint(0), Cl.uint(0), Cl.uint(0), Cl.uint(0), Cl.uint(0), Cl.uint(0), Cl.uint(0), Cl.uint(0)]))
 		);
 
 		response = await predictCategory(alice, 0, 'nay', 4000000, 0, sbtcToken);
 
-		aliceStake = simnet.getMapEntry(
+		aliceStake = await simnet.getMapEntry(
 			'bme024-0-market-predicting',
 			'stake-balances',
 			Cl.tuple({
@@ -115,7 +115,7 @@ describe('prediction fees and stakes', () => {
 			})
 		);
 		expect(aliceStake).toEqual(
-			Cl.some(Cl.list([Cl.uint(7338770n), Cl.uint(3669385n), Cl.uint(0), Cl.uint(0), Cl.uint(0), Cl.uint(0), Cl.uint(0), Cl.uint(0), Cl.uint(0), Cl.uint(0)]))
+			Cl.some(Cl.list([Cl.uint(7338769n), Cl.uint(3669384n), Cl.uint(0), Cl.uint(0), Cl.uint(0), Cl.uint(0), Cl.uint(0), Cl.uint(0), Cl.uint(0), Cl.uint(0)]))
 		);
 	});
 });

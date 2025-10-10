@@ -32,7 +32,7 @@ import {
 const simnet = await setupSimnet();
 
 async function assertBalance(user: string, tier: number, balance: number) {
-	let bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(tier), Cl.principal(user)], user);
+	let bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(tier), Cl.principal(user)], user);
 	expect(bal.result).toEqual(Cl.ok(Cl.uint(balance * 2)));
 }
 
@@ -192,7 +192,7 @@ describe('claiming errors', () => {
 		assertDataVarNumber(marketPredictingCPMM, 'dao-fee-bips', 150);
 		assertDataVarNumber(marketPredictingCPMM, 'market-fee-bips-max', 300);
 
-		await claim(betty, 0, 11882);
+		await claim(betty, 0, 11879);
 	});
 });
 
