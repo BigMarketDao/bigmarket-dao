@@ -1,5 +1,7 @@
-import { assert, describe, expect, it } from 'vitest';
 import { Cl } from '@stacks/transactions';
+import { describe, expect, it } from 'vitest';
+import { createBinaryMarket, createBinaryMarketWithErrorCode, createBinaryMarketWithGating } from '../categorical/categorical.test';
+import { proofToClarityValue } from '../gating/gating';
 import {
 	alice,
 	allowMarketCreators,
@@ -17,11 +19,8 @@ import {
 	setupSimnet,
 	stxToken,
 	tom,
-	treasury,
 	wallace
 } from '../helpers';
-import { proofToClarityValue } from '../gating/gating';
-import { createBinaryMarket, createBinaryMarketWithErrorCode, createBinaryMarketWithGating } from '../categorical/categorical.test';
 
 const simnet = await setupSimnet();
 
@@ -32,7 +31,6 @@ describe('prediction contract', () => {
 		await passProposalByExecutiveSignals(simnet, 'bdp001-market-fees');
 
 		await assertDataVarNumber(marketPredictingCPMM, 'dev-fee-bips', 500);
-		await assertDataVarNumber(marketPredictingCPMM, 'dao-fee-bips', 500);
 		await assertDataVarNumber(marketPredictingCPMM, 'market-fee-bips-max', 1000);
 
 		let response = await createBinaryMarket(0, betty, stxToken);
@@ -50,7 +48,6 @@ describe('prediction contract', () => {
 		await passProposalByExecutiveSignals(simnet, 'bdp001-market-fees');
 
 		await assertDataVarNumber(marketPredictingCPMM, 'dev-fee-bips', 500);
-		await assertDataVarNumber(marketPredictingCPMM, 'dao-fee-bips', 500);
 		await assertDataVarNumber(marketPredictingCPMM, 'market-fee-bips-max', 1000);
 
 		let response = await createBinaryMarket(0, deployer, stxToken);
@@ -65,7 +62,6 @@ describe('prediction contract', () => {
 		await passProposalByExecutiveSignals(simnet, 'bdp001-market-fees-1');
 
 		await assertDataVarNumber(marketPredictingCPMM, 'dev-fee-bips', 500);
-		await assertDataVarNumber(marketPredictingCPMM, 'dao-fee-bips', 500);
 		await assertDataVarNumber(marketPredictingCPMM, 'market-fee-bips-max', 0);
 	});
 
@@ -79,7 +75,6 @@ describe('prediction contract', () => {
 		await constructDao(simnet);
 		await passProposalByExecutiveSignals(simnet, 'bdp001-market-fees');
 		await assertDataVarNumber(marketPredictingCPMM, 'dev-fee-bips', 500);
-		await assertDataVarNumber(marketPredictingCPMM, 'dao-fee-bips', 500);
 		await assertDataVarNumber(marketPredictingCPMM, 'market-fee-bips-max', 1000);
 		await assertUserBalance(deployer, 100000000000000n);
 
@@ -114,7 +109,6 @@ describe('prediction contract', () => {
 		await constructDao(simnet);
 		await passProposalByExecutiveSignals(simnet, 'bdp001-market-fees');
 		await assertDataVarNumber(marketPredictingCPMM, 'dev-fee-bips', 500);
-		await assertDataVarNumber(marketPredictingCPMM, 'dao-fee-bips', 500);
 		await assertDataVarNumber(marketPredictingCPMM, 'market-fee-bips-max', 1000);
 		assertUserBalance(deployer, 100000000000000n);
 

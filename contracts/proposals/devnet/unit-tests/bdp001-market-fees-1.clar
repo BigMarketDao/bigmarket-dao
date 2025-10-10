@@ -9,7 +9,6 @@
 	(begin
 		(try! (contract-call? .bme024-0-market-predicting set-market-fee-bips-max u0))
 		(try! (contract-call? .bme024-0-market-predicting set-dev-fee-bips u500))
-		(try! (contract-call? .bme024-0-market-predicting set-dao-fee-bips u500))
 		(ok true)
 	)
 )

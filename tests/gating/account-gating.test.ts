@@ -188,11 +188,11 @@ describe('gating market  creation', () => {
 			//tree
 		);
 		console.log('--------------------------------------------------------------------------------------------------------------');
-		// Allowed = ["SP3Y12HJYP2NMNAFHWBPM2CMYDHYXME1F45GASVBG", "SPEZD95XQ194X67C1QJW4PHKDG8F5D66ZCT8BY29", "SP31WZCAZB0B1Q6WGC6ZYCWRGCBRP3KC7HG8A0XWC", "SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z"];
+		// Allowed = ["SP22SW60674C0V6B5E234C7ZD2YR8WXKXXVC48GZR", "SPEZD95XQ194X67C1QJW4PHKDG8F5D66ZCT8BY29", "SP246C0KRV7HKXMRB0H7Y6HCYGRCTZMVB9KP3391R", "SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z"];
 		allowedCreators = [
-			'SP3Y12HJYP2NMNAFHWBPM2CMYDHYXME1F45GASVBG',
+			'SP22SW60674C0V6B5E234C7ZD2YR8WXKXXVC48GZR',
 			'SPEZD95XQ194X67C1QJW4PHKDG8F5D66ZCT8BY29',
-			'SP31WZCAZB0B1Q6WGC6ZYCWRGCBRP3KC7HG8A0XWC',
+			'SP246C0KRV7HKXMRB0H7Y6HCYGRCTZMVB9KP3391R',
 			'SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z'
 		];
 		let newRoot = generateMerkleTreeUsingStandardPrincipal(allowedCreators);
@@ -200,7 +200,7 @@ describe('gating market  creation', () => {
 		const lookupRootKey1 = contractId2Key('ST3Y12HJYP2NMNAFHWBPM2CMYDHYXME1F46VC5SPJ.bme023-0-market-scalar-pyth');
 		console.log('--------------------------------------------------------------------------------------------------------------');
 		console.log(
-			'MAINNET: MERKLE ROOTS FOR MARKET CREATION: \nSP3Y12HJYP2NMNAFHWBPM2CMYDHYXME1F45GASVBG.bme023-0-market-scalar-pyth: \nkey= 0x' +
+			'MAINNET: MERKLE ROOTS FOR MARKET CREATION: \nSP22SW60674C0V6B5E234C7ZD2YR8WXKXXVC48GZR.bme023-0-market-scalar-pyth: \nkey= 0x' +
 				lookupRootKey1 +
 				'\nroot= 0x' +
 				newRoot.root

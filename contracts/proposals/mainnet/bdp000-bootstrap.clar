@@ -25,15 +25,15 @@
 			)
 		))
 		;; Set core team members.
-		(try! (contract-call? .bme003-0-core-proposals set-core-team-member 'SP3Y12HJYP2NMNAFHWBPM2CMYDHYXME1F45GASVBG true))
+		(try! (contract-call? .bme003-0-core-proposals set-core-team-member 'SP22SW60674C0V6B5E234C7ZD2YR8WXKXXVC48GZR true))
 		(try! (contract-call? .bme003-0-core-proposals set-core-team-member 'SPEZD95XQ194X67C1QJW4PHKDG8F5D66ZCT8BY29 true))
-		(try! (contract-call? .bme003-0-core-proposals set-core-team-member 'SP31WZCAZB0B1Q6WGC6ZYCWRGCBRP3KC7HG8A0XWC true))
+		(try! (contract-call? .bme003-0-core-proposals set-core-team-member 'SP246C0KRV7HKXMRB0H7Y6HCYGRCTZMVB9KP3391R true))
 		(try! (contract-call? .bme003-0-core-proposals set-core-team-member 'SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z true))
 
 		;; configure prediction markets
-		;; Allowed = ["SP3Y12HJYP2NMNAFHWBPM2CMYDHYXME1F45GASVBG", "SPEZD95XQ194X67C1QJW4PHKDG8F5D66ZCT8BY29", "SP31WZCAZB0B1Q6WGC6ZYCWRGCBRP3KC7HG8A0XWC", "SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z"];
-		(try! (contract-call? .bme022-0-market-gating set-merkle-root-by-principal .bme024-0-market-predicting 0xc148de13def6bae5319df37609f3f094120f4daddc571943737c95fce981a45d))
-		(try! (contract-call? .bme022-0-market-gating set-merkle-root-by-principal .bme024-0-market-scalar-pyth 0xc148de13def6bae5319df37609f3f094120f4daddc571943737c95fce981a45d))
+		;; Allowed = ["SP22SW60674C0V6B5E234C7ZD2YR8WXKXXVC48GZR", "SPEZD95XQ194X67C1QJW4PHKDG8F5D66ZCT8BY29", "SP246C0KRV7HKXMRB0H7Y6HCYGRCTZMVB9KP3391R", "SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z"];
+		(try! (contract-call? .bme022-0-market-gating set-merkle-root-by-principal .bme024-0-market-predicting 0xf40bb8a31e61dbc71524b5b200b6f6b32da28b38f7143cf9346a3d87cbbdf12c))
+		(try! (contract-call? .bme022-0-market-gating set-merkle-root-by-principal .bme024-0-market-scalar-pyth 0xf40bb8a31e61dbc71524b5b200b6f6b32da28b38f7143cf9346a3d87cbbdf12c))
 		
 		;; Category contract setting
 		(try! (contract-call? .bme024-0-market-predicting set-resolution-agent 'SP3NS9010CQ9AK3M6XN3XD9EHNTDZVGYSMFWZ288Z))

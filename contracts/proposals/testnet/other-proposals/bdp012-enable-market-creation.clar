@@ -6,7 +6,6 @@
 
 (define-public (execute (sender principal))
 	(begin 
-		(try! (contract-call? 'ST3Y12HJYP2NMNAFHWBPM2CMYDHYXME1F46VC5SPJ.bme024-0-market-predicting set-dao-fee-bips u110))
 		(try! (contract-call? 'ST3Y12HJYP2NMNAFHWBPM2CMYDHYXME1F46VC5SPJ.bme024-0-market-predicting set-market-fee-bips-max u333))
 		(try! (contract-call? 'ST3Y12HJYP2NMNAFHWBPM2CMYDHYXME1F46VC5SPJ.bme024-0-market-predicting set-creation-gated false))
 		(try! (contract-call? 'ST3Y12HJYP2NMNAFHWBPM2CMYDHYXME1F46VC5SPJ.bme024-0-market-scalar-pyth set-creation-gated false))
