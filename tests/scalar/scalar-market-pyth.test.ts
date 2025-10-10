@@ -198,7 +198,7 @@ describe('claiming errors', () => {
 	// 	assertDataVarNumber(marketScalingCPMM, 'market-fee-bips-max', 300);
 
 	// 	const response = await claim(alice, 0, 29692);
-	// 	console.log('claim winner ok', response);
+	// 	//silence: console.log('claim winner ok', response);
 	// });
 
 	// it('claim winners ok all staked on winning category', async () => {
@@ -280,14 +280,14 @@ describe('claiming errors', () => {
 	// 	assertContractBalance(marketScalingCPMM, 139000000n);
 
 	// 	let data = await projectedWinnings(wallace, 0, 0);
-	// 	console.log('-----------------------------------------------------------------');
-	// 	console.log('claim winner ok', data.result.value);
-	// 	console.log('-----------------------------------------------------------------');
+	// 	//silence: console.log('-----------------------------------------------------------------');
+	// 	//silence: console.log('claim winner ok', data.result.value);
+	// 	//silence: console.log('-----------------------------------------------------------------');
 
 	// 	data = await projectedWinnings(`${deployer}.${treasury}`, 0, 0);
-	// 	console.log('-----------------------------------------------------------------');
-	// 	console.log('claim winner ok', data.result.value);
-	// 	console.log('-----------------------------------------------------------------');
+	// 	//silence: console.log('-----------------------------------------------------------------');
+	// 	//silence: console.log('claim winner ok', data.result.value);
+	// 	//silence: console.log('-----------------------------------------------------------------');
 
 	// 	await claim(wallace, 0, 105813284);
 	// 	assertContractBalance(marketScalingCPMM, 33186716n);
@@ -298,7 +298,7 @@ describe('claiming errors', () => {
 	// 		[Cl.principal(deployer + '.bme024-0-market-scalar-pyth'), Cl.uint(0), Cl.principal(stxToken)],
 	// 		bob
 	// 	);
-	// 	console.log('claim winner ok', response.events);
+	// 	//silence: console.log('claim winner ok', response.events);
 	// 	expect(response.result).toEqual(Cl.ok(Cl.uint(33186715n)));
 
 	// 	assertContractBalance(marketScalingCPMM, 1n);
@@ -311,29 +311,29 @@ describe('claiming errors', () => {
 */
 // async function printPriceData() {
 // 	let data = await simnet.callReadOnlyFn('dia-oracle', 'get-value', [Cl.stringAscii(USD0)], alice);
-// 	console.log(USD0, (data.result as any).value);
+// 	//silence: console.log(USD0, (data.result as any).value);
 // 	data = await simnet.callReadOnlyFn('dia-oracle', 'get-value', [Cl.stringAscii(USD1)], alice);
-// 	console.log(USD1, (data.result as any).value);
+// 	//silence: console.log(USD1, (data.result as any).value);
 // 	data = await simnet.callReadOnlyFn('dia-oracle', 'get-value', [Cl.stringAscii(USD2)], alice);
-// 	console.log(USD2, (data.result as any).value);
+// 	//silence: console.log(USD2, (data.result as any).value);
 // }
 
 async function printMarketevents(response: any) {
-	console.log('response', response.events[0].data.value.data);
+	//silence: console.log('response', response.events[0].data.value.data);
 }
 
 async function printMarketBalances(user: string, marketId: number) {
 	let data = await simnet.callReadOnlyFn(marketScalingCPMM, 'get-market-data', [Cl.uint(marketId)], user);
-	console.log('categories', (data.result as any).value.data.categories.list[0]);
-	console.log('categories', (data.result as any).value.data.categories.list[1]);
-	console.log('categories', (data.result as any).value.data.categories.list[2]);
-	console.log('outcome', (data.result as any).value.data.outcome);
-	console.log('stakes', (data.result as any).value.data.stakes);
+	//silence: console.log('categories', (data.result as any).value.data.categories.list[0]);
+	//silence: console.log('categories', (data.result as any).value.data.categories.list[1]);
+	//silence: console.log('categories', (data.result as any).value.data.categories.list[2]);
+	//silence: console.log('outcome', (data.result as any).value.data.outcome);
+	//silence: console.log('stakes', (data.result as any).value.data.stakes);
 }
 
 async function printStakeBalances(user: string, marketId: number) {
 	let data = await simnet.callReadOnlyFn(marketScalingCPMM, 'get-stake-balances', [Cl.uint(marketId), Cl.principal(user)], alice);
-	console.log('get-stake-balances: ' + user, (data.result as any).value);
+	//silence: console.log('get-stake-balances: ' + user, (data.result as any).value);
 }
 export async function createBinaryMarket(marketId: number, creator?: string, token?: string) {
 	let response = await simnet.callPublicFn(

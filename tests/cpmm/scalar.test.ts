@@ -165,14 +165,14 @@ describe('claiming errors', () => {
 
 // 	it('claim winner ok', async () => {
 // 		assertContractBalance(marketScalingCPMM, undefined);
-// 		console.log('----> contractBalance : ' + marketScalingCPMM + ' : ' + simnet.getAssetsMap().get('STX')?.get(`${deployer}.${marketScalingCPMM}`));
+// 		//silence: console.log('----> contractBalance : ' + marketScalingCPMM + ' : ' + simnet.getAssetsMap().get('STX')?.get(`${deployer}.${marketScalingCPMM}`));
 // 		await createScalarMarket(0, deployer, stxToken, 9999);
-// 		console.log('----> contractBalance : ' + marketScalingCPMM + ' : ' + simnet.getAssetsMap().get('STX')?.get(`${deployer}.${marketScalingCPMM}`));
+// 		//silence: console.log('----> contractBalance : ' + marketScalingCPMM + ' : ' + simnet.getAssetsMap().get('STX')?.get(`${deployer}.${marketScalingCPMM}`));
 // 		let response = await predictCategory(alice, 0, 5, 3333, 5, stxToken, 9000);
-// 		console.log('----> contractBalance : ' + marketScalingCPMM + ' : ' + simnet.getAssetsMap().get('STX')?.get(`${deployer}.${marketScalingCPMM}`));
+// 		//silence: console.log('----> contractBalance : ' + marketScalingCPMM + ' : ' + simnet.getAssetsMap().get('STX')?.get(`${deployer}.${marketScalingCPMM}`));
 // 		// console.log('claim winner ok', response.events);
 // 		response = await predictCategory(bob, 0, lion, 3000, 0, stxToken, 3333);
-// 		console.log('----> contractBalance : ' + marketScalingCPMM + ' : ' + simnet.getAssetsMap().get('STX')?.get(`${deployer}.${marketScalingCPMM}`));
+// 		//silence: console.log('----> contractBalance : ' + marketScalingCPMM + ' : ' + simnet.getAssetsMap().get('STX')?.get(`${deployer}.${marketScalingCPMM}`));
 // 		// console.log('claim winner ok', response.events);
 // 		response = await predictCategory(betty, 0, cheetah, 3333, 2, stxToken, 0);
 // 		// console.log('claim winner ok', response.events);
@@ -244,7 +244,7 @@ describe('claiming errors', () => {
 // 			[Cl.principal(deployer + '.bme024-0-market-scalar-pyth'), Cl.uint(0), Cl.principal(stxToken)],
 // 			bob
 // 		);
-// 		console.log('claim winner ok', response.events);
+// 		//silence: console.log('claim winner ok', response.events);
 // 		expect(response.result).toEqual(Cl.ok(Cl.uint(3134)));
 
 // 		await claim(wallace, 0, 28134);
@@ -262,19 +262,19 @@ describe('claiming errors', () => {
 // */
 // async function printMarketBalances(user: string, marketId: number) {
 // 	let data = await simnet.callReadOnlyFn(marketScalingCPMM, 'get-market-data', [Cl.uint(marketId)], user);
-// 	console.log('MarketBalances ---> categories', (data.result as any).value.data.categories.list);
-// 	console.log('MarketBalances ---> outcome', (data.result as any).value.data.outcome.value?.value);
-// 	console.log('MarketBalances ---> stakes', (data.result as any).value.data.stakes.list);
-// 	console.log('MarketBalances ---> stake-tokens', (data.result as any).value.data['stake-tokens']);
+// 	//silence: console.log('MarketBalances ---> categories', (data.result as any).value.data.categories.list);
+// 	//silence: console.log('MarketBalances ---> outcome', (data.result as any).value.data.outcome.value?.value);
+// 	//silence: console.log('MarketBalances ---> stakes', (data.result as any).value.data.stakes.list);
+// 	//silence: console.log('MarketBalances ---> stake-tokens', (data.result as any).value.data['stake-tokens']);
 // }
 
 // async function printStakeBalances(user: string, marketId: number) {
 // 	let data = await simnet.callReadOnlyFn(marketScalingCPMM, 'get-stake-balances', [Cl.uint(marketId), Cl.principal(user)], alice);
-// 	console.log('get-stake-balances: ' + user, (data.result as any).value);
+// 	//silence: console.log('get-stake-balances: ' + user, (data.result as any).value);
 // }
 // async function printTokenStakeBalances(user: string, marketId: number) {
 // 	let data = await simnet.callReadOnlyFn(marketScalingCPMM, 'get-token-balances', [Cl.uint(marketId), Cl.principal(user)], alice);
-// 	console.log('get-token-balances: ' + user, (data.result as any).value);
+// 	//silence: console.log('get-token-balances: ' + user, (data.result as any).value);
 // }
 // export async function createBinaryMarketWithGating(marketId: number, proof: any, key?: any, creator?: string, token?: string, fee?: number) {
 // 	let response = await simnet.callPublicFn(
@@ -411,7 +411,7 @@ export async function createBinaryMarket(marketId: number, creator?: string, tok
 // async function resolveMarket(marketId: number, winner: number) {
 // 	simnet.mineEmptyBlocks(288);
 // 	let response = await simnet.callPublicFn(marketScalingCPMM, 'resolve-market', [Cl.uint(marketId)], bob);
-// 	console.log(response.result);
+// 	//silence: console.log(response.result);
 // 	expect(response.result).toEqual(Cl.ok(Cl.some(Cl.uint(winner))));
 // 	return response;
 // }

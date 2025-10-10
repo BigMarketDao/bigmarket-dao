@@ -1,6 +1,8 @@
-;; Title: Updates the liquidity extension to version 1
+;; Title: Upgrade Scalar Markets to Pyth V4
 ;; Author(s): mijoco.btc
-;; Description: improves conversion calculation of STX to BIGR to align with other reward actions
+;; Synopsis: Oracle Pyth V4 is now available
+;; Description: This proposal upgrades BigMarket scalar markets to use V4 Pyth Oracles
+;; It also 
 
 (impl-trait  .proposal-trait.proposal-trait)
 
@@ -8,10 +10,12 @@
 	(begin
 		(try! (contract-call? .bigmarket-dao set-extensions
 			(list
-				{extension: .bme010-0-liquidity-contribution, enabled: false}
-				{extension: .bme010-1-liquidity-contribution, enabled: true}
+				{extension: .bme024-0-market-scalar-pyth, enabled: false}
+				{extension: .bme024-0-market-scalar-pyth, enabled: true}
 			)
 		))
+		(try! (contract-call? .bme010-0-liquidity-contribution set-liquidity-reward-params {rate: u10, dampener: u10}))
+		(try! (contract-call? .bme032-0-scalar-strategy-hedge set-hedge-scalar-contract .bme024-0-market-scalar-pyth))
 		(ok true)
 	)
 )

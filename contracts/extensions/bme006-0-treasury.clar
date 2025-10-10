@@ -13,8 +13,6 @@
 (use-trait prediction-market-trait .prediction-market-trait.prediction-market-trait)
 (use-trait ft-velar-token 'SP2AKWJYC7BNY18W1XXKPGP0YVEK63QJG4793Z2D4.sip-010-trait-ft-standard.sip-010-trait)
 
-;; SP1Y5YSTAHZ88XYK1VPDH24GY0HPX5J4JECTMY4A1.univ2-router
-
 (define-constant err-unauthorised (err u3000))
 (define-constant err-invalid-amount (err u3001))
 

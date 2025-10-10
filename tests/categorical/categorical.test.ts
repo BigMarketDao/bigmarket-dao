@@ -16,6 +16,18 @@ import {
 	stxToken,
 	tom
 } from '../helpers';
+// SP22SW60674C0V6B5E234C7ZD2YR8WXKXXVC48GZR.bme021-0-market-voting
+
+// SP22SW60674C0V6B5E234C7ZD2YR8WXKXXVC48GZR.bme000-0-governance-token
+// SP22SW60674C0V6B5E234C7ZD2YR8WXKXXVC48GZR.bme001-0-proposal-voting
+// SP22SW60674C0V6B5E234C7ZD2YR8WXKXXVC48GZR.bme003-0-core-proposals
+// SP22SW60674C0V6B5E234C7ZD2YR8WXKXXVC48GZR.bme006-0-treasury
+// SP22SW60674C0V6B5E234C7ZD2YR8WXKXXVC48GZR.bme010-0-liquidity-contribution
+// SP22SW60674C0V6B5E234C7ZD2YR8WXKXXVC48GZR.bme022-0-market-gating
+// SP22SW60674C0V6B5E234C7ZD2YR8WXKXXVC48GZR.bme024-0-market-scalar-pyth
+// SP22SW60674C0V6B5E234C7ZD2YR8WXKXXVC48GZR.bme024-0-market-predicting
+// SP22SW60674C0V6B5E234C7ZD2YR8WXKXXVC48GZR.bme030-0-reputation-token
+// SP22SW60674C0V6B5E234C7ZD2YR8WXKXXVC48GZR.bme032-0-scalar-strategy-hedge
 
 const simnet = await setupSimnet();
 
@@ -54,10 +66,10 @@ describe('claiming errors', () => {
 
 	it('create ok', async () => {
 		let response = await createCategoricalMarket(0);
-		console.log('=======createCategoricalMarket===========================================');
-		console.log(response.result);
-		console.log(simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(6), Cl.principal(deployer)], deployer));
-		console.log('=======createCategoricalMarket===========================================');
+		//silence: console.log('=======createCategoricalMarket===========================================');
+		//silence: console.log(response.result);
+		//silence: console.log(simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(6), Cl.principal(deployer)], deployer));
+		//silence: console.log('=======createCategoricalMarket===========================================');
 
 		//await assertBalance(deployer, 6, 4);
 	});

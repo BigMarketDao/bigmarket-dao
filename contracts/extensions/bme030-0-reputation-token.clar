@@ -30,6 +30,8 @@
 (define-map supplies uint uint)
 (define-map last-claimed-epoch { who: principal } uint)
 (define-map tier-weights uint uint)
+(define-map join-epoch { who: principal } uint)
+(define-map minted-in-epoch { epoch: uint } uint)
 
 (define-data-var reward-per-epoch uint u10000000000) ;; 10,000 BIG per epoch (in micro units)
 (define-data-var overall-supply uint u0)
@@ -117,23 +119,35 @@
 ;; ------------------------
 (define-public (mint (recipient principal) (token-id uint) (amount uint))
   (let (
+    (current-epoch (/ burn-block-height epoch-duration))
     (base-amount
       (if (not is-in-mainnet)
           (* amount u2) ;; testnet: 2x
           (if (< burn-block-height (+ (var-get launch-height) u12000))
               (/ (* amount u3) u2) ;; 1.5x on early mainnet
               amount))) ;; no early adopter bonus
+    (weight (default-to u1 (map-get? tier-weights token-id)))
+    (weighted-amount (* base-amount weight))
   )
     (begin
       (try! (is-dao-or-extension))
       (asserts! (> base-amount u0) err-zero-amount)
       (asserts! (and (> token-id u0) (<= token-id max-tier)) err-invalid-tier)
+
       (try! (ft-mint? bigr-token base-amount recipient))
       (try! (tag-nft { token-id: token-id, owner: recipient }))
       (map-set balances { token-id: token-id, owner: recipient }
         (+ base-amount (default-to u0 (map-get? balances { token-id: token-id, owner: recipient }))))
       (map-set supplies token-id (+ base-amount (default-to u0 (map-get? supplies token-id))))
       (var-set overall-supply (+ (var-get overall-supply) base-amount))
+
+      (if (is-none (map-get? join-epoch { who: recipient }))
+            (map-set join-epoch { who: recipient } current-epoch)
+            true)
+      ;; update minted for this epoch
+      (map-set minted-in-epoch { epoch: current-epoch }
+        (+ weighted-amount (default-to u0 (map-get? minted-in-epoch { epoch: current-epoch }))))
+      
       (print { event: "sft_mint", token-id: token-id, amount: base-amount, recipient: recipient })
       (ok true)
     )
@@ -219,11 +233,14 @@
   (let (
         (epoch (/ burn-block-height epoch-duration))
         (last (default-to u0 (map-get? last-claimed-epoch { who: user })))
+        (joined (default-to epoch (map-get? join-epoch { who: user }))) ;; epoch they joined
+        (total-live (unwrap! (get-weighted-supply) err-claims-zero-total))
+        (minted-this-epoch (default-to u0 (map-get? minted-in-epoch { epoch: epoch })))
+        (total (- total-live minted-this-epoch))
       )
-    (if (< last epoch)
+    (if (and (< last epoch) (> epoch joined))
       (let (
             (rep (unwrap! (get-weighted-rep user) err-claims-zero-rep))
-            (total (unwrap! (get-weighted-supply) err-claims-zero-total))
           )
         (if (and (> rep u0) (> total u0))
           (let ((share (/ (* rep (var-get reward-per-epoch)) total)))

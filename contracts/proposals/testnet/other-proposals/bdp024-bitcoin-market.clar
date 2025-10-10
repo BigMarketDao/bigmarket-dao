@@ -24,7 +24,6 @@
 		(try! (contract-call? .bme023-0-market-bitcoin set-market-fee-bips-max u300))
 		(try! (contract-call? .bme023-0-market-bitcoin set-market-create-fee u1000000))
 		(try! (contract-call? .bme023-0-market-bitcoin set-dev-fee-bips u100))
-		(try! (contract-call? .bme023-0-market-bitcoin set-dao-fee-bips u150))
 		(try! (contract-call? .bme023-0-market-bitcoin set-dispute-window-length u24))
 
 		(try! (contract-call? .bme024-0-market-predicting set-token-minimum-seed 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.wrapped-stx u100000000))

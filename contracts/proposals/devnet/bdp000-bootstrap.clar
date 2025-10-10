@@ -60,7 +60,6 @@
 		(try! (contract-call? .bme024-0-market-predicting set-token-minimum-seed 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.tpepe u100))
 		(try! (contract-call? .bme024-0-market-predicting set-token-minimum-seed 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.tusdh u100))
 		(try! (contract-call? .bme024-0-market-predicting set-dev-fee-bips u100))
-		(try! (contract-call? .bme024-0-market-predicting set-dao-fee-bips u150))
 		(try! (contract-call? .bme024-0-market-predicting set-dispute-window-length u24))
 		(try! (contract-call? .bme024-0-market-predicting set-default-hedge-executor 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme032-0-scalar-strategy-hedge))
 
@@ -78,7 +77,6 @@
 		(try! (contract-call? .bme024-0-market-scalar-pyth set-token-minimum-seed 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.tpepe u100))
 		(try! (contract-call? .bme024-0-market-scalar-pyth set-token-minimum-seed 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.tusdh u100))
 		(try! (contract-call? .bme024-0-market-scalar-pyth set-dev-fee-bips u100))
-		(try! (contract-call? .bme024-0-market-scalar-pyth set-dao-fee-bips u150))
 		(try! (contract-call? .bme024-0-market-scalar-pyth set-dispute-window-length u24))
 		(try! (contract-call? .bme024-0-market-scalar-pyth set-default-hedge-executor 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme032-0-scalar-strategy-hedge))
 		;; STXUSD
@@ -97,7 +95,6 @@
 		(try! (contract-call? .bme023-0-market-bitcoin set-market-fee-bips-max u300))
 		(try! (contract-call? .bme023-0-market-bitcoin set-market-create-fee u1000000))
 		(try! (contract-call? .bme023-0-market-bitcoin set-dev-fee-bips u100))
-		(try! (contract-call? .bme023-0-market-bitcoin set-dao-fee-bips u150))
 		(try! (contract-call? .bme023-0-market-bitcoin set-dispute-window-length u24))
 
 		(try! (contract-call? .bme021-0-market-voting set-voting-duration u24))

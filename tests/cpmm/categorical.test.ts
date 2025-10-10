@@ -177,7 +177,7 @@ describe('claiming errors', () => {
 			[Cl.principal(deployer + '.bme024-0-market-predicting'), Cl.uint(0), Cl.principal(stxToken)],
 			bob
 		);
-		console.log('claim winner ok', response.events);
+		// console.log('claim winner ok', response.events);
 		expect(response.result).toEqual(Cl.ok(Cl.uint(3302872)));
 
 		await claim(betty, 0, 26407126);
@@ -219,7 +219,7 @@ describe('claiming errors', () => {
 			[Cl.principal(deployer + '.bme024-0-market-predicting'), Cl.uint(0), Cl.principal(stxToken)],
 			bob
 		);
-		console.log('claim winner ok', response.events);
+		// console.log('claim winner ok', response.events);
 		expect(response.result).toEqual(Cl.ok(Cl.uint(464213)));
 
 		await claim(fred, 0, 9243457);
@@ -237,10 +237,11 @@ describe('claiming errors', () => {
 */
 async function printMarketBalances(user: string, marketId: number) {
 	let data = await simnet.callReadOnlyFn('bme024-0-market-predicting', 'get-market-data', [Cl.uint(marketId)], user);
-	console.log('MarketBalances ---> categories', (data.result as any).value.data.categories.list);
-	console.log('MarketBalances ---> outcome', (data.result as any).value.data.outcome.value?.value);
-	console.log('MarketBalances ---> stakes', (data.result as any).value.data.stakes.list);
-	console.log('MarketBalances ---> stake-tokens', (data.result as any).value.data['stake-tokens']);
+	// console.log('MarketBalances ---> categories', data.result as any);
+	// console.log('MarketBalances ---> categories', (data.result as any).value.value.categories);
+	// console.log('MarketBalances ---> outcome', (data.result as any).value.value.outcome.value?.value);
+	// console.log('MarketBalances ---> stakes', (data.result as any).value.value.stakes);
+	// console.log('MarketBalances ---> stake-tokens', (data.result as any).value.value['stake-tokens']);
 }
 
 async function printStakeBalances(user: string, marketId: number) {

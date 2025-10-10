@@ -1,7 +1,7 @@
-import { describe, expect, it } from 'vitest';
 import { Cl, principalCV, uintCV } from '@stacks/transactions';
-import { alice, bob, constructDao, deployer, metadataHash, setupSimnet, sbtcToken, stxToken } from '../helpers';
+import { describe, expect, it } from 'vitest';
 import { createBinaryMarket, predictCategory } from '../categorical/categorical.test';
+import { alice, bob, constructDao, deployer, sbtcToken, setupSimnet } from '../helpers';
 
 const simnet = await setupSimnet();
 
@@ -94,17 +94,17 @@ describe('successful claim', () => {
 		let data = await simnet.callReadOnlyFn('bme024-0-market-predicting', 'get-stake-balances', [Cl.uint(0), Cl.principal(alice)], alice);
 		expect(data.result).toEqual(Cl.ok(Cl.list([Cl.uint(0), Cl.uint(9897n), Cl.uint(0), Cl.uint(0), Cl.uint(0), Cl.uint(0), Cl.uint(0), Cl.uint(0), Cl.uint(0), Cl.uint(0)])));
 		let stxBalances = simnet.getAssetsMap().get('STX'); // Replace if contract's principal
-		console.log('contractBalance 215: ' + stxBalances?.get(deployer + '.bme024-0-market-predicting'));
+		//silence: console.log('contractBalance 215: ' + stxBalances?.get(deployer + '.bme024-0-market-predicting'));
 
 		response = await simnet.callPublicFn('bme024-0-market-predicting', 'claim-winnings', [Cl.uint(0), Cl.principal(sbtcToken)], alice);
 		expect(response.result).toEqual(Cl.ok(Cl.uint(19790n)));
 
 		stxBalances = simnet.getAssetsMap().get('STX'); // Replace if contract's principal
-		console.log('contractBalance 228: ' + stxBalances?.get(deployer + '.bme024-0-market-predicting'));
+		//silence: console.log('contractBalance 228: ' + stxBalances?.get(deployer + '.bme024-0-market-predicting'));
 
 		response = await simnet.callPublicFn('bme024-0-market-predicting', 'claim-winnings', [Cl.uint(0), Cl.principal(sbtcToken)], bob);
 		expect(response.result).toEqual(Cl.ok(Cl.uint(19794n)));
 		stxBalances = simnet.getAssetsMap().get('STX'); // Replace if contract's principal
-		console.log('contractBalance 242: ' + stxBalances?.get(deployer + '.bme024-0-market-predicting'));
+		//silence: console.log('contractBalance 242: ' + stxBalances?.get(deployer + '.bme024-0-market-predicting'));
 	});
 });
