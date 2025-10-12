@@ -84,7 +84,7 @@
 
 (define-data-var market-counter uint u0)
 (define-data-var dispute-window-length uint u144)
-(define-data-var dev-fee-bips uint u200)
+(define-data-var dev-fee-bips uint u100)
 (define-data-var market-fee-bips-max uint u1000)
 (define-data-var dev-fund principal tx-sender)
 (define-data-var resolution-agent principal tx-sender)

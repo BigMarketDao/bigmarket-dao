@@ -1,7 +1,7 @@
 ;; Title: BDP000 Bootstrap
 ;; Description:
 ;; Sets up and configure the DAO
-;; Allowed = ["ST3Y12HJYP2NMNAFHWBPM2CMYDHYXME1F46VC5SPJ, ST31WZCAZB0B1Q6WGC6ZYCWRGCBRP3KC7HJQ2QQ1K, ST167Z6WFHMV0FZKFCRNWZ33WTB0DFBCW9M1FW3AY, ST105HCS1RTR7D61EZET8CWNEF24ENEN3V6ARBYBJ, ST3SJD6KV86N90W0MREGRTM1GWXN8Z91PF6W0BQKM", "STEZD95XQ194X67C1QJW4PHKDG8F5D66ZCYFX27A"];
+;; Allowed = ["ST3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX77J7SV0, ST2XFH8D1MM2G11C0S6AZRSNP031RAY92XFABDE58, ST167Z6WFHMV0FZKFCRNWZ33WTB0DFBCW9M1FW3AY, ST105HCS1RTR7D61EZET8CWNEF24ENEN3V6ARBYBJ, ST3SJD6KV86N90W0MREGRTM1GWXN8Z91PF6W0BQKM", "STEZD95XQ194X67C1QJW4PHKDG8F5D66ZCYFX27A"];
 
 (impl-trait  'SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z.proposal-trait.proposal-trait)
 
@@ -29,13 +29,13 @@
 		;; Set core team members.
 		(try! (contract-call? .bme003-0-core-proposals set-core-team-member 'ST167Z6WFHMV0FZKFCRNWZ33WTB0DFBCW9M1FW3AY true))
 		(try! (contract-call? .bme003-0-core-proposals set-core-team-member 'ST105HCS1RTR7D61EZET8CWNEF24ENEN3V6ARBYBJ true))
-		(try! (contract-call? .bme003-0-core-proposals set-core-team-member 'ST3Y12HJYP2NMNAFHWBPM2CMYDHYXME1F46VC5SPJ true))
+		(try! (contract-call? .bme003-0-core-proposals set-core-team-member 'ST3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX77J7SV0 true))
 		(try! (contract-call? .bme003-0-core-proposals set-core-team-member 'ST3SJD6KV86N90W0MREGRTM1GWXN8Z91PF6W0BQKM true))
 
 		;; configure prediction markets
-		;; allowedCreators = ["ST3Y12HJYP2NMNAFHWBPM2CMYDHYXME1F46VC5SPJ, ST31WZCAZB0B1Q6WGC6ZYCWRGCBRP3KC7HJQ2QQ1K, ST167Z6WFHMV0FZKFCRNWZ33WTB0DFBCW9M1FW3AY, ST105HCS1RTR7D61EZET8CWNEF24ENEN3V6ARBYBJ, ST3SJD6KV86N90W0MREGRTM1GWXN8Z91PF6W0BQKM", "STEZD95XQ194X67C1QJW4PHKDG8F5D66ZCYFX27A"];
-		(try! (contract-call? .bme022-0-market-gating set-merkle-root-by-principal .bme024-0-market-predicting 0x30ffcbef0fc180755c8469acac94b6c1eafca78ed04c001af8014d9718f5dd01))
-		(try! (contract-call? .bme022-0-market-gating set-merkle-root-by-principal .bme024-0-market-scalar-pyth 0x30ffcbef0fc180755c8469acac94b6c1eafca78ed04c001af8014d9718f5dd01))
+		;; allowedCreators = ["ST3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX77J7SV0, ST2XFH8D1MM2G11C0S6AZRSNP031RAY92XFABDE58, ST167Z6WFHMV0FZKFCRNWZ33WTB0DFBCW9M1FW3AY, ST105HCS1RTR7D61EZET8CWNEF24ENEN3V6ARBYBJ, ST3SJD6KV86N90W0MREGRTM1GWXN8Z91PF6W0BQKM", "STEZD95XQ194X67C1QJW4PHKDG8F5D66ZCYFX27A"];
+		(try! (contract-call? .bme022-0-market-gating set-merkle-root-by-principal .bme024-0-market-predicting 0x46847487ceffe52a8b7fd861fffdc7642121bff0ff5c4d1f843c550d2775540d))
+		(try! (contract-call? .bme022-0-market-gating set-merkle-root-by-principal .bme024-0-market-scalar-pyth 0x46847487ceffe52a8b7fd861fffdc7642121bff0ff5c4d1f843c550d2775540d))
 		
 		(try! (contract-call? .bme024-0-market-predicting set-resolution-agent 'ST167Z6WFHMV0FZKFCRNWZ33WTB0DFBCW9M1FW3AY))
 		(try! (contract-call? .bme024-0-market-predicting set-dev-fund 'ST16RPMHH96463TP1AFEWZKQ12D7CY57YZGRWJR88))
@@ -47,8 +47,8 @@
 		(try! (contract-call? .bme024-0-market-predicting set-allowed-token 'ST1F7QA2MDF17S807EPA36TSS8AMEFY4KA9TVGWXT.sbtc-token false))
 		(try! (contract-call? .bme024-0-market-predicting set-market-fee-bips-max u1000))
 		(try! (contract-call? .bme024-0-market-predicting set-token-minimum-seed 'ST2X0FMCBMBK3F41WVS8PKN75PF9H5ZDRJB7H600B.wrapped-stx u100000000))
-		(try! (contract-call? .bme024-0-market-predicting set-token-minimum-seed 'ST3Y12HJYP2NMNAFHWBPM2CMYDHYXME1F46VC5SPJ.bme000-0-governance-token u100000000))
-		(try! (contract-call? .bme024-0-market-predicting set-token-minimum-seed 'ST3Y12HJYP2NMNAFHWBPM2CMYDHYXME1F46VC5SPJ.big-play u100000000))
+		(try! (contract-call? .bme024-0-market-predicting set-token-minimum-seed 'ST3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX77J7SV0.bme000-0-governance-token u100000000))
+		(try! (contract-call? .bme024-0-market-predicting set-token-minimum-seed 'ST3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX77J7SV0.big-play u100000000))
 		(try! (contract-call? .bme024-0-market-predicting set-token-minimum-seed 'ST1F7QA2MDF17S807EPA36TSS8AMEFY4KA9TVGWXT.sbtc-token u100000000))
 
 		(try! (contract-call? .bme024-0-market-scalar-pyth set-resolution-agent 'ST167Z6WFHMV0FZKFCRNWZ33WTB0DFBCW9M1FW3AY))
@@ -67,8 +67,8 @@
 		
 		(try! (contract-call? .bme024-0-market-scalar-pyth set-market-fee-bips-max u1000))
 		(try! (contract-call? .bme024-0-market-scalar-pyth set-token-minimum-seed 'ST2X0FMCBMBK3F41WVS8PKN75PF9H5ZDRJB7H600B.wrapped-stx u100000000))
-		(try! (contract-call? .bme024-0-market-scalar-pyth set-token-minimum-seed 'ST3Y12HJYP2NMNAFHWBPM2CMYDHYXME1F46VC5SPJ.bme000-0-governance-token u100000000))
-		(try! (contract-call? .bme024-0-market-scalar-pyth set-token-minimum-seed 'ST3Y12HJYP2NMNAFHWBPM2CMYDHYXME1F46VC5SPJ.big-play u100000000))
+		(try! (contract-call? .bme024-0-market-scalar-pyth set-token-minimum-seed 'ST3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX77J7SV0.bme000-0-governance-token u100000000))
+		(try! (contract-call? .bme024-0-market-scalar-pyth set-token-minimum-seed 'ST3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX77J7SV0.big-play u100000000))
 		(try! (contract-call? .bme024-0-market-scalar-pyth set-token-minimum-seed 'ST1F7QA2MDF17S807EPA36TSS8AMEFY4KA9TVGWXT.sbtc-token u100000000))
 
 		(try! (contract-call? .bme000-0-governance-token bmg-mint-many
