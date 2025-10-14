@@ -66,3 +66,5 @@ clarinet deployments apply -p deployments/default.devnet-plan.yaml --no-dashboar
 ```
 
 or deploy manually using sandbox in order following address [ST3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX77J7SV0](https://explorer.hiro.so/address/ST3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX77J7SV0?chain=testnet);
+
+SP3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX52CR6XQ.bme008-0-resolution-coordinator
