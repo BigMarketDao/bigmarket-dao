@@ -15,6 +15,7 @@
 (define-constant err-share-transfer-failed (err u40006))
 (define-constant err-invalid-token (err u40007))
 
+
 (define-map share-orders
   { market: principal, market-id: uint, outcome: uint, seller: principal }
   { amount: uint, expiry-block: uint }

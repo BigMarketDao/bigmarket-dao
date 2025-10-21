@@ -22,6 +22,7 @@
 
 (define-constant max-tier u20)
 (define-constant epoch-duration u1000)
+(define-constant SCALE u1000000)
 
 (define-fungible-token bigr-token)
 (define-non-fungible-token bigr-id { token-id: uint, owner: principal })
@@ -243,7 +244,10 @@
             (rep (unwrap! (get-weighted-rep user) err-claims-zero-rep))
           )
         (if (and (> rep u0) (> total u0))
-          (let ((share (/ (* rep (var-get reward-per-epoch)) total)))
+          (let (
+              (share-scaled (/ (* (* rep (var-get reward-per-epoch)) SCALE) total))
+              (share (/ share-scaled SCALE))
+            )
             (map-set last-claimed-epoch { who: user } epoch)
             (try! (contract-call? .bme006-0-treasury sip010-transfer share user none .bme000-0-governance-token))
             (print { event: "big-claim", user: user, epoch: epoch, amount: share, reward-per-epoch: (var-get reward-per-epoch) })

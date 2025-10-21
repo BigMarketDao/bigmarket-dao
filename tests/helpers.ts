@@ -6,7 +6,7 @@ import { expect } from 'vitest';
 import { contractId2Key, generateMerkleProof, generateMerkleTreeUsingStandardPrincipal } from './gating/gating';
 
 export const simnet = await setupSimnet();
-export const accounts = simnet.getAccounts();
+export const accounts = await simnet.getAccounts();
 export const deployer = accounts.get('deployer')!; // ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
 export const alice = accounts.get('wallet_1')!; // ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5
 export const bob = accounts.get('wallet_2')!; // ST2CY5V39NHDPWSXMW9QDT3HC3GD6Q6XX4CFRK9AG
@@ -71,17 +71,17 @@ export async function constructDao(simnet: any) {
 }
 
 export async function assertDataVarNumber(contract: string, varName: string, value: number | undefined) {
-	let result = Number((simnet.getDataVar(contract, varName) as any).value);
+	let result = Number(((await simnet.getDataVar(contract, varName)) as any).value);
 	expect(result).toEqual(value);
 }
-export function assertContractBalance(contract: string, value: bigint | undefined) {
-	let stxBalances = simnet.getAssetsMap().get('STX'); // Replace if contract's principal
+export async function assertContractBalance(contract: string, value: bigint | undefined) {
+	let stxBalances = await simnet.getAssetsMap().get('STX'); // Replace if contract's principal
 	//console.log('contractBalance : ' + contract + ' : ' + stxBalances?.get(`${deployer}.${contract}`));
 	expect(stxBalances?.get(`${deployer}.${contract}`)).toEqual(value);
 }
 
 export async function assertUserBalance(user: string, value: bigint) {
-	let stxBalances = simnet.getAssetsMap().get('STX'); // Replace if contract's principal
+	let stxBalances = await simnet.getAssetsMap().get('STX'); // Replace if contract's principal
 	// console.log('assertUserBalance: ' + user + stxBalances?.get(`${user}`));
 	expect(stxBalances?.get(`${user}`)).toEqual(value);
 }
@@ -108,8 +108,8 @@ export async function assertStakeBalance(user: string, againstValue: number, for
 }
 
 export async function corePropose(simnet: any, proposalName: string) {
-	const alice = simnet.getAccounts().get('wallet_1')!;
-	const deployer = simnet.getAccounts().get('deployer')!;
+	const alice = await simnet.getAccounts().get('wallet_1')!;
+	const deployer = await simnet.getAccounts().get('deployer')!;
 	const proposal1 = `${deployer}.${proposalName}`;
 	const result = await simnet.callPublicFn(coreProposals, 'core-propose', [Cl.principal(proposal1), Cl.uint(simnet.blockHeight + 2), Cl.uint(100), Cl.uint(6600)], alice);
 	// console.log("corePropose: ", Cl.prettyPrint(result.result));
@@ -184,7 +184,7 @@ export async function passProposalByCoreVote(proposal: string, errorCode?: numbe
 	const coreProposeResponse = await simnet.callPublicFn(
 		coreProposals,
 		'core-propose',
-		[Cl.principal(`${deployer}.${proposal}`), Cl.uint(simnet.burnBlockHeight + 10), Cl.uint(100), Cl.some(Cl.uint(6600))],
+		[Cl.principal(`${deployer}.${proposal}`), Cl.uint(simnet.burnBlockHeight + 20), Cl.uint(100), Cl.some(Cl.uint(6600))],
 		alice
 	);
 	expect(coreProposeResponse.result).toEqual(Cl.ok(Cl.bool(true)));

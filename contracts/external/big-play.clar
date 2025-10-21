@@ -52,9 +52,15 @@
 
 (define-public (seed-once)
   (begin
-    (asserts! (not (var-get seeded)) (err u201)) 
+    (asserts! (not (var-get seeded)) (err u201))
     ;; freeze!
     (var-set seeded true)
-    (ft-mint? bmg-play seed-amount contract-owner)
+    (try! (ft-mint? bmg-play seed-amount contract-owner))
+    (try! (ft-mint? bmg-play seed-amount 'SPEZD95XQ194X67C1QJW4PHKDG8F5D66ZCT8BY29))
+    (try! (ft-mint? bmg-play seed-amount 'SP2XFH8D1MM2G11C0S6AZRSNP031RAY92XCARPRSQ))
+    (try! (ft-mint? bmg-play seed-amount 'SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z))
+    (try! (ft-mint? bmg-play seed-amount 'SP2Z2CBMGWB9MQZAF5Z8X56KS69XRV3SJF4WKJ7J9))
+    (try! (ft-mint? bmg-play seed-amount 'SPQE3J7XMMK0DN0BWJZHGE6B05VDYQRXRMDV734D))
+    (ok true)
   )
 )

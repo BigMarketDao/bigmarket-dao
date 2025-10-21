@@ -20,6 +20,9 @@
 (define-constant err-stage-cancelled (err u5009))
 (define-constant err-user-limit-reached (err u5010))
 
+(define-constant SCALE u1000000)
+(define-constant MICROSTX u1000000)
+
 (define-data-var current-stage uint u1) ;; IDO starts at Stage 1
 (define-data-var current-stage-start uint burn-block-height) ;; Tracks burn-block-height when stage begins
 (define-data-var max-user-ido-purchase uint u500000000000)
@@ -74,12 +77,12 @@
     (try! (is-dao-or-extension))
 
     ;; Set up each stage
-  (map-set ido-stage-details u1 {price: u5,  max-supply: u6000000000000, tokens-sold: u0, cancelled: false})
-  (map-set ido-stage-details u2 {price: u6,  max-supply: u8333330000000, tokens-sold: u0, cancelled: false})
-  (map-set ido-stage-details u3 {price: u7,  max-supply: u10714290000000, tokens-sold: u0, cancelled: false})
-  (map-set ido-stage-details u4 {price: u8,  max-supply: u12500000000000, tokens-sold: u0, cancelled: false})
-  (map-set ido-stage-details u5 {price: u10, max-supply: u15000000000000, tokens-sold: u0, cancelled: false})
-  (map-set ido-stage-details u6 {price: u20, max-supply: u10000000000000, tokens-sold: u0, cancelled: false})
+  (map-set ido-stage-details u1 {price: (* u5 SCALE),  max-supply: u6000000000000, tokens-sold: u0, cancelled: false})
+  (map-set ido-stage-details u2 {price: (* u6 SCALE),  max-supply: u8333330000000, tokens-sold: u0, cancelled: false})
+  (map-set ido-stage-details u3 {price: (* u7 SCALE),  max-supply: u10714290000000, tokens-sold: u0, cancelled: false})
+  (map-set ido-stage-details u4 {price: (* u8 SCALE),  max-supply: u12500000000000, tokens-sold: u0, cancelled: false})
+  (map-set ido-stage-details u5 {price: (* u10 SCALE), max-supply: u15000000000000, tokens-sold: u0, cancelled: false})
+  (map-set ido-stage-details u6 {price: (* u20 SCALE), max-supply: u10000000000000, tokens-sold: u0, cancelled: false})
 
     (print {event: "ido-initialized"})
     (ok true)
@@ -96,7 +99,9 @@
     (sender tx-sender)
 		(cancelled (get cancelled stage-info))
     (current-stake (default-to u0 (map-get? ido-purchases {stage: stage, buyer: tx-sender})))
-    (tokens-to-buy (* stx-amount bmg-price))
+    (stx-in-stx (/ (* stx-amount SCALE) MICROSTX))
+    (tokens-to-buy (/ (* stx-in-stx bmg-price) SCALE))
+
 	)
     ;; assert account limit not reached
     (asserts! (<= (+ current-stake tokens-to-buy) (var-get max-user-ido-purchase)) err-user-limit-reached)
@@ -166,11 +171,12 @@
         (stage-info (unwrap! (map-get? ido-stage-details stage) err-invalid-stage))
         (price (get price stage-info))
         (sender tx-sender)
+        (refund (/ (* purchase-amount price) SCALE))
 	)
     ;; Ensure stage is actually cancelled
     (asserts! (get cancelled stage-info) err-stage-not-cancelled)
     ;; Transfer STX back to the buyer / burn the bdg
-    (try! (as-contract (contract-call? .bme006-0-treasury stx-transfer (* purchase-amount price) sender none)))
+    (try! (as-contract (contract-call? .bme006-0-treasury stx-transfer refund sender none)))
     (try! (as-contract (contract-call? .bme000-0-governance-token bmg-burn purchase-amount sender)))
     ;; Remove the purchase record
     (map-delete ido-purchases {stage: stage, buyer: tx-sender})

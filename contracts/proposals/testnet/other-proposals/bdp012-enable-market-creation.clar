@@ -6,10 +6,10 @@
 
 (define-public (execute (sender principal))
 	(begin 
-		(try! (contract-call? 'ST3Y12HJYP2NMNAFHWBPM2CMYDHYXME1F46VC5SPJ.bme024-0-market-predicting set-market-fee-bips-max u333))
-		(try! (contract-call? 'ST3Y12HJYP2NMNAFHWBPM2CMYDHYXME1F46VC5SPJ.bme024-0-market-predicting set-creation-gated false))
-		(try! (contract-call? 'ST3Y12HJYP2NMNAFHWBPM2CMYDHYXME1F46VC5SPJ.bme024-0-market-scalar-pyth set-creation-gated false))
-		;;(try! (contract-call? 'ST3Y12HJYP2NMNAFHWBPM2CMYDHYXME1F46VC5SPJ.bme024-0-market-predicting set-default-hedge-executor 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme032-0-scalar-strategy-hedge))
+		(try! (contract-call? 'ST3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX77J7SV0.bme024-0-market-predicting set-market-fee-bips-max u333))
+		(try! (contract-call? 'ST3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX77J7SV0.bme024-0-market-predicting set-creation-gated false))
+		(try! (contract-call? 'ST3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX77J7SV0.bme024-0-market-scalar-pyth set-creation-gated false))
+		;;(try! (contract-call? 'ST3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX77J7SV0.bme024-0-market-predicting set-default-hedge-executor 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme032-0-scalar-strategy-hedge))
 		(ok true)
 	)
 )

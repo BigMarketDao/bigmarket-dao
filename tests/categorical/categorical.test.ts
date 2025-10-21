@@ -16,23 +16,23 @@ import {
 	stxToken,
 	tom
 } from '../helpers';
-// SP22SW60674C0V6B5E234C7ZD2YR8WXKXXVC48GZR.bme021-0-market-voting
+// SP3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX52CR6XQ.bme021-0-market-voting
 
-// SP22SW60674C0V6B5E234C7ZD2YR8WXKXXVC48GZR.bme000-0-governance-token
-// SP22SW60674C0V6B5E234C7ZD2YR8WXKXXVC48GZR.bme001-0-proposal-voting
-// SP22SW60674C0V6B5E234C7ZD2YR8WXKXXVC48GZR.bme003-0-core-proposals
-// SP22SW60674C0V6B5E234C7ZD2YR8WXKXXVC48GZR.bme006-0-treasury
-// SP22SW60674C0V6B5E234C7ZD2YR8WXKXXVC48GZR.bme010-0-liquidity-contribution
-// SP22SW60674C0V6B5E234C7ZD2YR8WXKXXVC48GZR.bme022-0-market-gating
-// SP22SW60674C0V6B5E234C7ZD2YR8WXKXXVC48GZR.bme024-0-market-scalar-pyth
-// SP22SW60674C0V6B5E234C7ZD2YR8WXKXXVC48GZR.bme024-0-market-predicting
-// SP22SW60674C0V6B5E234C7ZD2YR8WXKXXVC48GZR.bme030-0-reputation-token
-// SP22SW60674C0V6B5E234C7ZD2YR8WXKXXVC48GZR.bme032-0-scalar-strategy-hedge
+// SP3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX52CR6XQ.bme000-0-governance-token
+// SP3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX52CR6XQ.bme001-0-proposal-voting
+// SP3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX52CR6XQ.bme003-0-core-proposals
+// SP3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX52CR6XQ.bme006-0-treasury
+// SP3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX52CR6XQ.bme010-0-liquidity-contribution
+// SP3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX52CR6XQ.bme022-0-market-gating
+// SP3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX52CR6XQ.bme024-0-market-scalar-pyth
+// SP3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX52CR6XQ.bme024-0-market-predicting
+// SP3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX52CR6XQ.bme030-0-reputation-token
+// SP3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX52CR6XQ.bme032-0-scalar-strategy-hedge
 
 const simnet = await setupSimnet();
 
 async function assertBalance(user: string, tier: number, balance: number) {
-	let bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(tier), Cl.principal(user)], user);
+	let bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(tier), Cl.principal(user)], user);
 	expect(bal.result).toEqual(Cl.ok(Cl.uint(balance * 2)));
 }
 
@@ -192,7 +192,7 @@ describe('claiming errors', () => {
 		assertDataVarNumber(marketPredictingCPMM, 'dao-fee-bips', 150);
 		assertDataVarNumber(marketPredictingCPMM, 'market-fee-bips-max', 300);
 
-		await claim(betty, 0, 11882);
+		await claim(betty, 0, 11879);
 	});
 });
 

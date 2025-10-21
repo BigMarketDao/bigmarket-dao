@@ -179,6 +179,22 @@ path = 'contracts/proposals/testnet/bdp005-update-liquidity-ext.clar'
 clarity_version = 3
 epoch = 3.0
 
+[contracts.bdp001-0-resolution-coordinator]
+path = 'contracts/proposals/devnet/unit-tests/resolution/bdp001-0-resolution-coordinator.clar'
+clarity_version = 3
+epoch = 3.0
+
+[contracts.bdp001-1-resolution-coordinator]
+path = 'contracts/proposals/devnet/unit-tests/resolution/bdp001-1-resolution-coordinator.clar'
+clarity_version = 3
+epoch = 3.0
+
+[contracts.bdp001-resolution-add-agent]
+path = 'contracts/proposals/mainnet/bdp001-resolution-add-agent.clar'
+clarity_version = 3
+epoch = 3.0
+
+
 [contracts.big-play]
 path = 'contracts/external/big-play.clar'
 clarity_version = 3
@@ -206,6 +222,11 @@ epoch = 3.0
 
 [contracts.bme004-0-core-execute]
 path = 'contracts/extensions/bme004-0-core-execute.clar'
+clarity_version = 3
+epoch = 3.0
+
+[contracts.bme008-0-resolution-coordinator]
+path = 'contracts/extensions/bme008-0-resolution-coordinator.clar'
 clarity_version = 3
 epoch = 3.0
 

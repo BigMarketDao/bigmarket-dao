@@ -24,16 +24,16 @@
 				{extension: .bme032-0-scalar-strategy-hedge, enabled: true}
 			)
 		))
-		;; Set core team members.
-		(try! (contract-call? .bme003-0-core-proposals set-core-team-member 'SP22SW60674C0V6B5E234C7ZD2YR8WXKXXVC48GZR true))
+		;; Set initial members who are able to make proposals
+		(try! (contract-call? .bme003-0-core-proposals set-core-team-member 'SP3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX52CR6XQ true))
 		(try! (contract-call? .bme003-0-core-proposals set-core-team-member 'SPEZD95XQ194X67C1QJW4PHKDG8F5D66ZCT8BY29 true))
-		(try! (contract-call? .bme003-0-core-proposals set-core-team-member 'SP246C0KRV7HKXMRB0H7Y6HCYGRCTZMVB9KP3391R true))
+		(try! (contract-call? .bme003-0-core-proposals set-core-team-member 'SP2XFH8D1MM2G11C0S6AZRSNP031RAY92XCARPRSQ true))
 		(try! (contract-call? .bme003-0-core-proposals set-core-team-member 'SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z true))
 
-		;; configure prediction markets
-		;; Allowed = ["SP22SW60674C0V6B5E234C7ZD2YR8WXKXXVC48GZR", "SPEZD95XQ194X67C1QJW4PHKDG8F5D66ZCT8BY29", "SP246C0KRV7HKXMRB0H7Y6HCYGRCTZMVB9KP3391R", "SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z"];
-		(try! (contract-call? .bme022-0-market-gating set-merkle-root-by-principal .bme024-0-market-predicting 0xf40bb8a31e61dbc71524b5b200b6f6b32da28b38f7143cf9346a3d87cbbdf12c))
-		(try! (contract-call? .bme022-0-market-gating set-merkle-root-by-principal .bme024-0-market-scalar-pyth 0xf40bb8a31e61dbc71524b5b200b6f6b32da28b38f7143cf9346a3d87cbbdf12c))
+		;; initial market creators
+		;; Allowed = ["SP3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX52CR6XQ", "SPEZD95XQ194X67C1QJW4PHKDG8F5D66ZCT8BY29", "SP2XFH8D1MM2G11C0S6AZRSNP031RAY92XCARPRSQ", "SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z", 'SP2Z2CBMGWB9MQZAF5Z8X56KS69XRV3SJF4WKJ7J9','SPQE3J7XMMK0DN0BWJZHGE6B05VDYQRXRMDV734D'];
+		(try! (contract-call? .bme022-0-market-gating set-merkle-root-by-principal .bme024-0-market-predicting 0xa268e9042d73cf2939ba07ddbc2972cd1c6dad1ad30125a57b2ee040e60a2ead))
+		(try! (contract-call? .bme022-0-market-gating set-merkle-root-by-principal .bme024-0-market-scalar-pyth 0xa268e9042d73cf2939ba07ddbc2972cd1c6dad1ad30125a57b2ee040e60a2ead))
 		
 		;; Category contract setting
 		(try! (contract-call? .bme024-0-market-predicting set-resolution-agent 'SP3NS9010CQ9AK3M6XN3XD9EHNTDZVGYSMFWZ288Z))
@@ -61,9 +61,16 @@
 		(try! (contract-call? .bme024-0-market-scalar-pyth set-price-band-width 0x23d7315113f5b1d3ba7a83604c44b94d79f4fd69af77f804fc7f920a6dc65744 u900))
 		(try! (contract-call? .bme024-0-market-scalar-pyth set-price-band-width 0x8963217838ab4cf5cadc172203c1f0b763fbaa45f346d8ee50ba994bbcac3026 u600))
 
+		 ;; premint BIG for reputation and a small amount (100) for initial operations 
 		(try! (contract-call? .bme000-0-governance-token bmg-mint-many
 			(list
 				{amount: (/ (* u1500 token-supply) u10000), recipient: .bme006-0-treasury}
+				{amount: u100000000, recipient: 'SP3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX52CR6XQ}
+				{amount: u100000000, recipient: 'SPEZD95XQ194X67C1QJW4PHKDG8F5D66ZCT8BY29}
+				{amount: u100000000, recipient: 'SP2XFH8D1MM2G11C0S6AZRSNP031RAY92XCARPRSQ}
+				{amount: u100000000, recipient: 'SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z}
+				{amount: u100000000, recipient: 'SP2Z2CBMGWB9MQZAF5Z8X56KS69XRV3SJF4WKJ7J9}
+				{amount: u100000000, recipient: 'SPQE3J7XMMK0DN0BWJZHGE6B05VDYQRXRMDV734D}
 			)
 		))
 

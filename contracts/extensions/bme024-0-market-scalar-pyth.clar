@@ -34,6 +34,7 @@
 
 (define-constant DEFAULT_MARKET_DURATION u144) ;; ~1 day in Bitcoin blocks
 (define-constant DEFAULT_COOL_DOWN_PERIOD u144) ;; ~1 day in Bitcoin blocks
+(define-constant SCALE u1000000)
 
 (define-constant RESOLUTION_OPEN u0)
 (define-constant RESOLUTION_RESOLVING u1)
@@ -82,13 +83,16 @@
 (define-constant err-oracle-uncertain (err u10151))
 (define-constant err-oracle-volatile (err u10152))
 (define-constant err-oracle-no-fallback (err u10153))
+(define-constant err-oracle-zero-price (err u10154))
+(define-constant err-oracle-zero-delta (err u10155))
+(define-constant err-invalid-param (err u10156))
 
 (define-constant marketplace .bme040-0-shares-marketplace)
 (define-constant MIN_POOL u1)
 
 (define-data-var market-counter uint u0)
 (define-data-var dispute-window-length uint u144)
-(define-data-var dev-fee-bips uint u200)
+(define-data-var dev-fee-bips uint u100)
 (define-data-var market-fee-bips-max uint u1000)
 (define-data-var dev-fund principal tx-sender)
 (define-data-var resolution-agent principal tx-sender)
@@ -262,6 +266,33 @@
   )
 )
 
+(define-public (set-max-staleness (secs uint))
+  (begin
+    (try! (is-dao-or-extension))
+    (asserts! (and (> secs u60) (< secs u86400)) err-invalid-param)
+    (var-set max-staleness-secs secs)
+    (ok true)
+  )
+)
+
+(define-public (set-max-conf-bips (bips uint))
+  (begin
+    (try! (is-dao-or-extension))
+    (asserts! (<= bips u1000) err-invalid-param)
+    (var-set max-conf-bips bips)
+    (ok true)
+  )
+)
+
+(define-public (set-max-move-bips (bips uint))
+  (begin
+    (try! (is-dao-or-extension))
+    (asserts! (<= bips u10000) err-invalid-param)
+    (var-set max-move-bips bips)
+    (ok true)
+  )
+)
+
 (define-read-only (get-market-data (market-id uint))
 	(map-get? markets market-id)
 )
@@ -301,10 +332,13 @@
         (categories (category-bands start-price delta))
         (num-categories (len categories))
         ;; NOTE: seed is evenly divided with rounding error discarded
-        (seed (/ seed-amount num-categories))
+        (seed (/ (* seed-amount SCALE) (* num-categories SCALE)))
         (user-stake-list (list seed seed seed seed seed seed seed seed seed seed))
         (share-list (zero-after-n user-stake-list num-categories))
       )
+      (asserts! (> band-bips u0) err-band-not-set)
+      (asserts! (> start-price u0) err-oracle-zero-price)
+      (asserts! (> delta u0) err-oracle-zero-delta)
       (asserts! (> market-duration-final u10) err-market-not-found)
       (asserts! (> cool-down-final u10) err-market-not-found)
 
@@ -356,7 +390,7 @@
       )
       (var-set market-counter (+ new-id u1))
       (try! (contract-call? .bme030-0-reputation-token mint tx-sender u2 u8))
-      (print {event: "create-market", market-id: new-id, categories: categories, market-fee-bips: market-fee-bips, token: token, market-data-hash: market-data-hash, creator: tx-sender, seed-amount: seed-amount})
+      (print {event: "create-market", market-id: new-id, categories: categories, market-fee-bips: market-fee-bips, token: token, market-data-hash: market-data-hash, creator: tx-sender, seed-amount: seed-amount, start-price: start-price })
       (ok new-id)
   )
 )
@@ -393,8 +427,8 @@
       (let (
             (new-y (- other-pool amount-shares))
             (numerator (* selected-pool other-pool))
-            (new-x (/ numerator new-y))
-            (cost   (if (> new-x selected-pool) (- new-x selected-pool) u0))
+            (new-x (/ (* numerator SCALE) new-y))
+            (cost (/ (- new-x (* selected-pool SCALE)) SCALE))
            )
         (ok cost)
       )
@@ -405,7 +439,8 @@
 ;; Read-only: get current price to buy `amount` shares in a category
 (define-read-only (get-max-shares (market-id uint) (index uint) (total-cost uint))
   (let (
-        (fee (/ (* total-cost (var-get dev-fee-bips)) u10000))
+        (fee-scaled (/ (* (* total-cost (var-get dev-fee-bips)) SCALE) u10000))
+        (fee (/ fee-scaled SCALE))
         (cost-of-shares (if (> total-cost fee) (- total-cost fee) u0))
         (market-data (unwrap-panic (map-get? markets market-id)))
         (stake-list (get stakes market-data))
@@ -430,8 +465,10 @@
         (let (
               (denom (+ selected-pool cost))            ;; > selected-pool, non-zero
               (numerator (* selected-pool other-pool))
-              (new-y (/ numerator denom))               ;; integer division
-              (raw-shares (if (> other-pool new-y) (- other-pool new-y) u0))
+              (new-y (/ (* numerator SCALE) denom))
+              (raw-shares (if (> (* other-pool SCALE) new-y)
+                              (/ (- (* other-pool SCALE) new-y) SCALE)
+                              u0))
               ;; Enforce floor: clamp to keep MIN_POOL on the other side
               (max-by-floor (if (> other-pool MIN_POOL) (- other-pool MIN_POOL) u0))
               (shares (if (> raw-shares max-by-floor) max-by-floor raw-shares))
@@ -698,7 +735,10 @@
     (total-token-pool (fold + staked-tokens u0))
 
     ;; CPMM Payout: the proportion of the total tokens staked to the shares won
-    (gross-refund (if (> winning-pool u0) (/ (* user-shares total-token-pool) winning-pool) u0))
+    (gross-refund-scaled (if (> winning-pool u0)
+        (/ (* (* user-shares total-token-pool) SCALE) winning-pool)
+        u0))
+    (gross-refund (/ gross-refund-scaled SCALE))   
 
     (marketfee (/ (* gross-refund marketfee-bips) u10000))
     (net-refund (- gross-refund marketfee))
@@ -866,7 +906,7 @@
 (define-private (get-current-price-safe (feed-id (buff 32)))
   (let (
       (d         (unwrap! (contract-call? .pyth-oracle-v4 get-price feed-id .pyth-storage-v4) err-oracle))
-      (raw-price (to-uint (get price d)))         ;; int
+      (raw-price (to-uint (abs-int (get price d))))
       (raw-conf  (get conf d))          ;; uint
       (expo      (get expo d))          ;; int
       (ts        (get publish-time d))  ;; uint (not optional)
@@ -876,10 +916,11 @@
       (now       (now-seconds))
     )
     (begin
+      (asserts! (< (abs-int expo) 20) err-oracle-uncertain)
       ;; freshness check in seconds
-      ;;(asserts! (<= (- now ts) (var-get max-staleness-secs)) err-oracle-stale)
+      (asserts! (<= (- now ts) (var-get max-staleness-secs)) err-oracle-stale)
       ;; confidence bound
-      ;;(asserts! (<= conf-bips (var-get max-conf-bips)) err-oracle-uncertain)
+      (asserts! (<= conf-bips (var-get max-conf-bips)) err-oracle-uncertain)
       (ok price)
     )
   )

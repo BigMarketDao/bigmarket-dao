@@ -1,6 +1,6 @@
-import { describe, expect, it } from 'vitest';
 import { Cl } from '@stacks/transactions';
-import { alice, bob, constructDao, coreProposals, deployer, proposalVoting, setupSimnet, tom } from '../helpers';
+import { describe, expect, it } from 'vitest';
+import { alice, bob, constructDao, coreProposals, deployer, proposalVoting, setupSimnet } from '../helpers';
 
 const simnet = await setupSimnet();
 
@@ -41,10 +41,10 @@ describe('custom majority tests', () => {
 		await constructDao(simnet);
 		const proposal = 'bdp001-initialise-token-sale';
 		await corePropose(deployer, proposal);
-		simnet.mineEmptyBurnBlocks(20);
+		await simnet.mineEmptyBurnBlocks(20);
 		vote(bob, proposal, 100, false);
 		vote(alice, proposal, 100, true);
-		simnet.mineEmptyBurnBlocks(20);
+		await simnet.mineEmptyBurnBlocks(20);
 		ensureProposalDataMatches(proposal, 100, 100, -1, deployer, false, false);
 		conclude(proposal, true, 3009);
 	});
@@ -53,12 +53,12 @@ describe('custom majority tests', () => {
 		await constructDao(simnet);
 		const proposal = 'bdp001-initialise-token-sale';
 		await corePropose(deployer, proposal);
-		simnet.mineEmptyBurnBlocks(20);
+		await simnet.mineEmptyBurnBlocks(20);
 		vote(bob, proposal, 100, false);
 		vote(alice, proposal, 100, true);
-		simnet.mineEmptyBurnBlocks(20);
+		await simnet.mineEmptyBurnBlocks(20);
 		ensureProposalDataMatches(proposal, 100, 100, -1, deployer, false, false);
-		simnet.mineEmptyBurnBlocks(200);
+		await simnet.mineEmptyBurnBlocks(200);
 		conclude(proposal, false);
 	});
 
@@ -66,12 +66,12 @@ describe('custom majority tests', () => {
 		await constructDao(simnet);
 		const proposal = 'bdp001-initialise-token-sale';
 		await corePropose(deployer, proposal, 5001);
-		simnet.mineEmptyBurnBlocks(20);
+		await simnet.mineEmptyBurnBlocks(20);
 		vote(bob, proposal, 10001, false);
 		vote(alice, proposal, 10002, true);
-		simnet.mineEmptyBurnBlocks(20);
+		await simnet.mineEmptyBurnBlocks(20);
 		ensureProposalDataMatches(proposal, 10002, 10001, 5001, deployer, false, false);
-		simnet.mineEmptyBurnBlocks(200);
+		await simnet.mineEmptyBurnBlocks(200);
 		conclude(proposal, false);
 	});
 
@@ -79,12 +79,12 @@ describe('custom majority tests', () => {
 		await constructDao(simnet);
 		const proposal = 'bdp001-initialise-token-sale';
 		await corePropose(deployer, proposal, 5001);
-		simnet.mineEmptyBurnBlocks(20);
+		await simnet.mineEmptyBurnBlocks(20);
 		vote(bob, proposal, 10001, false);
 		vote(alice, proposal, 10002, true);
-		simnet.mineEmptyBurnBlocks(20);
+		await simnet.mineEmptyBurnBlocks(20);
 		ensureProposalDataMatches(proposal, 10002, 10001, 5001, deployer, false, false);
-		simnet.mineEmptyBurnBlocks(200);
+		await simnet.mineEmptyBurnBlocks(200);
 		conclude(proposal, false);
 	});
 
@@ -92,12 +92,12 @@ describe('custom majority tests', () => {
 		await constructDao(simnet);
 		const proposal = 'bdp001-initialise-token-sale';
 		await corePropose(deployer, proposal, 5001);
-		simnet.mineEmptyBurnBlocks(20);
+		await simnet.mineEmptyBurnBlocks(20);
 		vote(bob, proposal, 10000, false);
 		vote(alice, proposal, 10005, true);
-		simnet.mineEmptyBurnBlocks(20);
+		await simnet.mineEmptyBurnBlocks(20);
 		ensureProposalDataMatches(proposal, 10005, 10000, 5001, deployer, false, false);
-		simnet.mineEmptyBurnBlocks(200);
+		await simnet.mineEmptyBurnBlocks(200);
 		conclude(proposal, true);
 	});
 });
