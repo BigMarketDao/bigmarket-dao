@@ -78,9 +78,9 @@
   pyth-storage-contract: principal,
   wormhole-core-contract: principal
 } { 
-    pyth-oracle-contract: .pyth-oracle-v3,
+    pyth-oracle-contract: .pyth-oracle-v4,
     pyth-decoder-contract: .pyth-pnau-decoder-v2, 
-    pyth-storage-contract: .pyth-storage-v3,
+    pyth-storage-contract: .pyth-storage-v4,
     wormhole-core-contract: .wormhole-core-v3
 })
 

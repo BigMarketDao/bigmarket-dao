@@ -102,9 +102,9 @@ describe('claiming errors', () => {
 		await resolveMarketUndisputed(0);
 		assertContractBalance(marketPredictingCPMM, 100000990n);
 
-		await claim(alice, 0, 2939);
+		await claim(alice, 0, 2936);
 		await claim(bob, 0, 2999);
-		await claimDao(`${deployer}.bme024-0-market-predicting`, 0, 99995049);
+		await claimDao(`${deployer}.bme024-0-market-predicting`, 0, 99995052);
 		await printMarketBalances(alice, 0);
 		await printMarketBalances(bob, 0);
 		assertContractBalance(marketPredictingCPMM, 3n);

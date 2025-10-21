@@ -1,633 +1,635 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuites name="vitest tests" tests="9" failures="0" errors="0" time="3.181">
-    <testsuite name="tests/gating/account-gating.test.ts" timestamp="2025-10-08T17:02:32.187Z" hostname="Mikes-MacBook-Pro.local" tests="9" failures="0" errors="0" skipped="0" time="1.324">
-        <testcase classname="tests/gating/account-gating.test.ts" name="gating market  creation &gt; err-expecting-merkle-root-for-poll" time="0.161">
-            <system-out>
-{ event: &quot;execute&quot;, proposal: (ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bdp000-bootstrap as &lt;SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z.proposal-trait.proposal-trait&gt;) } (bigmarket-dao:63)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme000-0-governance-token } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme001-0-proposal-voting } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme003-0-core-proposals } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme004-0-core-execute } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme006-0-treasury } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme010-0-token-sale } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme010-0-liquidity-contribution } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme021-0-market-voting } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme022-0-market-gating } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme023-0-market-bitcoin } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-predicting } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-scalar-pyth } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme030-0-reputation-token } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme040-0-shares-marketplace } (bigmarket-dao:41)
-{ event: &quot;set-core-team-member&quot;, member: true, who: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM } (bme003-0-core-proposals:48)
-{ event: &quot;set-core-team-member&quot;, member: true, who: &apos;ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5 } (bme003-0-core-proposals:48)
-{ contract-id: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-scalar-pyth, contract-key: 0xf131a25d1309392f4a51317bbd59d274865a348e4ef6d1eb40f92f56edbe55ef, contract-name: 0x0d0000001b626d653032342d302d6d61726b65742d7363616c61722d70797468, event: &quot;set-merkle-root-by-principal&quot;, merkle-root: (some { merkle-root: 0x26067618f71da1da6fa33c9b7f8d989b87f71ade892e1c55ce3b46ac79a7e64e }) } (bme022-0-market-gating:68)
-{ contract-id: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-predicting, contract-key: 0x54abdeef6da725ddae0b3ed6775656128b152c636a5a44508153639838c60c1b, contract-name: 0x0d0000001a626d653032342d302d6d61726b65742d70726564696374696e67, event: &quot;set-merkle-root-by-principal&quot;, merkle-root: (some { merkle-root: 0x26067618f71da1da6fa33c9b7f8d989b87f71ade892e1c55ce3b46ac79a7e64e }) } (bme022-0-market-gating:68)
-{ contract-id: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-scalar-pyth, contract-key: 0xf131a25d1309392f4a51317bbd59d274865a348e4ef6d1eb40f92f56edbe55ef, contract-name: 0x0d0000001b626d653032342d302d6d61726b65742d7363616c61722d70797468, event: &quot;set-merkle-root-by-principal&quot;, merkle-root: (some { merkle-root: 0x26067618f71da1da6fa33c9b7f8d989b87f71ade892e1c55ce3b46ac79a7e64e }) } (bme022-0-market-gating:68)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.wrapped-stx } (bme024-0-market-predicting:144)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.sbtc } (bme024-0-market-predicting:144)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.tusdh } (bme024-0-market-predicting:144)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.tpepe } (bme024-0-market-predicting:144)
-{ default-hedge-executor: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme032-0-scalar-strategy-hedge, event: &quot;default-hedge-executor&quot; } (bme024-0-market-predicting:164)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.wrapped-stx } (bme024-0-market-scalar-pyth:160)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.sbtc } (bme024-0-market-scalar-pyth:160)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.tusdh } (bme024-0-market-scalar-pyth:160)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.tpepe } (bme024-0-market-scalar-pyth:160)
-{ default-hedge-executor: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme032-0-scalar-strategy-hedge, event: &quot;default-hedge-executor&quot; } (bme024-0-market-scalar-pyth:180)
-{ event: &quot;price-band-width&quot;, feed-id: 0xec7a775f46379b5e943c3526b1c8d54cd49749176b0b98e02dde68d1bd335c17, precent: u2000 } (bme024-0-market-scalar-pyth:198)
-{ event: &quot;price-band-width&quot;, feed-id: 0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43, precent: u100 } (bme024-0-market-scalar-pyth:198)
-{ event: &quot;price-band-width&quot;, feed-id: 0xef0d8b6fda2ceba41da15d4095d1da392a0d2f8ed0c6c7bc0f4cfac8c280b56d, precent: u500 } (bme024-0-market-scalar-pyth:198)
-{ event: &quot;price-band-width&quot;, feed-id: 0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace, precent: u1000 } (bme024-0-market-scalar-pyth:198)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ event: &quot;set-tier-weight&quot;, token-id: u1, weight: u1 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u2, weight: u1 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u3, weight: u1 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u4, weight: u2 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u5, weight: u2 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u6, weight: u2 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u7, weight: u3 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u8, weight: u3 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u9, weight: u3 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u10, weight: u5 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u11, weight: u5 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u12, weight: u5 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u13, weight: u8 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u14, weight: u8 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u15, weight: u8 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u16, weight: u13 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u17, weight: u13 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u18, weight: u13 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u19, weight: u21 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u20, weight: u21 } (bme030-0-reputation-token:112)
-&quot;BigMarket DAO has risen.&quot; (bdp000-bootstrap:199)
-{ contract-key: 0x54abdeef6da725ddae0b3ed6775656128b152c636a5a44508153639838c60c1b, contract-name: 0x0d0000001a626d653032342d302d6d61726b65742d70726564696374696e67, event: &quot;can-access-by-account&quot;, leaf: 0x26067618f71da1da6fa33c9b7f8d989b87f71ade892e1c55ce3b46ac79a7e64e, proof-valid: true, root: { merkle-root: 0x26067618f71da1da6fa33c9b7f8d989b87f71ade892e1c55ce3b46ac79a7e64e }, sender: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM, txsender: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-predicting } (bme022-0-market-gating:192)
-{ amount: u16, event: &quot;sft_mint&quot;, recipient: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM, token-id: u2 } (bme030-0-reputation-token:151)
-{ categories: (list &quot;nay&quot; &quot;yay&quot;), creator: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM, event: &quot;create-market&quot;, market-data-hash: 0xfe57bb961c647d98656cc35801e52d3eed46f3cdcc8e840df7af8bd3a04312d5, market-fee-bips: u0, market-id: u0, seed-amount: u100000000, token: (ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.wrapped-stx as &lt;SP2AKWJYC7BNY18W1XXKPGP0YVEK63QJG4793Z2D4.sip-010-trait-ft-standard.sip-010-trait&gt;) } (bme024-0-market-predicting:327)
-
-            </system-out>
+<testsuites name="vitest tests" tests="293" failures="0" errors="0" time="8249.707">
+    <testsuite name="tests/bde001-proposal-voting.test.ts" timestamp="2025-10-13T15:04:04.019Z" hostname="Mikes-MacBook-Pro.local" tests="2" failures="0" errors="0" skipped="0" time="0">
+        <testcase classname="tests/bde001-proposal-voting.test.ts" name="bme001-0-proposal-voting contract &gt; ensures the contract is deployed" time="0">
         </testcase>
-        <testcase classname="tests/gating/account-gating.test.ts" name="gating market  creation &gt; err-unauthorised" time="0.14">
-            <system-out>
-{ event: &quot;execute&quot;, proposal: (ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bdp000-bootstrap as &lt;SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z.proposal-trait.proposal-trait&gt;) } (bigmarket-dao:63)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme000-0-governance-token } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme001-0-proposal-voting } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme003-0-core-proposals } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme004-0-core-execute } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme006-0-treasury } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme010-0-token-sale } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme010-0-liquidity-contribution } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme021-0-market-voting } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme022-0-market-gating } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme023-0-market-bitcoin } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-predicting } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-scalar-pyth } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme030-0-reputation-token } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme040-0-shares-marketplace } (bigmarket-dao:41)
-{ event: &quot;set-core-team-member&quot;, member: true, who: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM } (bme003-0-core-proposals:48)
-{ event: &quot;set-core-team-member&quot;, member: true, who: &apos;ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5 } (bme003-0-core-proposals:48)
-{ contract-id: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-scalar-pyth, contract-key: 0xf131a25d1309392f4a51317bbd59d274865a348e4ef6d1eb40f92f56edbe55ef, contract-name: 0x0d0000001b626d653032342d302d6d61726b65742d7363616c61722d70797468, event: &quot;set-merkle-root-by-principal&quot;, merkle-root: (some { merkle-root: 0x26067618f71da1da6fa33c9b7f8d989b87f71ade892e1c55ce3b46ac79a7e64e }) } (bme022-0-market-gating:68)
-{ contract-id: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-predicting, contract-key: 0x54abdeef6da725ddae0b3ed6775656128b152c636a5a44508153639838c60c1b, contract-name: 0x0d0000001a626d653032342d302d6d61726b65742d70726564696374696e67, event: &quot;set-merkle-root-by-principal&quot;, merkle-root: (some { merkle-root: 0x26067618f71da1da6fa33c9b7f8d989b87f71ade892e1c55ce3b46ac79a7e64e }) } (bme022-0-market-gating:68)
-{ contract-id: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-scalar-pyth, contract-key: 0xf131a25d1309392f4a51317bbd59d274865a348e4ef6d1eb40f92f56edbe55ef, contract-name: 0x0d0000001b626d653032342d302d6d61726b65742d7363616c61722d70797468, event: &quot;set-merkle-root-by-principal&quot;, merkle-root: (some { merkle-root: 0x26067618f71da1da6fa33c9b7f8d989b87f71ade892e1c55ce3b46ac79a7e64e }) } (bme022-0-market-gating:68)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.wrapped-stx } (bme024-0-market-predicting:144)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.sbtc } (bme024-0-market-predicting:144)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.tusdh } (bme024-0-market-predicting:144)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.tpepe } (bme024-0-market-predicting:144)
-{ default-hedge-executor: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme032-0-scalar-strategy-hedge, event: &quot;default-hedge-executor&quot; } (bme024-0-market-predicting:164)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.wrapped-stx } (bme024-0-market-scalar-pyth:160)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.sbtc } (bme024-0-market-scalar-pyth:160)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.tusdh } (bme024-0-market-scalar-pyth:160)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.tpepe } (bme024-0-market-scalar-pyth:160)
-{ default-hedge-executor: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme032-0-scalar-strategy-hedge, event: &quot;default-hedge-executor&quot; } (bme024-0-market-scalar-pyth:180)
-{ event: &quot;price-band-width&quot;, feed-id: 0xec7a775f46379b5e943c3526b1c8d54cd49749176b0b98e02dde68d1bd335c17, precent: u2000 } (bme024-0-market-scalar-pyth:198)
-{ event: &quot;price-band-width&quot;, feed-id: 0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43, precent: u100 } (bme024-0-market-scalar-pyth:198)
-{ event: &quot;price-band-width&quot;, feed-id: 0xef0d8b6fda2ceba41da15d4095d1da392a0d2f8ed0c6c7bc0f4cfac8c280b56d, precent: u500 } (bme024-0-market-scalar-pyth:198)
-{ event: &quot;price-band-width&quot;, feed-id: 0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace, precent: u1000 } (bme024-0-market-scalar-pyth:198)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ event: &quot;set-tier-weight&quot;, token-id: u1, weight: u1 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u2, weight: u1 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u3, weight: u1 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u4, weight: u2 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u5, weight: u2 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u6, weight: u2 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u7, weight: u3 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u8, weight: u3 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u9, weight: u3 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u10, weight: u5 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u11, weight: u5 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u12, weight: u5 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u13, weight: u8 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u14, weight: u8 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u15, weight: u8 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u16, weight: u13 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u17, weight: u13 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u18, weight: u13 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u19, weight: u21 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u20, weight: u21 } (bme030-0-reputation-token:112)
-&quot;BigMarket DAO has risen.&quot; (bdp000-bootstrap:199)
-
-            </system-out>
+        <testcase classname="tests/bde001-proposal-voting.test.ts" name="bme001-0-proposal-voting contract &gt; core-propose - can set new sunset height" time="0">
         </testcase>
-        <testcase classname="tests/gating/account-gating.test.ts" name="gating market  creation &gt; ensure bme022 is valid extension" time="0.137">
-            <system-out>
-{ event: &quot;execute&quot;, proposal: (ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bdp000-bootstrap as &lt;SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z.proposal-trait.proposal-trait&gt;) } (bigmarket-dao:63)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme000-0-governance-token } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme001-0-proposal-voting } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme003-0-core-proposals } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme004-0-core-execute } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme006-0-treasury } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme010-0-token-sale } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme010-0-liquidity-contribution } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme021-0-market-voting } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme022-0-market-gating } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme023-0-market-bitcoin } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-predicting } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-scalar-pyth } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme030-0-reputation-token } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme040-0-shares-marketplace } (bigmarket-dao:41)
-{ event: &quot;set-core-team-member&quot;, member: true, who: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM } (bme003-0-core-proposals:48)
-{ event: &quot;set-core-team-member&quot;, member: true, who: &apos;ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5 } (bme003-0-core-proposals:48)
-{ contract-id: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-scalar-pyth, contract-key: 0xf131a25d1309392f4a51317bbd59d274865a348e4ef6d1eb40f92f56edbe55ef, contract-name: 0x0d0000001b626d653032342d302d6d61726b65742d7363616c61722d70797468, event: &quot;set-merkle-root-by-principal&quot;, merkle-root: (some { merkle-root: 0x26067618f71da1da6fa33c9b7f8d989b87f71ade892e1c55ce3b46ac79a7e64e }) } (bme022-0-market-gating:68)
-{ contract-id: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-predicting, contract-key: 0x54abdeef6da725ddae0b3ed6775656128b152c636a5a44508153639838c60c1b, contract-name: 0x0d0000001a626d653032342d302d6d61726b65742d70726564696374696e67, event: &quot;set-merkle-root-by-principal&quot;, merkle-root: (some { merkle-root: 0x26067618f71da1da6fa33c9b7f8d989b87f71ade892e1c55ce3b46ac79a7e64e }) } (bme022-0-market-gating:68)
-{ contract-id: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-scalar-pyth, contract-key: 0xf131a25d1309392f4a51317bbd59d274865a348e4ef6d1eb40f92f56edbe55ef, contract-name: 0x0d0000001b626d653032342d302d6d61726b65742d7363616c61722d70797468, event: &quot;set-merkle-root-by-principal&quot;, merkle-root: (some { merkle-root: 0x26067618f71da1da6fa33c9b7f8d989b87f71ade892e1c55ce3b46ac79a7e64e }) } (bme022-0-market-gating:68)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.wrapped-stx } (bme024-0-market-predicting:144)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.sbtc } (bme024-0-market-predicting:144)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.tusdh } (bme024-0-market-predicting:144)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.tpepe } (bme024-0-market-predicting:144)
-{ default-hedge-executor: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme032-0-scalar-strategy-hedge, event: &quot;default-hedge-executor&quot; } (bme024-0-market-predicting:164)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.wrapped-stx } (bme024-0-market-scalar-pyth:160)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.sbtc } (bme024-0-market-scalar-pyth:160)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.tusdh } (bme024-0-market-scalar-pyth:160)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.tpepe } (bme024-0-market-scalar-pyth:160)
-{ default-hedge-executor: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme032-0-scalar-strategy-hedge, event: &quot;default-hedge-executor&quot; } (bme024-0-market-scalar-pyth:180)
-{ event: &quot;price-band-width&quot;, feed-id: 0xec7a775f46379b5e943c3526b1c8d54cd49749176b0b98e02dde68d1bd335c17, precent: u2000 } (bme024-0-market-scalar-pyth:198)
-{ event: &quot;price-band-width&quot;, feed-id: 0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43, precent: u100 } (bme024-0-market-scalar-pyth:198)
-{ event: &quot;price-band-width&quot;, feed-id: 0xef0d8b6fda2ceba41da15d4095d1da392a0d2f8ed0c6c7bc0f4cfac8c280b56d, precent: u500 } (bme024-0-market-scalar-pyth:198)
-{ event: &quot;price-band-width&quot;, feed-id: 0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace, precent: u1000 } (bme024-0-market-scalar-pyth:198)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ event: &quot;set-tier-weight&quot;, token-id: u1, weight: u1 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u2, weight: u1 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u3, weight: u1 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u4, weight: u2 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u5, weight: u2 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u6, weight: u2 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u7, weight: u3 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u8, weight: u3 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u9, weight: u3 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u10, weight: u5 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u11, weight: u5 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u12, weight: u5 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u13, weight: u8 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u14, weight: u8 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u15, weight: u8 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u16, weight: u13 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u17, weight: u13 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u18, weight: u13 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u19, weight: u21 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u20, weight: u21 } (bme030-0-reputation-token:112)
-&quot;BigMarket DAO has risen.&quot; (bdp000-bootstrap:199)
-
-            </system-out>
+    </testsuite>
+    <testsuite name="tests/claritybitcoin/bitcoin_tx.test.ts" timestamp="2025-10-13T15:04:04.020Z" hostname="Mikes-MacBook-Pro.local" tests="1" failures="0" errors="0" skipped="0" time="0">
+        <testcase classname="tests/claritybitcoin/bitcoin_tx.test.ts" name="clarity bitcoin &gt; check parse random mempool segwit" time="0">
         </testcase>
-        <testcase classname="tests/gating/account-gating.test.ts" name="gating market  creation &gt; can call set-merkle-root via proposal" time="0.149">
-            <system-out>
-{ event: &quot;execute&quot;, proposal: (ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bdp000-bootstrap as &lt;SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z.proposal-trait.proposal-trait&gt;) } (bigmarket-dao:63)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme000-0-governance-token } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme001-0-proposal-voting } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme003-0-core-proposals } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme004-0-core-execute } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme006-0-treasury } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme010-0-token-sale } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme010-0-liquidity-contribution } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme021-0-market-voting } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme022-0-market-gating } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme023-0-market-bitcoin } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-predicting } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-scalar-pyth } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme030-0-reputation-token } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme040-0-shares-marketplace } (bigmarket-dao:41)
-{ event: &quot;set-core-team-member&quot;, member: true, who: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM } (bme003-0-core-proposals:48)
-{ event: &quot;set-core-team-member&quot;, member: true, who: &apos;ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5 } (bme003-0-core-proposals:48)
-{ contract-id: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-scalar-pyth, contract-key: 0xf131a25d1309392f4a51317bbd59d274865a348e4ef6d1eb40f92f56edbe55ef, contract-name: 0x0d0000001b626d653032342d302d6d61726b65742d7363616c61722d70797468, event: &quot;set-merkle-root-by-principal&quot;, merkle-root: (some { merkle-root: 0x26067618f71da1da6fa33c9b7f8d989b87f71ade892e1c55ce3b46ac79a7e64e }) } (bme022-0-market-gating:68)
-{ contract-id: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-predicting, contract-key: 0x54abdeef6da725ddae0b3ed6775656128b152c636a5a44508153639838c60c1b, contract-name: 0x0d0000001a626d653032342d302d6d61726b65742d70726564696374696e67, event: &quot;set-merkle-root-by-principal&quot;, merkle-root: (some { merkle-root: 0x26067618f71da1da6fa33c9b7f8d989b87f71ade892e1c55ce3b46ac79a7e64e }) } (bme022-0-market-gating:68)
-{ contract-id: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-scalar-pyth, contract-key: 0xf131a25d1309392f4a51317bbd59d274865a348e4ef6d1eb40f92f56edbe55ef, contract-name: 0x0d0000001b626d653032342d302d6d61726b65742d7363616c61722d70797468, event: &quot;set-merkle-root-by-principal&quot;, merkle-root: (some { merkle-root: 0x26067618f71da1da6fa33c9b7f8d989b87f71ade892e1c55ce3b46ac79a7e64e }) } (bme022-0-market-gating:68)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.wrapped-stx } (bme024-0-market-predicting:144)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.sbtc } (bme024-0-market-predicting:144)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.tusdh } (bme024-0-market-predicting:144)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.tpepe } (bme024-0-market-predicting:144)
-{ default-hedge-executor: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme032-0-scalar-strategy-hedge, event: &quot;default-hedge-executor&quot; } (bme024-0-market-predicting:164)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.wrapped-stx } (bme024-0-market-scalar-pyth:160)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.sbtc } (bme024-0-market-scalar-pyth:160)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.tusdh } (bme024-0-market-scalar-pyth:160)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.tpepe } (bme024-0-market-scalar-pyth:160)
-{ default-hedge-executor: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme032-0-scalar-strategy-hedge, event: &quot;default-hedge-executor&quot; } (bme024-0-market-scalar-pyth:180)
-{ event: &quot;price-band-width&quot;, feed-id: 0xec7a775f46379b5e943c3526b1c8d54cd49749176b0b98e02dde68d1bd335c17, precent: u2000 } (bme024-0-market-scalar-pyth:198)
-{ event: &quot;price-band-width&quot;, feed-id: 0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43, precent: u100 } (bme024-0-market-scalar-pyth:198)
-{ event: &quot;price-band-width&quot;, feed-id: 0xef0d8b6fda2ceba41da15d4095d1da392a0d2f8ed0c6c7bc0f4cfac8c280b56d, precent: u500 } (bme024-0-market-scalar-pyth:198)
-{ event: &quot;price-band-width&quot;, feed-id: 0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace, precent: u1000 } (bme024-0-market-scalar-pyth:198)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ event: &quot;set-tier-weight&quot;, token-id: u1, weight: u1 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u2, weight: u1 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u3, weight: u1 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u4, weight: u2 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u5, weight: u2 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u6, weight: u2 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u7, weight: u3 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u8, weight: u3 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u9, weight: u3 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u10, weight: u5 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u11, weight: u5 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u12, weight: u5 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u13, weight: u8 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u14, weight: u8 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u15, weight: u8 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u16, weight: u13 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u17, weight: u13 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u18, weight: u13 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u19, weight: u21 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u20, weight: u21 } (bme030-0-reputation-token:112)
-&quot;BigMarket DAO has risen.&quot; (bdp000-bootstrap:199)
-{ event: &quot;propose&quot;, proposal: (ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bdp001-gating as &lt;SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z.proposal-trait.proposal-trait&gt;), proposer: &apos;ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5 } (bme001-0-proposal-voting:73)
-{ amount: u1000, event: &quot;vote&quot;, for: true, proposal: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bdp001-gating, voter: &apos;ST2CY5V39NHDPWSXMW9QDT3HC3GD6Q6XX4CFRK9AG } (bme001-0-proposal-voting:172)
-{ event: &quot;conclude&quot;, passed: true, proposal: (ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bdp001-gating as &lt;SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z.proposal-trait.proposal-trait&gt;) } (bme001-0-proposal-voting:193)
-{ amount: u6, event: &quot;sft_mint&quot;, recipient: &apos;ST2CY5V39NHDPWSXMW9QDT3HC3GD6Q6XX4CFRK9AG, token-id: u11 } (bme030-0-reputation-token:151)
-{ event: &quot;execute&quot;, proposal: (ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bdp001-gating as &lt;SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z.proposal-trait.proposal-trait&gt;) } (bigmarket-dao:63)
-{ contract-id: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-predicting, contract-key: 0x54abdeef6da725ddae0b3ed6775656128b152c636a5a44508153639838c60c1b, contract-name: 0x0d0000001a626d653032342d302d6d61726b65742d70726564696374696e67, event: &quot;set-merkle-root-by-principal&quot;, merkle-root: (some { merkle-root: 0x5f24649277af2f6364faf35827dffe12b85f2f1dca5ae92733c72af91455aa64 }) } (bme022-0-market-gating:68)
-
-            </system-out>
+    </testsuite>
+    <testsuite name="tests/cpmm/categorical.test.ts" timestamp="2025-10-13T15:04:04.020Z" hostname="Mikes-MacBook-Pro.local" tests="15" failures="0" errors="0" skipped="0" time="0">
+        <testcase classname="tests/cpmm/categorical.test.ts" name="claiming errors &gt; err too few categories" time="0">
         </testcase>
-        <testcase classname="tests/gating/account-gating.test.ts" name="gating market  creation &gt; can&apos;t call create-market with invalid merkle lookup key" time="0.159">
-            <system-out>
-{ event: &quot;execute&quot;, proposal: (ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bdp000-bootstrap as &lt;SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z.proposal-trait.proposal-trait&gt;) } (bigmarket-dao:63)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme000-0-governance-token } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme001-0-proposal-voting } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme003-0-core-proposals } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme004-0-core-execute } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme006-0-treasury } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme010-0-token-sale } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme010-0-liquidity-contribution } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme021-0-market-voting } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme022-0-market-gating } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme023-0-market-bitcoin } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-predicting } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-scalar-pyth } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme030-0-reputation-token } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme040-0-shares-marketplace } (bigmarket-dao:41)
-{ event: &quot;set-core-team-member&quot;, member: true, who: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM } (bme003-0-core-proposals:48)
-{ event: &quot;set-core-team-member&quot;, member: true, who: &apos;ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5 } (bme003-0-core-proposals:48)
-{ contract-id: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-scalar-pyth, contract-key: 0xf131a25d1309392f4a51317bbd59d274865a348e4ef6d1eb40f92f56edbe55ef, contract-name: 0x0d0000001b626d653032342d302d6d61726b65742d7363616c61722d70797468, event: &quot;set-merkle-root-by-principal&quot;, merkle-root: (some { merkle-root: 0x26067618f71da1da6fa33c9b7f8d989b87f71ade892e1c55ce3b46ac79a7e64e }) } (bme022-0-market-gating:68)
-{ contract-id: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-predicting, contract-key: 0x54abdeef6da725ddae0b3ed6775656128b152c636a5a44508153639838c60c1b, contract-name: 0x0d0000001a626d653032342d302d6d61726b65742d70726564696374696e67, event: &quot;set-merkle-root-by-principal&quot;, merkle-root: (some { merkle-root: 0x26067618f71da1da6fa33c9b7f8d989b87f71ade892e1c55ce3b46ac79a7e64e }) } (bme022-0-market-gating:68)
-{ contract-id: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-scalar-pyth, contract-key: 0xf131a25d1309392f4a51317bbd59d274865a348e4ef6d1eb40f92f56edbe55ef, contract-name: 0x0d0000001b626d653032342d302d6d61726b65742d7363616c61722d70797468, event: &quot;set-merkle-root-by-principal&quot;, merkle-root: (some { merkle-root: 0x26067618f71da1da6fa33c9b7f8d989b87f71ade892e1c55ce3b46ac79a7e64e }) } (bme022-0-market-gating:68)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.wrapped-stx } (bme024-0-market-predicting:144)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.sbtc } (bme024-0-market-predicting:144)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.tusdh } (bme024-0-market-predicting:144)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.tpepe } (bme024-0-market-predicting:144)
-{ default-hedge-executor: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme032-0-scalar-strategy-hedge, event: &quot;default-hedge-executor&quot; } (bme024-0-market-predicting:164)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.wrapped-stx } (bme024-0-market-scalar-pyth:160)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.sbtc } (bme024-0-market-scalar-pyth:160)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.tusdh } (bme024-0-market-scalar-pyth:160)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.tpepe } (bme024-0-market-scalar-pyth:160)
-{ default-hedge-executor: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme032-0-scalar-strategy-hedge, event: &quot;default-hedge-executor&quot; } (bme024-0-market-scalar-pyth:180)
-{ event: &quot;price-band-width&quot;, feed-id: 0xec7a775f46379b5e943c3526b1c8d54cd49749176b0b98e02dde68d1bd335c17, precent: u2000 } (bme024-0-market-scalar-pyth:198)
-{ event: &quot;price-band-width&quot;, feed-id: 0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43, precent: u100 } (bme024-0-market-scalar-pyth:198)
-{ event: &quot;price-band-width&quot;, feed-id: 0xef0d8b6fda2ceba41da15d4095d1da392a0d2f8ed0c6c7bc0f4cfac8c280b56d, precent: u500 } (bme024-0-market-scalar-pyth:198)
-{ event: &quot;price-band-width&quot;, feed-id: 0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace, precent: u1000 } (bme024-0-market-scalar-pyth:198)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ event: &quot;set-tier-weight&quot;, token-id: u1, weight: u1 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u2, weight: u1 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u3, weight: u1 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u4, weight: u2 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u5, weight: u2 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u6, weight: u2 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u7, weight: u3 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u8, weight: u3 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u9, weight: u3 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u10, weight: u5 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u11, weight: u5 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u12, weight: u5 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u13, weight: u8 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u14, weight: u8 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u15, weight: u8 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u16, weight: u13 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u17, weight: u13 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u18, weight: u13 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u19, weight: u21 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u20, weight: u21 } (bme030-0-reputation-token:112)
-&quot;BigMarket DAO has risen.&quot; (bdp000-bootstrap:199)
-{ event: &quot;propose&quot;, proposal: (ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bdp001-gating as &lt;SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z.proposal-trait.proposal-trait&gt;), proposer: &apos;ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5 } (bme001-0-proposal-voting:73)
-{ amount: u1000, event: &quot;vote&quot;, for: true, proposal: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bdp001-gating, voter: &apos;ST2CY5V39NHDPWSXMW9QDT3HC3GD6Q6XX4CFRK9AG } (bme001-0-proposal-voting:172)
-{ event: &quot;conclude&quot;, passed: true, proposal: (ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bdp001-gating as &lt;SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z.proposal-trait.proposal-trait&gt;) } (bme001-0-proposal-voting:193)
-{ amount: u6, event: &quot;sft_mint&quot;, recipient: &apos;ST2CY5V39NHDPWSXMW9QDT3HC3GD6Q6XX4CFRK9AG, token-id: u11 } (bme030-0-reputation-token:151)
-{ event: &quot;execute&quot;, proposal: (ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bdp001-gating as &lt;SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z.proposal-trait.proposal-trait&gt;) } (bigmarket-dao:63)
-{ contract-id: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-predicting, contract-key: 0x54abdeef6da725ddae0b3ed6775656128b152c636a5a44508153639838c60c1b, contract-name: 0x0d0000001a626d653032342d302d6d61726b65742d70726564696374696e67, event: &quot;set-merkle-root-by-principal&quot;, merkle-root: (some { merkle-root: 0x5f24649277af2f6364faf35827dffe12b85f2f1dca5ae92733c72af91455aa64 }) } (bme022-0-market-gating:68)
-
-            </system-out>
+        <testcase classname="tests/cpmm/categorical.test.ts" name="claiming errors &gt; create binary market ok" time="0">
         </testcase>
-        <testcase classname="tests/gating/account-gating.test.ts" name="gating market  creation &gt; deployer can create-market if dao bootstrapped" time="0.141">
-            <system-out>
-{ event: &quot;execute&quot;, proposal: (ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bdp000-bootstrap as &lt;SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z.proposal-trait.proposal-trait&gt;) } (bigmarket-dao:63)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme000-0-governance-token } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme001-0-proposal-voting } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme003-0-core-proposals } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme004-0-core-execute } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme006-0-treasury } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme010-0-token-sale } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme010-0-liquidity-contribution } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme021-0-market-voting } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme022-0-market-gating } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme023-0-market-bitcoin } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-predicting } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-scalar-pyth } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme030-0-reputation-token } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme040-0-shares-marketplace } (bigmarket-dao:41)
-{ event: &quot;set-core-team-member&quot;, member: true, who: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM } (bme003-0-core-proposals:48)
-{ event: &quot;set-core-team-member&quot;, member: true, who: &apos;ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5 } (bme003-0-core-proposals:48)
-{ contract-id: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-scalar-pyth, contract-key: 0xf131a25d1309392f4a51317bbd59d274865a348e4ef6d1eb40f92f56edbe55ef, contract-name: 0x0d0000001b626d653032342d302d6d61726b65742d7363616c61722d70797468, event: &quot;set-merkle-root-by-principal&quot;, merkle-root: (some { merkle-root: 0x26067618f71da1da6fa33c9b7f8d989b87f71ade892e1c55ce3b46ac79a7e64e }) } (bme022-0-market-gating:68)
-{ contract-id: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-predicting, contract-key: 0x54abdeef6da725ddae0b3ed6775656128b152c636a5a44508153639838c60c1b, contract-name: 0x0d0000001a626d653032342d302d6d61726b65742d70726564696374696e67, event: &quot;set-merkle-root-by-principal&quot;, merkle-root: (some { merkle-root: 0x26067618f71da1da6fa33c9b7f8d989b87f71ade892e1c55ce3b46ac79a7e64e }) } (bme022-0-market-gating:68)
-{ contract-id: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-scalar-pyth, contract-key: 0xf131a25d1309392f4a51317bbd59d274865a348e4ef6d1eb40f92f56edbe55ef, contract-name: 0x0d0000001b626d653032342d302d6d61726b65742d7363616c61722d70797468, event: &quot;set-merkle-root-by-principal&quot;, merkle-root: (some { merkle-root: 0x26067618f71da1da6fa33c9b7f8d989b87f71ade892e1c55ce3b46ac79a7e64e }) } (bme022-0-market-gating:68)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.wrapped-stx } (bme024-0-market-predicting:144)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.sbtc } (bme024-0-market-predicting:144)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.tusdh } (bme024-0-market-predicting:144)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.tpepe } (bme024-0-market-predicting:144)
-{ default-hedge-executor: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme032-0-scalar-strategy-hedge, event: &quot;default-hedge-executor&quot; } (bme024-0-market-predicting:164)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.wrapped-stx } (bme024-0-market-scalar-pyth:160)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.sbtc } (bme024-0-market-scalar-pyth:160)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.tusdh } (bme024-0-market-scalar-pyth:160)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.tpepe } (bme024-0-market-scalar-pyth:160)
-{ default-hedge-executor: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme032-0-scalar-strategy-hedge, event: &quot;default-hedge-executor&quot; } (bme024-0-market-scalar-pyth:180)
-{ event: &quot;price-band-width&quot;, feed-id: 0xec7a775f46379b5e943c3526b1c8d54cd49749176b0b98e02dde68d1bd335c17, precent: u2000 } (bme024-0-market-scalar-pyth:198)
-{ event: &quot;price-band-width&quot;, feed-id: 0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43, precent: u100 } (bme024-0-market-scalar-pyth:198)
-{ event: &quot;price-band-width&quot;, feed-id: 0xef0d8b6fda2ceba41da15d4095d1da392a0d2f8ed0c6c7bc0f4cfac8c280b56d, precent: u500 } (bme024-0-market-scalar-pyth:198)
-{ event: &quot;price-band-width&quot;, feed-id: 0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace, precent: u1000 } (bme024-0-market-scalar-pyth:198)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ event: &quot;set-tier-weight&quot;, token-id: u1, weight: u1 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u2, weight: u1 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u3, weight: u1 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u4, weight: u2 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u5, weight: u2 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u6, weight: u2 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u7, weight: u3 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u8, weight: u3 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u9, weight: u3 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u10, weight: u5 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u11, weight: u5 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u12, weight: u5 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u13, weight: u8 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u14, weight: u8 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u15, weight: u8 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u16, weight: u13 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u17, weight: u13 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u18, weight: u13 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u19, weight: u21 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u20, weight: u21 } (bme030-0-reputation-token:112)
-&quot;BigMarket DAO has risen.&quot; (bdp000-bootstrap:199)
-{ contract-key: 0x54abdeef6da725ddae0b3ed6775656128b152c636a5a44508153639838c60c1b, contract-name: 0x0d0000001a626d653032342d302d6d61726b65742d70726564696374696e67, event: &quot;can-access-by-account&quot;, leaf: 0x26067618f71da1da6fa33c9b7f8d989b87f71ade892e1c55ce3b46ac79a7e64e, proof-valid: true, root: { merkle-root: 0x26067618f71da1da6fa33c9b7f8d989b87f71ade892e1c55ce3b46ac79a7e64e }, sender: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM, txsender: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-predicting } (bme022-0-market-gating:192)
-{ amount: u16, event: &quot;sft_mint&quot;, recipient: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM, token-id: u2 } (bme030-0-reputation-token:151)
-{ categories: (list &quot;nay&quot; &quot;yay&quot;), creator: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM, event: &quot;create-market&quot;, market-data-hash: 0xfe57bb961c647d98656cc35801e52d3eed46f3cdcc8e840df7af8bd3a04312d5, market-fee-bips: u0, market-id: u0, seed-amount: u100000000, token: (ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.wrapped-stx as &lt;SP2AKWJYC7BNY18W1XXKPGP0YVEK63QJG4793Z2D4.sip-010-trait-ft-standard.sip-010-trait&gt;) } (bme024-0-market-predicting:327)
-
-            </system-out>
+        <testcase classname="tests/cpmm/categorical.test.ts" name="claiming errors &gt; create ok" time="0">
         </testcase>
-        <testcase classname="tests/gating/account-gating.test.ts" name="gating market  creation &gt; alice cannot create-market if dao bootstrapped" time="0.144">
-            <system-out>
-{ event: &quot;execute&quot;, proposal: (ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bdp000-bootstrap as &lt;SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z.proposal-trait.proposal-trait&gt;) } (bigmarket-dao:63)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme000-0-governance-token } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme001-0-proposal-voting } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme003-0-core-proposals } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme004-0-core-execute } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme006-0-treasury } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme010-0-token-sale } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme010-0-liquidity-contribution } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme021-0-market-voting } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme022-0-market-gating } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme023-0-market-bitcoin } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-predicting } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-scalar-pyth } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme030-0-reputation-token } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme040-0-shares-marketplace } (bigmarket-dao:41)
-{ event: &quot;set-core-team-member&quot;, member: true, who: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM } (bme003-0-core-proposals:48)
-{ event: &quot;set-core-team-member&quot;, member: true, who: &apos;ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5 } (bme003-0-core-proposals:48)
-{ contract-id: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-scalar-pyth, contract-key: 0xf131a25d1309392f4a51317bbd59d274865a348e4ef6d1eb40f92f56edbe55ef, contract-name: 0x0d0000001b626d653032342d302d6d61726b65742d7363616c61722d70797468, event: &quot;set-merkle-root-by-principal&quot;, merkle-root: (some { merkle-root: 0x26067618f71da1da6fa33c9b7f8d989b87f71ade892e1c55ce3b46ac79a7e64e }) } (bme022-0-market-gating:68)
-{ contract-id: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-predicting, contract-key: 0x54abdeef6da725ddae0b3ed6775656128b152c636a5a44508153639838c60c1b, contract-name: 0x0d0000001a626d653032342d302d6d61726b65742d70726564696374696e67, event: &quot;set-merkle-root-by-principal&quot;, merkle-root: (some { merkle-root: 0x26067618f71da1da6fa33c9b7f8d989b87f71ade892e1c55ce3b46ac79a7e64e }) } (bme022-0-market-gating:68)
-{ contract-id: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-scalar-pyth, contract-key: 0xf131a25d1309392f4a51317bbd59d274865a348e4ef6d1eb40f92f56edbe55ef, contract-name: 0x0d0000001b626d653032342d302d6d61726b65742d7363616c61722d70797468, event: &quot;set-merkle-root-by-principal&quot;, merkle-root: (some { merkle-root: 0x26067618f71da1da6fa33c9b7f8d989b87f71ade892e1c55ce3b46ac79a7e64e }) } (bme022-0-market-gating:68)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.wrapped-stx } (bme024-0-market-predicting:144)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.sbtc } (bme024-0-market-predicting:144)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.tusdh } (bme024-0-market-predicting:144)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.tpepe } (bme024-0-market-predicting:144)
-{ default-hedge-executor: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme032-0-scalar-strategy-hedge, event: &quot;default-hedge-executor&quot; } (bme024-0-market-predicting:164)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.wrapped-stx } (bme024-0-market-scalar-pyth:160)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.sbtc } (bme024-0-market-scalar-pyth:160)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.tusdh } (bme024-0-market-scalar-pyth:160)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.tpepe } (bme024-0-market-scalar-pyth:160)
-{ default-hedge-executor: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme032-0-scalar-strategy-hedge, event: &quot;default-hedge-executor&quot; } (bme024-0-market-scalar-pyth:180)
-{ event: &quot;price-band-width&quot;, feed-id: 0xec7a775f46379b5e943c3526b1c8d54cd49749176b0b98e02dde68d1bd335c17, precent: u2000 } (bme024-0-market-scalar-pyth:198)
-{ event: &quot;price-band-width&quot;, feed-id: 0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43, precent: u100 } (bme024-0-market-scalar-pyth:198)
-{ event: &quot;price-band-width&quot;, feed-id: 0xef0d8b6fda2ceba41da15d4095d1da392a0d2f8ed0c6c7bc0f4cfac8c280b56d, precent: u500 } (bme024-0-market-scalar-pyth:198)
-{ event: &quot;price-band-width&quot;, feed-id: 0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace, precent: u1000 } (bme024-0-market-scalar-pyth:198)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ event: &quot;set-tier-weight&quot;, token-id: u1, weight: u1 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u2, weight: u1 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u3, weight: u1 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u4, weight: u2 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u5, weight: u2 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u6, weight: u2 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u7, weight: u3 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u8, weight: u3 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u9, weight: u3 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u10, weight: u5 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u11, weight: u5 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u12, weight: u5 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u13, weight: u8 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u14, weight: u8 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u15, weight: u8 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u16, weight: u13 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u17, weight: u13 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u18, weight: u13 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u19, weight: u21 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u20, weight: u21 } (bme030-0-reputation-token:112)
-&quot;BigMarket DAO has risen.&quot; (bdp000-bootstrap:199)
-{ event: &quot;execute&quot;, proposal: (ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bdp001-gating-true-testnet as &lt;SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z.proposal-trait.proposal-trait&gt;) } (bigmarket-dao:63)
-{ contract-id: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-predicting, contract-key: 0x54abdeef6da725ddae0b3ed6775656128b152c636a5a44508153639838c60c1b, contract-name: 0x0d0000001a626d653032342d302d6d61726b65742d70726564696374696e67, event: &quot;set-merkle-root-by-principal&quot;, merkle-root: (some { merkle-root: 0x26067618f71da1da6fa33c9b7f8d989b87f71ade892e1c55ce3b46ac79a7e64e }) } (bme022-0-market-gating:68)
-
-            </system-out>
+        <testcase classname="tests/cpmm/categorical.test.ts" name="claiming errors &gt; create and stake not ok on unknown category" time="0">
         </testcase>
-        <testcase classname="tests/gating/account-gating.test.ts" name="gating market  creation &gt; GENERATE TESTNET MERKLE ROOTS FOR MARKET CREATION" time="0.143">
-            <system-out>
-{ event: &quot;execute&quot;, proposal: (ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bdp000-bootstrap as &lt;SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z.proposal-trait.proposal-trait&gt;) } (bigmarket-dao:63)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme000-0-governance-token } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme001-0-proposal-voting } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme003-0-core-proposals } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme004-0-core-execute } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme006-0-treasury } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme010-0-token-sale } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme010-0-liquidity-contribution } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme021-0-market-voting } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme022-0-market-gating } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme023-0-market-bitcoin } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-predicting } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-scalar-pyth } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme030-0-reputation-token } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme040-0-shares-marketplace } (bigmarket-dao:41)
-{ event: &quot;set-core-team-member&quot;, member: true, who: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM } (bme003-0-core-proposals:48)
-{ event: &quot;set-core-team-member&quot;, member: true, who: &apos;ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5 } (bme003-0-core-proposals:48)
-{ contract-id: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-scalar-pyth, contract-key: 0xf131a25d1309392f4a51317bbd59d274865a348e4ef6d1eb40f92f56edbe55ef, contract-name: 0x0d0000001b626d653032342d302d6d61726b65742d7363616c61722d70797468, event: &quot;set-merkle-root-by-principal&quot;, merkle-root: (some { merkle-root: 0x26067618f71da1da6fa33c9b7f8d989b87f71ade892e1c55ce3b46ac79a7e64e }) } (bme022-0-market-gating:68)
-{ contract-id: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-predicting, contract-key: 0x54abdeef6da725ddae0b3ed6775656128b152c636a5a44508153639838c60c1b, contract-name: 0x0d0000001a626d653032342d302d6d61726b65742d70726564696374696e67, event: &quot;set-merkle-root-by-principal&quot;, merkle-root: (some { merkle-root: 0x26067618f71da1da6fa33c9b7f8d989b87f71ade892e1c55ce3b46ac79a7e64e }) } (bme022-0-market-gating:68)
-{ contract-id: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-scalar-pyth, contract-key: 0xf131a25d1309392f4a51317bbd59d274865a348e4ef6d1eb40f92f56edbe55ef, contract-name: 0x0d0000001b626d653032342d302d6d61726b65742d7363616c61722d70797468, event: &quot;set-merkle-root-by-principal&quot;, merkle-root: (some { merkle-root: 0x26067618f71da1da6fa33c9b7f8d989b87f71ade892e1c55ce3b46ac79a7e64e }) } (bme022-0-market-gating:68)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.wrapped-stx } (bme024-0-market-predicting:144)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.sbtc } (bme024-0-market-predicting:144)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.tusdh } (bme024-0-market-predicting:144)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.tpepe } (bme024-0-market-predicting:144)
-{ default-hedge-executor: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme032-0-scalar-strategy-hedge, event: &quot;default-hedge-executor&quot; } (bme024-0-market-predicting:164)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.wrapped-stx } (bme024-0-market-scalar-pyth:160)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.sbtc } (bme024-0-market-scalar-pyth:160)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.tusdh } (bme024-0-market-scalar-pyth:160)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.tpepe } (bme024-0-market-scalar-pyth:160)
-{ default-hedge-executor: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme032-0-scalar-strategy-hedge, event: &quot;default-hedge-executor&quot; } (bme024-0-market-scalar-pyth:180)
-{ event: &quot;price-band-width&quot;, feed-id: 0xec7a775f46379b5e943c3526b1c8d54cd49749176b0b98e02dde68d1bd335c17, precent: u2000 } (bme024-0-market-scalar-pyth:198)
-{ event: &quot;price-band-width&quot;, feed-id: 0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43, precent: u100 } (bme024-0-market-scalar-pyth:198)
-{ event: &quot;price-band-width&quot;, feed-id: 0xef0d8b6fda2ceba41da15d4095d1da392a0d2f8ed0c6c7bc0f4cfac8c280b56d, precent: u500 } (bme024-0-market-scalar-pyth:198)
-{ event: &quot;price-band-width&quot;, feed-id: 0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace, precent: u1000 } (bme024-0-market-scalar-pyth:198)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ event: &quot;set-tier-weight&quot;, token-id: u1, weight: u1 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u2, weight: u1 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u3, weight: u1 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u4, weight: u2 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u5, weight: u2 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u6, weight: u2 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u7, weight: u3 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u8, weight: u3 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u9, weight: u3 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u10, weight: u5 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u11, weight: u5 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u12, weight: u5 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u13, weight: u8 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u14, weight: u8 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u15, weight: u8 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u16, weight: u13 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u17, weight: u13 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u18, weight: u13 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u19, weight: u21 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u20, weight: u21 } (bme030-0-reputation-token:112)
-&quot;BigMarket DAO has risen.&quot; (bdp000-bootstrap:199)
-{ event: &quot;execute&quot;, proposal: (ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bdp001-gating as &lt;SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z.proposal-trait.proposal-trait&gt;) } (bigmarket-dao:63)
-{ contract-id: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-predicting, contract-key: 0x54abdeef6da725ddae0b3ed6775656128b152c636a5a44508153639838c60c1b, contract-name: 0x0d0000001a626d653032342d302d6d61726b65742d70726564696374696e67, event: &quot;set-merkle-root-by-principal&quot;, merkle-root: (some { merkle-root: 0x5f24649277af2f6364faf35827dffe12b85f2f1dca5ae92733c72af91455aa64 }) } (bme022-0-market-gating:68)
-ST3Y12HJYP2NMNAFHWBPM2CMYDHYXME1F46VC5SPJ, ST31WZCAZB0B1Q6WGC6ZYCWRGCBRP3KC7HJQ2QQ1K, ST167Z6WFHMV0FZKFCRNWZ33WTB0DFBCW9M1FW3AY, ST105HCS1RTR7D61EZET8CWNEF24ENEN3V6ARBYBJ, ST3SJD6KV86N90W0MREGRTM1GWXN8Z91PF6W0BQKM, STEZD95XQ194X67C1QJW4PHKDG8F5D66ZCYFX27A 
---------------------------------------------------------------------------------------------------------------
-TESTNET: MERKLE ROOTS FOR MARKET CREATION: 
-ST3Y12HJYP2NMNAFHWBPM2CMYDHYXME1F46VC5SPJ.bme023-0-market-scalar-pyth: 
-key= 0xcafd0bbdf303b480b7ab52788582bbdcb490471484d5f622f742195c0dcd3997
-root= 0x30ffcbef0fc180755c8469acac94b6c1eafca78ed04c001af8014d9718f5dd01
---------------------------------------------------------------------------------------------------------------
---------------------------------------------------------------------------------------------------------------
-MAINNET: MERKLE ROOTS FOR MARKET CREATION: 
-SP22SW60674C0V6B5E234C7ZD2YR8WXKXXVC48GZR.bme023-0-market-scalar-pyth: 
-key= 0xcafd0bbdf303b480b7ab52788582bbdcb490471484d5f622f742195c0dcd3997
-root= 0xf40bb8a31e61dbc71524b5b200b6f6b32da28b38f7143cf9346a3d87cbbdf12c
-
-            </system-out>
+        <testcase classname="tests/cpmm/categorical.test.ts" name="claiming errors &gt; create and stake ok" time="0">
         </testcase>
-        <testcase classname="tests/gating/account-gating.test.ts" name="gating market  creation &gt; can create-market with valid merkle proof" time="0.15">
-            <system-out>
-{ event: &quot;execute&quot;, proposal: (ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bdp000-bootstrap as &lt;SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z.proposal-trait.proposal-trait&gt;) } (bigmarket-dao:63)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme000-0-governance-token } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme001-0-proposal-voting } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme003-0-core-proposals } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme004-0-core-execute } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme006-0-treasury } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme010-0-token-sale } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme010-0-liquidity-contribution } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme021-0-market-voting } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme022-0-market-gating } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme023-0-market-bitcoin } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-predicting } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-scalar-pyth } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme030-0-reputation-token } (bigmarket-dao:41)
-{ enabled: true, event: &quot;extension&quot;, extension: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme040-0-shares-marketplace } (bigmarket-dao:41)
-{ event: &quot;set-core-team-member&quot;, member: true, who: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM } (bme003-0-core-proposals:48)
-{ event: &quot;set-core-team-member&quot;, member: true, who: &apos;ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5 } (bme003-0-core-proposals:48)
-{ contract-id: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-scalar-pyth, contract-key: 0xf131a25d1309392f4a51317bbd59d274865a348e4ef6d1eb40f92f56edbe55ef, contract-name: 0x0d0000001b626d653032342d302d6d61726b65742d7363616c61722d70797468, event: &quot;set-merkle-root-by-principal&quot;, merkle-root: (some { merkle-root: 0x26067618f71da1da6fa33c9b7f8d989b87f71ade892e1c55ce3b46ac79a7e64e }) } (bme022-0-market-gating:68)
-{ contract-id: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-predicting, contract-key: 0x54abdeef6da725ddae0b3ed6775656128b152c636a5a44508153639838c60c1b, contract-name: 0x0d0000001a626d653032342d302d6d61726b65742d70726564696374696e67, event: &quot;set-merkle-root-by-principal&quot;, merkle-root: (some { merkle-root: 0x26067618f71da1da6fa33c9b7f8d989b87f71ade892e1c55ce3b46ac79a7e64e }) } (bme022-0-market-gating:68)
-{ contract-id: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-scalar-pyth, contract-key: 0xf131a25d1309392f4a51317bbd59d274865a348e4ef6d1eb40f92f56edbe55ef, contract-name: 0x0d0000001b626d653032342d302d6d61726b65742d7363616c61722d70797468, event: &quot;set-merkle-root-by-principal&quot;, merkle-root: (some { merkle-root: 0x26067618f71da1da6fa33c9b7f8d989b87f71ade892e1c55ce3b46ac79a7e64e }) } (bme022-0-market-gating:68)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.wrapped-stx } (bme024-0-market-predicting:144)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.sbtc } (bme024-0-market-predicting:144)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.tusdh } (bme024-0-market-predicting:144)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.tpepe } (bme024-0-market-predicting:144)
-{ default-hedge-executor: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme032-0-scalar-strategy-hedge, event: &quot;default-hedge-executor&quot; } (bme024-0-market-predicting:164)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.wrapped-stx } (bme024-0-market-scalar-pyth:160)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.sbtc } (bme024-0-market-scalar-pyth:160)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.tusdh } (bme024-0-market-scalar-pyth:160)
-{ enabled: true, event: &quot;allowed-token&quot;, token: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.tpepe } (bme024-0-market-scalar-pyth:160)
-{ default-hedge-executor: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme032-0-scalar-strategy-hedge, event: &quot;default-hedge-executor&quot; } (bme024-0-market-scalar-pyth:180)
-{ event: &quot;price-band-width&quot;, feed-id: 0xec7a775f46379b5e943c3526b1c8d54cd49749176b0b98e02dde68d1bd335c17, precent: u2000 } (bme024-0-market-scalar-pyth:198)
-{ event: &quot;price-band-width&quot;, feed-id: 0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43, precent: u100 } (bme024-0-market-scalar-pyth:198)
-{ event: &quot;price-band-width&quot;, feed-id: 0xef0d8b6fda2ceba41da15d4095d1da392a0d2f8ed0c6c7bc0f4cfac8c280b56d, precent: u500 } (bme024-0-market-scalar-pyth:198)
-{ event: &quot;price-band-width&quot;, feed-id: 0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace, precent: u1000 } (bme024-0-market-scalar-pyth:198)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ amount: u300000000000, current-key: u1, duration: u105120, event: &quot;set-core-team-vesting&quot;, start-block: u5 } (bme000-0-governance-token:93)
-{ event: &quot;set-tier-weight&quot;, token-id: u1, weight: u1 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u2, weight: u1 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u3, weight: u1 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u4, weight: u2 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u5, weight: u2 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u6, weight: u2 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u7, weight: u3 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u8, weight: u3 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u9, weight: u3 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u10, weight: u5 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u11, weight: u5 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u12, weight: u5 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u13, weight: u8 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u14, weight: u8 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u15, weight: u8 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u16, weight: u13 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u17, weight: u13 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u18, weight: u13 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u19, weight: u21 } (bme030-0-reputation-token:112)
-{ event: &quot;set-tier-weight&quot;, token-id: u20, weight: u21 } (bme030-0-reputation-token:112)
-&quot;BigMarket DAO has risen.&quot; (bdp000-bootstrap:199)
-{ event: &quot;propose&quot;, proposal: (ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bdp001-gating as &lt;SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z.proposal-trait.proposal-trait&gt;), proposer: &apos;ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5 } (bme001-0-proposal-voting:73)
-{ amount: u1000, event: &quot;vote&quot;, for: true, proposal: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bdp001-gating, voter: &apos;ST2CY5V39NHDPWSXMW9QDT3HC3GD6Q6XX4CFRK9AG } (bme001-0-proposal-voting:172)
-{ event: &quot;conclude&quot;, passed: true, proposal: (ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bdp001-gating as &lt;SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z.proposal-trait.proposal-trait&gt;) } (bme001-0-proposal-voting:193)
-{ amount: u6, event: &quot;sft_mint&quot;, recipient: &apos;ST2CY5V39NHDPWSXMW9QDT3HC3GD6Q6XX4CFRK9AG, token-id: u11 } (bme030-0-reputation-token:151)
-{ event: &quot;execute&quot;, proposal: (ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bdp001-gating as &lt;SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z.proposal-trait.proposal-trait&gt;) } (bigmarket-dao:63)
-{ contract-id: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-predicting, contract-key: 0x54abdeef6da725ddae0b3ed6775656128b152c636a5a44508153639838c60c1b, contract-name: 0x0d0000001a626d653032342d302d6d61726b65742d70726564696374696e67, event: &quot;set-merkle-root-by-principal&quot;, merkle-root: (some { merkle-root: 0x5f24649277af2f6364faf35827dffe12b85f2f1dca5ae92733c72af91455aa64 }) } (bme022-0-market-gating:68)
-{ contract-key: 0x54abdeef6da725ddae0b3ed6775656128b152c636a5a44508153639838c60c1b, contract-name: 0x0d0000001a626d653032342d302d6d61726b65742d70726564696374696e67, event: &quot;can-access-by-account&quot;, leaf: 0x70361feed353e5d08a22632f522e787f10b09894e543da5fcc472255afbd1849, proof-valid: true, root: { merkle-root: 0x5f24649277af2f6364faf35827dffe12b85f2f1dca5ae92733c72af91455aa64 }, sender: &apos;ST2CY5V39NHDPWSXMW9QDT3HC3GD6Q6XX4CFRK9AG, txsender: &apos;ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme024-0-market-predicting } (bme022-0-market-gating:192)
-{ amount: u16, event: &quot;sft_mint&quot;, recipient: &apos;ST2CY5V39NHDPWSXMW9QDT3HC3GD6Q6XX4CFRK9AG, token-id: u2 } (bme030-0-reputation-token:151)
-{ categories: (list &quot;nay&quot; &quot;yay&quot;), creator: &apos;ST2CY5V39NHDPWSXMW9QDT3HC3GD6Q6XX4CFRK9AG, event: &quot;create-market&quot;, market-data-hash: 0x54abdeef6da725ddae0b3ed6775656128b152c636a5a44508153639838c60c1b, market-fee-bips: u0, market-id: u0, seed-amount: u100000000, token: (ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.wrapped-stx as &lt;SP2AKWJYC7BNY18W1XXKPGP0YVEK63QJG4793Z2D4.sip-010-trait-ft-standard.sip-010-trait&gt;) } (bme024-0-market-predicting:327)
-
-            </system-out>
+        <testcase classname="tests/cpmm/categorical.test.ts" name="claiming errors &gt; res agent cannot stake" time="0">
+        </testcase>
+        <testcase classname="tests/cpmm/categorical.test.ts" name="claiming errors &gt; create and stake spread ok" time="0">
+        </testcase>
+        <testcase classname="tests/cpmm/categorical.test.ts" name="claiming errors &gt; resolve ok" time="0">
+        </testcase>
+        <testcase classname="tests/cpmm/categorical.test.ts" name="claiming errors &gt; resolve undisputed requires window to elapse" time="0">
+        </testcase>
+        <testcase classname="tests/cpmm/categorical.test.ts" name="claiming errors &gt; resolve undisputed requires window to elapse" time="0">
+        </testcase>
+        <testcase classname="tests/cpmm/categorical.test.ts" name="claiming errors &gt; resolve undisputed requires window to elapse" time="0">
+        </testcase>
+        <testcase classname="tests/cpmm/categorical.test.ts" name="claiming errors &gt; claim err-user-not-winner-or-claimed" time="0">
+        </testcase>
+        <testcase classname="tests/cpmm/categorical.test.ts" name="claiming errors &gt; claim loser ok" time="0">
+        </testcase>
+        <testcase classname="tests/cpmm/categorical.test.ts" name="claiming errors &gt; claim winner ok" time="0">
+        </testcase>
+        <testcase classname="tests/cpmm/categorical.test.ts" name="claiming errors &gt; claim winner ok" time="0">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/cpmm/marketplace.test.ts" timestamp="2025-10-13T15:04:04.021Z" hostname="Mikes-MacBook-Pro.local" tests="11" failures="0" errors="0" skipped="0" time="0">
+        <testcase classname="tests/cpmm/marketplace.test.ts" name="claiming errors &gt; ensure alice can create a sell order" time="0">
+        </testcase>
+        <testcase classname="tests/cpmm/marketplace.test.ts" name="claiming errors &gt; ensure alice can create two sell orders if first is cancelled" time="0">
+        </testcase>
+        <testcase classname="tests/cpmm/marketplace.test.ts" name="claiming errors &gt; ensure alice cant create two sell order" time="0">
+        </testcase>
+        <testcase classname="tests/cpmm/marketplace.test.ts" name="claiming errors &gt; ensure alice can create two sell orders if first is cancelled" time="0">
+        </testcase>
+        <testcase classname="tests/cpmm/marketplace.test.ts" name="claiming errors &gt; ensure alice sell order cant be fullfilled if her balance too low" time="0">
+        </testcase>
+        <testcase classname="tests/cpmm/marketplace.test.ts" name="claiming errors &gt; ensure alice sell order can be fullfilled" time="0">
+        </testcase>
+        <testcase classname="tests/cpmm/marketplace.test.ts" name="claiming errors &gt; ensure bob cant buy non existing order " time="0">
+        </testcase>
+        <testcase classname="tests/cpmm/marketplace.test.ts" name="claiming errors &gt; ensure bob order expires" time="0">
+        </testcase>
+        <testcase classname="tests/cpmm/marketplace.test.ts" name="claiming errors &gt; ensure bob order can buy if expiry pushed" time="0">
+        </testcase>
+        <testcase classname="tests/cpmm/marketplace.test.ts" name="claiming errors &gt; ensure order cant be filled twice" time="0">
+        </testcase>
+        <testcase classname="tests/cpmm/marketplace.test.ts" name="claiming errors &gt; check bob and alice can both claim after p2p trade" time="0">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/cpmm/scalar.test.ts" timestamp="2025-10-13T15:04:04.021Z" hostname="Mikes-MacBook-Pro.local" tests="2" failures="0" errors="0" skipped="0" time="0">
+        <testcase classname="tests/cpmm/scalar.test.ts" name="claiming errors &gt; err too few categories" time="0">
+        </testcase>
+        <testcase classname="tests/cpmm/scalar.test.ts" name="claiming errors &gt; create binary market ok" time="0">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/core-proposal-voting/custom-majority.test.ts" timestamp="2025-10-13T15:04:04.021Z" hostname="Mikes-MacBook-Pro.local" tests="10" failures="0" errors="0" skipped="0" time="0">
+        <testcase classname="tests/core-proposal-voting/custom-majority.test.ts" name="custom majority tests &gt; check value set by proposal" time="0">
+        </testcase>
+        <testcase classname="tests/core-proposal-voting/custom-majority.test.ts" name="custom majority tests &gt; check none set by proposal" time="0">
+        </testcase>
+        <testcase classname="tests/core-proposal-voting/custom-majority.test.ts" name="custom majority tests &gt; check err-not-majority" time="0">
+        </testcase>
+        <testcase classname="tests/core-proposal-voting/custom-majority.test.ts" name="custom majority tests &gt; check err-not-majority for 50%" time="0">
+        </testcase>
+        <testcase classname="tests/core-proposal-voting/custom-majority.test.ts" name="custom majority tests &gt; check ok for 50.01%" time="0">
+        </testcase>
+        <testcase classname="tests/core-proposal-voting/custom-majority.test.ts" name="custom majority tests &gt; check vote cant conclude before end height" time="0">
+        </testcase>
+        <testcase classname="tests/core-proposal-voting/custom-majority.test.ts" name="custom majority tests &gt; check tied vote concludes false" time="0">
+        </testcase>
+        <testcase classname="tests/core-proposal-voting/custom-majority.test.ts" name="custom majority tests &gt; check vote less than custom concludes false" time="0">
+        </testcase>
+        <testcase classname="tests/core-proposal-voting/custom-majority.test.ts" name="custom majority tests &gt; check vote equal to custom concludes false" time="0">
+        </testcase>
+        <testcase classname="tests/core-proposal-voting/custom-majority.test.ts" name="custom majority tests &gt; check vote greater than custom concludes true" time="0">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/governance/initial-allocation.test.ts" timestamp="2025-10-13T15:04:04.022Z" hostname="Mikes-MacBook-Pro.local" tests="8" failures="0" errors="0" skipped="0" time="0">
+        <testcase classname="tests/governance/initial-allocation.test.ts" name="initial distribution &gt; User is not recipient" time="0">
+        </testcase>
+        <testcase classname="tests/governance/initial-allocation.test.ts" name="initial distribution &gt; check initial recipients" time="0">
+        </testcase>
+        <testcase classname="tests/governance/initial-allocation.test.ts" name="initial distribution &gt; cannot reset allocation directly" time="0">
+        </testcase>
+        <testcase classname="tests/governance/initial-allocation.test.ts" name="initial distribution &gt; can reset allocation via dao" time="0">
+        </testcase>
+        <testcase classname="tests/governance/initial-allocation.test.ts" name="initial distribution &gt; cannot claim before cliff" time="0">
+        </testcase>
+        <testcase classname="tests/governance/initial-allocation.test.ts" name="initial distribution &gt; can claim after cliff" time="0">
+        </testcase>
+        <testcase classname="tests/governance/initial-allocation.test.ts" name="initial distribution &gt; can claim incrementally after cliff" time="0">
+        </testcase>
+        <testcase classname="tests/governance/initial-allocation.test.ts" name="initial distribution &gt; cannot reset allocation after first claim made" time="0">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/governance/staged-release.test.ts" timestamp="2025-10-13T15:04:04.022Z" hostname="Mikes-MacBook-Pro.local" tests="10" failures="0" errors="0" skipped="0" time="0">
+        <testcase classname="tests/governance/staged-release.test.ts" name="initial distribution &gt; buying is blocked before initialisation" time="0">
+        </testcase>
+        <testcase classname="tests/governance/staged-release.test.ts" name="initial distribution &gt; cannot directly initialisate" time="0">
+        </testcase>
+        <testcase classname="tests/governance/staged-release.test.ts" name="initial distribution &gt; check initial variables" time="0">
+        </testcase>
+        <testcase classname="tests/governance/staged-release.test.ts" name="initial distribution &gt; cannot claim before initialisation" time="0">
+        </testcase>
+        <testcase classname="tests/governance/staged-release.test.ts" name="initial distribution &gt; only dao can advance stage" time="0">
+        </testcase>
+        <testcase classname="tests/governance/staged-release.test.ts" name="initial distribution &gt; cannot advance beyond last stage" time="0">
+        </testcase>
+        <testcase classname="tests/governance/staged-release.test.ts" name="initial distribution &gt; cannot exceed stage limit" time="0">
+        </testcase>
+        <testcase classname="tests/governance/staged-release.test.ts" name="initial distribution &gt; payout is determined by stage ratio" time="0">
+        </testcase>
+        <testcase classname="tests/governance/staged-release.test.ts" name="initial distribution &gt; cancel prevent buy" time="0">
+        </testcase>
+        <testcase classname="tests/governance/staged-release.test.ts" name="initial distribution &gt; cancel enable refund" time="0">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/gating/account-gating.test.ts" timestamp="2025-10-13T15:04:04.023Z" hostname="Mikes-MacBook-Pro.local" tests="9" failures="0" errors="0" skipped="0" time="0">
+        <testcase classname="tests/gating/account-gating.test.ts" name="gating market  creation &gt; err-expecting-merkle-root-for-poll" time="0">
+        </testcase>
+        <testcase classname="tests/gating/account-gating.test.ts" name="gating market  creation &gt; err-unauthorised" time="0">
+        </testcase>
+        <testcase classname="tests/gating/account-gating.test.ts" name="gating market  creation &gt; ensure bme022 is valid extension" time="0">
+        </testcase>
+        <testcase classname="tests/gating/account-gating.test.ts" name="gating market  creation &gt; can call set-merkle-root via proposal" time="0">
+        </testcase>
+        <testcase classname="tests/gating/account-gating.test.ts" name="gating market  creation &gt; can&apos;t call create-market with invalid merkle lookup key" time="0">
+        </testcase>
+        <testcase classname="tests/gating/account-gating.test.ts" name="gating market  creation &gt; deployer can create-market if dao bootstrapped" time="0">
+        </testcase>
+        <testcase classname="tests/gating/account-gating.test.ts" name="gating market  creation &gt; alice cannot create-market if dao bootstrapped" time="0">
+        </testcase>
+        <testcase classname="tests/gating/account-gating.test.ts" name="gating market  creation &gt; GENERATE TESTNET MERKLE ROOTS FOR MARKET CREATION" time="0">
+        </testcase>
+        <testcase classname="tests/gating/account-gating.test.ts" name="gating market  creation &gt; can create-market with valid merkle proof" time="0">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/predictions/claims-with-market-fee.test.ts" timestamp="2025-10-13T15:04:04.023Z" hostname="Mikes-MacBook-Pro.local" tests="1" failures="0" errors="0" skipped="0" time="0">
+        <testcase classname="tests/predictions/claims-with-market-fee.test.ts" name="successful claim &gt; bob wins 50% of pool" time="0">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/predictions/claims.test.ts" timestamp="2025-10-13T15:04:04.023Z" hostname="Mikes-MacBook-Pro.local" tests="19" failures="0" errors="0" skipped="0" time="0">
+        <testcase classname="tests/predictions/claims.test.ts" name="claiming errors &gt; err too few categories" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/claims.test.ts" name="claiming errors &gt; create binary market ok" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/claims.test.ts" name="claiming errors &gt; create ok" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/claims.test.ts" name="claiming errors &gt; create and stake not ok on unknown category" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/claims.test.ts" name="claiming errors &gt; create and stake ok" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/claims.test.ts" name="claiming errors &gt; res agent cannot stake" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/claims.test.ts" name="claiming errors &gt; create and stake spread ok" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/claims.test.ts" name="claiming errors &gt; resolve ok" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/claims.test.ts" name="claiming errors &gt; resolve undisputed requires window to elapse" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/claims.test.ts" name="claiming errors &gt; resolve undisputed requires window to elapse" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/claims.test.ts" name="claiming errors &gt; resolve undisputed requires window to elapse" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/claims.test.ts" name="claiming errors &gt; claim err-user-not-winner-or-claimed" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/claims.test.ts" name="claiming errors &gt; claim loser ok" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/claims.test.ts" name="claiming errors &gt; claim winner ok" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/claims.test.ts" name="claiming errors &gt; err-market-not-found" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/claims.test.ts" name="claiming errors &gt; err-market-not-concluded" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/claims.test.ts" name="claiming errors &gt; err-market-not-concluded" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/claims.test.ts" name="claiming errors &gt; err-user-not-winner" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/claims.test.ts" name="successful claim &gt; bob wins 50% of pool" time="0">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/predictions/create-market-fees.test.ts" timestamp="2025-10-13T15:04:04.024Z" hostname="Mikes-MacBook-Pro.local" tests="19" failures="0" errors="0" skipped="0" time="0">
+        <testcase classname="tests/predictions/create-market-fees.test.ts" name="claiming errors &gt; err too few categories" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/create-market-fees.test.ts" name="claiming errors &gt; create binary market ok" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/create-market-fees.test.ts" name="claiming errors &gt; create ok" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/create-market-fees.test.ts" name="claiming errors &gt; create and stake not ok on unknown category" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/create-market-fees.test.ts" name="claiming errors &gt; create and stake ok" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/create-market-fees.test.ts" name="claiming errors &gt; res agent cannot stake" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/create-market-fees.test.ts" name="claiming errors &gt; create and stake spread ok" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/create-market-fees.test.ts" name="claiming errors &gt; resolve ok" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/create-market-fees.test.ts" name="claiming errors &gt; resolve undisputed requires window to elapse" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/create-market-fees.test.ts" name="claiming errors &gt; resolve undisputed requires window to elapse" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/create-market-fees.test.ts" name="claiming errors &gt; resolve undisputed requires window to elapse" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/create-market-fees.test.ts" name="claiming errors &gt; claim err-user-not-winner-or-claimed" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/create-market-fees.test.ts" name="claiming errors &gt; claim loser ok" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/create-market-fees.test.ts" name="claiming errors &gt; claim winner ok" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/create-market-fees.test.ts" name="prediction contract &gt; ensure creation fee is paid" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/create-market-fees.test.ts" name="prediction contract &gt; ensure create market fee is paid" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/create-market-fees.test.ts" name="prediction contract &gt; ensure market fee cant exceed max" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/create-market-fees.test.ts" name="prediction contract &gt; ensure betty pays the market creat fee of 1000 but receives 10% of alice winnings" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/create-market-fees.test.ts" name="prediction contract &gt; ensure fees are correct with 4 users" time="0">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/predictions/resolving.test.ts" timestamp="2025-10-13T15:04:04.025Z" hostname="Mikes-MacBook-Pro.local" tests="19" failures="0" errors="0" skipped="0" time="0">
+        <testcase classname="tests/predictions/resolving.test.ts" name="claiming errors &gt; err too few categories" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/resolving.test.ts" name="claiming errors &gt; create binary market ok" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/resolving.test.ts" name="claiming errors &gt; create ok" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/resolving.test.ts" name="claiming errors &gt; create and stake not ok on unknown category" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/resolving.test.ts" name="claiming errors &gt; create and stake ok" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/resolving.test.ts" name="claiming errors &gt; res agent cannot stake" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/resolving.test.ts" name="claiming errors &gt; create and stake spread ok" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/resolving.test.ts" name="claiming errors &gt; resolve ok" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/resolving.test.ts" name="claiming errors &gt; resolve undisputed requires window to elapse" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/resolving.test.ts" name="claiming errors &gt; resolve undisputed requires window to elapse" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/resolving.test.ts" name="claiming errors &gt; resolve undisputed requires window to elapse" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/resolving.test.ts" name="claiming errors &gt; claim err-user-not-winner-or-claimed" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/resolving.test.ts" name="claiming errors &gt; claim loser ok" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/resolving.test.ts" name="claiming errors &gt; claim winner ok" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/resolving.test.ts" name="resolving errors &gt; only dev can resolve" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/resolving.test.ts" name="resolving errors &gt; err-market-not-found" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/resolving.test.ts" name="resolving errors &gt; err-already-concluded" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/resolving.test.ts" name="resolve market &gt; resolve market yes" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/resolving.test.ts" name="resolve market &gt; resolve market no bids" time="0">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/predictions/scenarios.test.ts" timestamp="2025-10-13T15:04:04.026Z" hostname="Mikes-MacBook-Pro.local" tests="19" failures="0" errors="0" skipped="0" time="0">
+        <testcase classname="tests/predictions/scenarios.test.ts" name="claiming errors &gt; err too few categories" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/scenarios.test.ts" name="claiming errors &gt; create binary market ok" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/scenarios.test.ts" name="claiming errors &gt; create ok" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/scenarios.test.ts" name="claiming errors &gt; create and stake not ok on unknown category" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/scenarios.test.ts" name="claiming errors &gt; create and stake ok" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/scenarios.test.ts" name="claiming errors &gt; res agent cannot stake" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/scenarios.test.ts" name="claiming errors &gt; create and stake spread ok" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/scenarios.test.ts" name="claiming errors &gt; resolve ok" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/scenarios.test.ts" name="claiming errors &gt; resolve undisputed requires window to elapse" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/scenarios.test.ts" name="claiming errors &gt; resolve undisputed requires window to elapse" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/scenarios.test.ts" name="claiming errors &gt; resolve undisputed requires window to elapse" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/scenarios.test.ts" name="claiming errors &gt; claim err-user-not-winner-or-claimed" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/scenarios.test.ts" name="claiming errors &gt; claim loser ok" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/scenarios.test.ts" name="claiming errors &gt; claim winner ok" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/scenarios.test.ts" name="check actual claims vs expected for some scenarios &gt; Alice stake 100STX on YES, market resolves yes" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/scenarios.test.ts" name="check actual claims vs expected for some scenarios &gt; Alice stakes 100STX on yes, Bob 100STX on NO market resolves yes" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/scenarios.test.ts" name="check actual claims vs expected for some scenarios &gt; Alice stakes 100 STX on YES, Bob stakes 50 STX on YES, Tom stakes 200 STX on NO, Annie stakes 20 STX on NO, market resolves NO" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/scenarios.test.ts" name="Alice stakes 100 STX on YES, Bob stakes 50 STX on YES, Tom stakes 200 STX on NO, Annie stakes 20 STX on NO, market resolves NO" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/scenarios.test.ts" name="Alice stakes 100 STX on YES, Bob stakes 50 STX on YES, Tom stakes 200 STX on NO, Annie stakes 20 STX on NO, market resolves NO" time="0">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/predictions/staking.test.ts" timestamp="2025-10-13T15:04:04.026Z" hostname="Mikes-MacBook-Pro.local" tests="19" failures="0" errors="0" skipped="0" time="0">
+        <testcase classname="tests/predictions/staking.test.ts" name="claiming errors &gt; err too few categories" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/staking.test.ts" name="claiming errors &gt; create binary market ok" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/staking.test.ts" name="claiming errors &gt; create ok" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/staking.test.ts" name="claiming errors &gt; create and stake not ok on unknown category" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/staking.test.ts" name="claiming errors &gt; create and stake ok" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/staking.test.ts" name="claiming errors &gt; res agent cannot stake" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/staking.test.ts" name="claiming errors &gt; create and stake spread ok" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/staking.test.ts" name="claiming errors &gt; resolve ok" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/staking.test.ts" name="claiming errors &gt; resolve undisputed requires window to elapse" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/staking.test.ts" name="claiming errors &gt; resolve undisputed requires window to elapse" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/staking.test.ts" name="claiming errors &gt; resolve undisputed requires window to elapse" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/staking.test.ts" name="claiming errors &gt; claim err-user-not-winner-or-claimed" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/staking.test.ts" name="claiming errors &gt; claim loser ok" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/staking.test.ts" name="claiming errors &gt; claim winner ok" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/staking.test.ts" name="prediction errors &gt; user can&apos;t commit more than their balance" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/staking.test.ts" name="prediction errors &gt; err-already-concluded" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/staking.test.ts" name="prediction fees and stakes &gt; user transfers exact stake" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/staking.test.ts" name="prediction fees and stakes &gt; fees are collected up front from prediction stakes" time="0">
+        </testcase>
+        <testcase classname="tests/predictions/staking.test.ts" name="prediction fees and stakes &gt; alice hedges yes and no" time="0">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/reputation/reputation-sft.test.ts" timestamp="2025-10-13T15:04:04.028Z" hostname="Mikes-MacBook-Pro.local" tests="15" failures="0" errors="0" skipped="0" time="0">
+        <testcase classname="tests/reputation/reputation-sft.test.ts" name="minting &gt; only dao can mint" time="0">
+        </testcase>
+        <testcase classname="tests/reputation/reputation-sft.test.ts" name="minting &gt; only dao can burn" time="0">
+        </testcase>
+        <testcase classname="tests/reputation/reputation-sft.test.ts" name="minting &gt; only dao can transfer" time="0">
+        </testcase>
+        <testcase classname="tests/reputation/reputation-sft.test.ts" name="minting &gt; dao can mint and burn additional amount" time="0">
+        </testcase>
+        <testcase classname="tests/reputation/reputation-sft.test.ts" name="minting &gt; dao can transfer" time="0">
+        </testcase>
+        <testcase classname="tests/reputation/reputation-sft.test.ts" name="minting &gt; dao can transfer many" time="0">
+        </testcase>
+        <testcase classname="tests/reputation/reputation-sft.test.ts" name="claiming &gt; cannot claim before first epoch" time="0">
+        </testcase>
+        <testcase classname="tests/reputation/reputation-sft.test.ts" name="claiming &gt; cannot claim with 0 reps" time="0">
+        </testcase>
+        <testcase classname="tests/reputation/reputation-sft.test.ts" name="claiming &gt; only dao extensions can trigger claims" time="0">
+        </testcase>
+        <testcase classname="tests/reputation/reputation-sft.test.ts" name="claiming &gt; alice cant claim twice in same epoch" time="0">
+        </testcase>
+        <testcase classname="tests/reputation/reputation-sft.test.ts" name="claiming &gt; alice and bobs claims are proportional" time="0">
+        </testcase>
+        <testcase classname="tests/reputation/reputation-sft.test.ts" name="claiming &gt; alice and bob can claim subsequent epochs" time="0">
+        </testcase>
+        <testcase classname="tests/reputation/reputation-sft.test.ts" name="claiming &gt; alice and bobs shares decrease proportionally when tom creates a market" time="0">
+        </testcase>
+        <testcase classname="tests/reputation/reputation-sft.test.ts" name="Reputation Rewards &gt; prevents claiming in the current epoch, allows in subsequent epoch, and blocks double-claim" time="0">
+        </testcase>
+        <testcase classname="tests/reputation/reputation-sft.test.ts" name="Reputation Rewards &gt; again with tier weights - weigths are set in bootstrap" time="0">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/resolution/resolution-agent.test.ts" timestamp="2025-10-13T15:04:04.028Z" hostname="Mikes-MacBook-Pro.local" tests="10" failures="0" errors="0" skipped="0" time="0">
+        <testcase classname="tests/resolution/resolution-agent.test.ts" name="resolution coordinator &gt; agent bob can resolve" time="0">
+        </testcase>
+        <testcase classname="tests/resolution/resolution-agent.test.ts" name="resolution coordinator &gt; agent can no longer resolve" time="0">
+        </testcase>
+        <testcase classname="tests/resolution/resolution-agent.test.ts" name="resolution coordinator &gt; ensure bob cant resolve directly" time="0">
+        </testcase>
+        <testcase classname="tests/resolution/resolution-agent.test.ts" name="resolution coordinator &gt; ensure bob can resolve via coordinator" time="0">
+        </testcase>
+        <testcase classname="tests/resolution/resolution-agent.test.ts" name="resolution coordinator &gt; ensure bob can resolve via coordinator to nay" time="0">
+        </testcase>
+        <testcase classname="tests/resolution/resolution-agent.test.ts" name="resolution coordinator &gt; ensure bob can resolve via coordinator to yay" time="0">
+        </testcase>
+        <testcase classname="tests/resolution/resolution-agent.test.ts" name="resolution coordinator &gt; ensure bob cannot resolve via coordinator when more signals needed" time="0">
+        </testcase>
+        <testcase classname="tests/resolution/resolution-agent.test.ts" name="resolution coordinator &gt; ensure bob cannot resolve via coordinator when more signals needed" time="0">
+        </testcase>
+        <testcase classname="tests/resolution/resolution-agent.test.ts" name="resolution coordinator &gt; ensure bob tom AND betty can resolve via coordinator when more signals needed" time="0">
+        </testcase>
+        <testcase classname="tests/resolution/resolution-agent.test.ts" name="resolution coordinator &gt; ensure bob tom cannot resolve via coordinator" time="0">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/categorical/categorical.test.ts" timestamp="2025-10-13T15:04:04.029Z" hostname="Mikes-MacBook-Pro.local" tests="14" failures="0" errors="0" skipped="0" time="0">
+        <testcase classname="tests/categorical/categorical.test.ts" name="claiming errors &gt; err too few categories" time="0">
+        </testcase>
+        <testcase classname="tests/categorical/categorical.test.ts" name="claiming errors &gt; create binary market ok" time="0">
+        </testcase>
+        <testcase classname="tests/categorical/categorical.test.ts" name="claiming errors &gt; create ok" time="0">
+        </testcase>
+        <testcase classname="tests/categorical/categorical.test.ts" name="claiming errors &gt; create and stake not ok on unknown category" time="0">
+        </testcase>
+        <testcase classname="tests/categorical/categorical.test.ts" name="claiming errors &gt; create and stake ok" time="0">
+        </testcase>
+        <testcase classname="tests/categorical/categorical.test.ts" name="claiming errors &gt; res agent cannot stake" time="0">
+        </testcase>
+        <testcase classname="tests/categorical/categorical.test.ts" name="claiming errors &gt; create and stake spread ok" time="0">
+        </testcase>
+        <testcase classname="tests/categorical/categorical.test.ts" name="claiming errors &gt; resolve ok" time="0">
+        </testcase>
+        <testcase classname="tests/categorical/categorical.test.ts" name="claiming errors &gt; resolve undisputed requires window to elapse" time="0">
+        </testcase>
+        <testcase classname="tests/categorical/categorical.test.ts" name="claiming errors &gt; resolve undisputed requires window to elapse" time="0">
+        </testcase>
+        <testcase classname="tests/categorical/categorical.test.ts" name="claiming errors &gt; resolve undisputed requires window to elapse" time="0">
+        </testcase>
+        <testcase classname="tests/categorical/categorical.test.ts" name="claiming errors &gt; claim err-user-not-winner-or-claimed" time="0">
+        </testcase>
+        <testcase classname="tests/categorical/categorical.test.ts" name="claiming errors &gt; claim loser ok" time="0">
+        </testcase>
+        <testcase classname="tests/categorical/categorical.test.ts" name="claiming errors &gt; claim winner ok" time="0">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/sbtc/claims.test.ts" timestamp="2025-10-13T15:04:04.029Z" hostname="Mikes-MacBook-Pro.local" tests="21" failures="0" errors="0" skipped="0" time="0">
+        <testcase classname="tests/sbtc/claims.test.ts" name="claiming errors &gt; err too few categories" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/claims.test.ts" name="claiming errors &gt; create binary market ok" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/claims.test.ts" name="claiming errors &gt; create ok" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/claims.test.ts" name="claiming errors &gt; create and stake not ok on unknown category" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/claims.test.ts" name="claiming errors &gt; create and stake ok" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/claims.test.ts" name="claiming errors &gt; res agent cannot stake" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/claims.test.ts" name="claiming errors &gt; create and stake spread ok" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/claims.test.ts" name="claiming errors &gt; resolve ok" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/claims.test.ts" name="claiming errors &gt; resolve undisputed requires window to elapse" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/claims.test.ts" name="claiming errors &gt; resolve undisputed requires window to elapse" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/claims.test.ts" name="claiming errors &gt; resolve undisputed requires window to elapse" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/claims.test.ts" name="claiming errors &gt; claim err-user-not-winner-or-claimed" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/claims.test.ts" name="claiming errors &gt; claim loser ok" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/claims.test.ts" name="claiming errors &gt; claim winner ok" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/claims.test.ts" name="claiming errors &gt; err-market-not-found" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/claims.test.ts" name="claiming errors &gt; err-user-balance-unknown" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/claims.test.ts" name="claiming errors &gt; err-market-not-concluded" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/claims.test.ts" name="claiming errors &gt; err-user-not-winner" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/claims.test.ts" name="claiming errors &gt; err-winning-pool-is-zero" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/claims.test.ts" name="claiming errors &gt; err-market-not-concluded" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/claims.test.ts" name="successful claim &gt; bob wins 50% of pool" time="0">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/sbtc/scenarios.test.ts" timestamp="2025-10-13T15:04:04.030Z" hostname="Mikes-MacBook-Pro.local" tests="19" failures="0" errors="0" skipped="0" time="0">
+        <testcase classname="tests/sbtc/scenarios.test.ts" name="claiming errors &gt; err too few categories" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/scenarios.test.ts" name="claiming errors &gt; create binary market ok" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/scenarios.test.ts" name="claiming errors &gt; create ok" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/scenarios.test.ts" name="claiming errors &gt; create and stake not ok on unknown category" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/scenarios.test.ts" name="claiming errors &gt; create and stake ok" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/scenarios.test.ts" name="claiming errors &gt; res agent cannot stake" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/scenarios.test.ts" name="claiming errors &gt; create and stake spread ok" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/scenarios.test.ts" name="claiming errors &gt; resolve ok" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/scenarios.test.ts" name="claiming errors &gt; resolve undisputed requires window to elapse" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/scenarios.test.ts" name="claiming errors &gt; resolve undisputed requires window to elapse" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/scenarios.test.ts" name="claiming errors &gt; resolve undisputed requires window to elapse" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/scenarios.test.ts" name="claiming errors &gt; claim err-user-not-winner-or-claimed" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/scenarios.test.ts" name="claiming errors &gt; claim loser ok" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/scenarios.test.ts" name="claiming errors &gt; claim winner ok" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/scenarios.test.ts" name="check actual claims vs expected for some scenarios &gt; Alice stake 100STX on YES, market resolves yes" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/scenarios.test.ts" name="check actual claims vs expected for some scenarios &gt; Alice stakes 100STX on yes, Bob 100STX on NO market resolves yes" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/scenarios.test.ts" name="check actual claims vs expected for some scenarios &gt; Alice stakes 100 STX on YES, Bob stakes 50 STX on YES, Tom stakes 200 STX on NO, Annie stakes 20 STX on NO, market resolves NO" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/scenarios.test.ts" name="Alice stakes 100 STX on YES, Bob stakes 50 STX on YES, Tom stakes 200 STX on NO, Annie stakes 20 STX on NO, market resolves NO" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/scenarios.test.ts" name="Alice stakes 100 STX on YES, Bob stakes 50 STX on YES, Tom stakes 200 STX on NO, Annie stakes 20 STX on NO, market resolves NO" time="0">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/sbtc/staking.test.ts" timestamp="2025-10-13T15:04:04.031Z" hostname="Mikes-MacBook-Pro.local" tests="18" failures="0" errors="0" skipped="0" time="0">
+        <testcase classname="tests/sbtc/staking.test.ts" name="claiming errors &gt; err too few categories" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/staking.test.ts" name="claiming errors &gt; create binary market ok" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/staking.test.ts" name="claiming errors &gt; create ok" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/staking.test.ts" name="claiming errors &gt; create and stake not ok on unknown category" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/staking.test.ts" name="claiming errors &gt; create and stake ok" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/staking.test.ts" name="claiming errors &gt; res agent cannot stake" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/staking.test.ts" name="claiming errors &gt; create and stake spread ok" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/staking.test.ts" name="claiming errors &gt; resolve ok" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/staking.test.ts" name="claiming errors &gt; resolve undisputed requires window to elapse" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/staking.test.ts" name="claiming errors &gt; resolve undisputed requires window to elapse" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/staking.test.ts" name="claiming errors &gt; resolve undisputed requires window to elapse" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/staking.test.ts" name="claiming errors &gt; claim err-user-not-winner-or-claimed" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/staking.test.ts" name="claiming errors &gt; claim loser ok" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/staking.test.ts" name="claiming errors &gt; claim winner ok" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/staking.test.ts" name="prediction errors &gt; user can&apos;t commit if slippage too high" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/staking.test.ts" name="prediction fees and stakes &gt; user transfers exact stake" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/staking.test.ts" name="prediction fees and stakes &gt; fees are collected up front from prediction stakes" time="0">
+        </testcase>
+        <testcase classname="tests/sbtc/staking.test.ts" name="prediction fees and stakes &gt; alice hedges yes and no" time="0">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/scalar/scalar-market-pyth.test.ts" timestamp="2025-10-13T15:04:04.032Z" hostname="Mikes-MacBook-Pro.local" tests="7" failures="0" errors="0" skipped="0" time="0">
+        <testcase classname="tests/scalar/scalar-market-pyth.test.ts" name="claiming errors &gt; create binary market ok" time="0">
+        </testcase>
+        <testcase classname="tests/scalar/scalar-market-pyth.test.ts" name="claiming errors &gt; create ok" time="0">
+        </testcase>
+        <testcase classname="tests/scalar/scalar-market-pyth.test.ts" name="claiming errors &gt; create and stake not ok on unknown category" time="0">
+        </testcase>
+        <testcase classname="tests/scalar/scalar-market-pyth.test.ts" name="claiming errors &gt; create and stake ok" time="0">
+        </testcase>
+        <testcase classname="tests/scalar/scalar-market-pyth.test.ts" name="claiming errors &gt; res agent cannot stake" time="0">
+        </testcase>
+        <testcase classname="tests/scalar/scalar-market-pyth.test.ts" name="claiming errors &gt; create and stake spread ok" time="0">
+        </testcase>
+        <testcase classname="tests/scalar/scalar-market-pyth.test.ts" name="claiming errors &gt; resolve to category 5 for STX/USD/0" time="0">
+        </testcase>
+    </testsuite>
+    <testsuite name="tests/voting/voting.test.ts" timestamp="2025-10-13T15:04:04.032Z" hostname="Mikes-MacBook-Pro.local" tests="25" failures="0" errors="0" skipped="0" time="0">
+        <testcase classname="tests/voting/voting.test.ts" name="claiming errors &gt; err too few categories" time="0">
+        </testcase>
+        <testcase classname="tests/voting/voting.test.ts" name="claiming errors &gt; create binary market ok" time="0">
+        </testcase>
+        <testcase classname="tests/voting/voting.test.ts" name="claiming errors &gt; create ok" time="0">
+        </testcase>
+        <testcase classname="tests/voting/voting.test.ts" name="claiming errors &gt; create and stake not ok on unknown category" time="0">
+        </testcase>
+        <testcase classname="tests/voting/voting.test.ts" name="claiming errors &gt; create and stake ok" time="0">
+        </testcase>
+        <testcase classname="tests/voting/voting.test.ts" name="claiming errors &gt; res agent cannot stake" time="0">
+        </testcase>
+        <testcase classname="tests/voting/voting.test.ts" name="claiming errors &gt; create and stake spread ok" time="0">
+        </testcase>
+        <testcase classname="tests/voting/voting.test.ts" name="claiming errors &gt; resolve ok" time="0">
+        </testcase>
+        <testcase classname="tests/voting/voting.test.ts" name="claiming errors &gt; resolve undisputed requires window to elapse" time="0">
+        </testcase>
+        <testcase classname="tests/voting/voting.test.ts" name="claiming errors &gt; resolve undisputed requires window to elapse" time="0">
+        </testcase>
+        <testcase classname="tests/voting/voting.test.ts" name="claiming errors &gt; resolve undisputed requires window to elapse" time="0">
+        </testcase>
+        <testcase classname="tests/voting/voting.test.ts" name="claiming errors &gt; claim err-user-not-winner-or-claimed" time="0">
+        </testcase>
+        <testcase classname="tests/voting/voting.test.ts" name="claiming errors &gt; claim loser ok" time="0">
+        </testcase>
+        <testcase classname="tests/voting/voting.test.ts" name="claiming errors &gt; claim winner ok" time="0">
+        </testcase>
+        <testcase classname="tests/voting/voting.test.ts" name="voting on resolution &gt; err-disputer-must-have-stake" time="0">
+        </testcase>
+        <testcase classname="tests/voting/voting.test.ts" name="voting on resolution &gt; err-unauthorised - dao function" time="0">
+        </testcase>
+        <testcase classname="tests/voting/voting.test.ts" name="voting on resolution &gt; staker can create market vote" time="0">
+        </testcase>
+        <testcase classname="tests/voting/voting.test.ts" name="voting on resolution &gt; staker can create market vote" time="0">
+        </testcase>
+        <testcase classname="tests/voting/voting.test.ts" name="voting on resolution &gt; vote cant close before voting window" time="0">
+        </testcase>
+        <testcase classname="tests/voting/voting.test.ts" name="voting on resolution &gt; vote can close after voting window with no votes" time="0">
+        </testcase>
+        <testcase classname="tests/voting/voting.test.ts" name="voting on resolution &gt; vote cant vote after end" time="0">
+        </testcase>
+        <testcase classname="tests/voting/voting.test.ts" name="voting on resolution &gt; cant vote with more than current unlocked bdg balance" time="0">
+        </testcase>
+        <testcase classname="tests/voting/voting.test.ts" name="voting on resolution &gt; can vote before end" time="0">
+        </testcase>
+        <testcase classname="tests/voting/voting.test.ts" name="voting on resolution &gt; vote closes true with for votes" time="0">
+        </testcase>
+        <testcase classname="tests/voting/voting.test.ts" name="voting on resolution &gt; vote closes true with against votes" time="0">
         </testcase>
     </testsuite>
 </testsuites>

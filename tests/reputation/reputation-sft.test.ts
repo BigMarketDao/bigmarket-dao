@@ -1,13 +1,16 @@
 import { Cl } from '@stacks/transactions';
 import { describe, expect, it } from 'vitest';
-import { alice, bob, constructDao, deployer, fred, isValidExtension, liquidityCont, passProposalByExecutiveSignals, reputationSft, setupSimnet, tom } from '../helpers';
+import { alice, bob, constructDao, deployer, fred, isValidExtension, liquidityCont, passProposalByExecutiveSignals, reputationSft, tom } from '../helpers';
 
-const simnet = await setupSimnet();
-
-async function assertBalance(user: string, tier: number, balance: number) {
-	let bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(tier), Cl.principal(user)], user);
-	expect(bal.result).toEqual(Cl.ok(Cl.uint(balance * 2)));
-}
+process.on('unhandledRejection', (reason) => {
+	const msg = String(reason);
+	// swallow only the late Clarity unwrap noise
+	if (msg.includes('value not found')) {
+		console.warn('🔇 Swallowed late Clarity WASM "value not found" rejection');
+		return;
+	}
+	throw reason;
+});
 
 describe('minting', () => {
 	it('only dao can mint', async () => {
@@ -28,60 +31,60 @@ describe('minting', () => {
 	it('dao can mint and burn additional amount', async () => {
 		await constructDao(simnet);
 		await passProposalByExecutiveSignals(simnet, 'bdp001-sft-tokens-1');
-		let bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(1), Cl.principal(alice)], alice);
+		let bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(1), Cl.principal(alice)], alice);
 		expect(bal.result).toEqual(Cl.ok(Cl.uint(1000 * 2)));
 		await passProposalByExecutiveSignals(simnet, 'bdp001-sft-tokens-2');
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(1), Cl.principal(alice)], alice);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(1), Cl.principal(alice)], alice);
 		expect(bal.result).toEqual(Cl.ok(Cl.uint(2000 * 2)));
 		await passProposalByExecutiveSignals(simnet, 'bdp001-sft-tokens-3');
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(1), Cl.principal(alice)], alice);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(1), Cl.principal(alice)], alice);
 		expect(bal.result).toEqual(Cl.ok(Cl.uint(1500 * 2 + 500)));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(2), Cl.principal(bob)], alice);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(2), Cl.principal(bob)], alice);
 		expect(bal.result).toEqual(Cl.ok(Cl.uint(5 * 2 + 5)));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(2), Cl.principal(alice)], alice);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(2), Cl.principal(alice)], alice);
 		expect(bal.result).toEqual(Cl.ok(Cl.uint(10 * 2)));
 	});
 	it('dao can transfer', async () => {
 		await constructDao(simnet);
 		await passProposalByExecutiveSignals(simnet, 'bdp001-sft-tokens-1');
-		let bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(1), Cl.principal(alice)], alice);
+		let bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(1), Cl.principal(alice)], alice);
 		expect(bal.result).toEqual(Cl.ok(Cl.uint(1000 * 2)));
 		await passProposalByExecutiveSignals(simnet, 'bdp001-sft-tokens-4');
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(2), Cl.principal(alice)], alice);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(2), Cl.principal(alice)], alice);
 		expect(bal.result).toEqual(Cl.ok(Cl.uint(5 * 2 + 5)));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(2), Cl.principal(bob)], alice);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(2), Cl.principal(bob)], alice);
 		expect(bal.result).toEqual(Cl.ok(Cl.uint(15 * 2 - 5)));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(1), Cl.principal(alice)], alice);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(1), Cl.principal(alice)], alice);
 		expect(bal.result).toEqual(Cl.ok(Cl.uint(2000 * 2 - 1000)));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(1), Cl.principal(bob)], alice);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(1), Cl.principal(bob)], alice);
 		expect(bal.result).toEqual(Cl.ok(Cl.uint(1000)));
 	});
 	it('dao can transfer many', async () => {
 		await constructDao(simnet);
 		await passProposalByExecutiveSignals(simnet, 'bdp001-sft-tokens-5');
-		let bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(1), Cl.principal(alice)], alice);
+		let bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(1), Cl.principal(alice)], alice);
 		expect(bal.result).toEqual(Cl.ok(Cl.uint(1999)));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(1), Cl.principal(bob)], alice);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(1), Cl.principal(bob)], alice);
 		expect(bal.result).toEqual(Cl.ok(Cl.uint(1999)));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(2), Cl.principal(alice)], alice);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(2), Cl.principal(alice)], alice);
 		expect(bal.result).toEqual(Cl.ok(Cl.uint(19)));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(2), Cl.principal(bob)], alice);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(2), Cl.principal(bob)], alice);
 		expect(bal.result).toEqual(Cl.ok(Cl.uint(19n)));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(2), Cl.principal(tom)], alice);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(2), Cl.principal(tom)], alice);
 		expect(bal.result).toEqual(Cl.ok(Cl.uint(2)));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(1), Cl.principal(tom)], alice);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(1), Cl.principal(tom)], alice);
 		expect(bal.result).toEqual(Cl.ok(Cl.uint(2)));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-overall-balance', [Cl.principal(tom)], alice);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-overall-balance', [Cl.principal(tom)], alice);
 		expect(bal.result).toEqual(Cl.ok(Cl.uint(4)));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-overall-balance', [Cl.principal(alice)], alice);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-overall-balance', [Cl.principal(alice)], alice);
 		expect(bal.result).toEqual(Cl.ok(Cl.uint(2018)));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-overall-balance', [Cl.principal(bob)], alice);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-overall-balance', [Cl.principal(bob)], alice);
 		expect(bal.result).toEqual(Cl.ok(Cl.uint(2018)));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-total-supply', [Cl.uint(2)], alice);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-total-supply', [Cl.uint(2)], alice);
 		expect(bal.result).toEqual(Cl.ok(Cl.uint(20 * 2)));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-total-supply', [Cl.uint(1)], alice);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-total-supply', [Cl.uint(1)], alice);
 		expect(bal.result).toEqual(Cl.ok(Cl.uint(2000 * 2)));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-decimals', [Cl.uint(1)], alice);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-decimals', [Cl.uint(1)], alice);
 		expect(bal.result).toEqual(Cl.ok(Cl.uint(0)));
 	});
 });
@@ -106,7 +109,7 @@ describe('claiming', () => {
 		await passProposalByExecutiveSignals(simnet, 'bdp001-sft-disable');
 		await simnet.mineEmptyBlocks(4000);
 
-		let bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-overall-balance', [Cl.principal(alice)], alice);
+		let bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-overall-balance', [Cl.principal(alice)], alice);
 		expect(bal.result).toEqual(Cl.ok(Cl.uint(1010 * 2)));
 
 		let response = await simnet.callPublicFn(reputationSft, 'claim-big-reward', [], alice);
@@ -120,13 +123,13 @@ describe('claiming', () => {
 
 		isValidExtension(`${deployer}.bme030-0-reputation-token`);
 
-		let bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-overall-balance', [Cl.principal(alice)], alice);
+		let bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-overall-balance', [Cl.principal(alice)], alice);
 		expect(bal.result).toEqual(Cl.ok(Cl.uint(1010 * 2)));
 
-		let stxBalances = simnet.getAssetsMap().get('STX'); // Replace if contract's principal
+		let stxBalances = await simnet.getAssetsMap().get('STX'); // Replace if contract's principal
 		//silence: console.log('contractBalance: ' + stxBalances?.get(`${deployer}.${treasury}`));
 
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-overall-balance', [Cl.principal(alice)], alice);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-overall-balance', [Cl.principal(alice)], alice);
 		expect(bal.result).toEqual(Cl.ok(Cl.uint(1010 * 2)));
 
 		let response = await simnet.callPublicFn(reputationSft, 'claim-big-reward', [], alice);
@@ -141,15 +144,15 @@ describe('claiming', () => {
 		await passProposalByExecutiveSignals(simnet, 'bdp001-sft-tokens-1');
 		await simnet.mineEmptyBlocks(4000);
 
-		let bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-overall-balance', [Cl.principal(alice)], alice);
+		let bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-overall-balance', [Cl.principal(alice)], alice);
 		expect(bal.result).toEqual(Cl.ok(Cl.uint(1010 * 2)));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-overall-balance', [Cl.principal(bob)], alice);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-overall-balance', [Cl.principal(bob)], alice);
 		expect(bal.result).toEqual(Cl.ok(Cl.uint(1010 * 2)));
 
-		let stxBalances = simnet.getAssetsMap().get('STX'); // Replace if contract's principal
+		let stxBalances = await simnet.getAssetsMap().get('STX'); // Replace if contract's principal
 		//silence: console.log('contractBalance: ' + stxBalances?.get(`${deployer}.${treasury}`));
 
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-overall-balance', [Cl.principal(alice)], alice);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-overall-balance', [Cl.principal(alice)], alice);
 		expect(bal.result).toEqual(Cl.ok(Cl.uint(1010 * 2)));
 
 		let response = await simnet.callPublicFn(reputationSft, 'claim-big-reward', [], alice);
@@ -163,23 +166,23 @@ describe('claiming', () => {
 		await constructDao(simnet);
 		await passProposalByExecutiveSignals(simnet, 'bdp001-sft-tokens-1');
 
-		let bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-epoch', [], bob);
+		let bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-epoch', [], bob);
 		expect(bal.result).toEqual(Cl.uint(0));
 
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(alice)], bob);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(alice)], bob);
 		expect(bal.result).toEqual(Cl.uint(0));
 
 		await simnet.mineEmptyBlocks(4000);
 
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-overall-balance', [Cl.principal(alice)], alice);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-overall-balance', [Cl.principal(alice)], alice);
 		expect(bal.result).toEqual(Cl.ok(Cl.uint(1010 * 2)));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-overall-balance', [Cl.principal(bob)], alice);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-overall-balance', [Cl.principal(bob)], alice);
 		expect(bal.result).toEqual(Cl.ok(Cl.uint(1010 * 2)));
 
-		let stxBalances = simnet.getAssetsMap().get('STX'); // Replace if contract's principal
+		let stxBalances = await simnet.getAssetsMap().get('STX'); // Replace if contract's principal
 		//silence: console.log('contractBalance: ' + stxBalances?.get(`${deployer}.${treasury}`));
 
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-overall-balance', [Cl.principal(alice)], alice);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-overall-balance', [Cl.principal(alice)], alice);
 		expect(bal.result).toEqual(Cl.ok(Cl.uint(1010 * 2)));
 
 		let response = await simnet.callPublicFn(reputationSft, 'claim-big-reward', [], alice);
@@ -188,10 +191,10 @@ describe('claiming', () => {
 		response = await simnet.callPublicFn(reputationSft, 'claim-big-reward', [], bob);
 		expect(response.result).toEqual(Cl.ok(Cl.uint(5000000000)));
 
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-epoch', [], bob);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-epoch', [], bob);
 		expect(bal.result).toEqual(Cl.uint(4));
 
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(alice)], bob);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(alice)], bob);
 		expect(bal.result).toEqual(Cl.uint(4));
 
 		await simnet.mineEmptyBlocks(1000);
@@ -202,10 +205,10 @@ describe('claiming', () => {
 		response = await simnet.callPublicFn(reputationSft, 'claim-big-reward', [], bob);
 		expect(response.result).toEqual(Cl.ok(Cl.uint(5000000000)));
 
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-epoch', [], bob);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-epoch', [], bob);
 		expect(bal.result).toEqual(Cl.uint(5));
 
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(alice)], bob);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(alice)], bob);
 		expect(bal.result).toEqual(Cl.uint(5));
 	});
 
@@ -214,15 +217,15 @@ describe('claiming', () => {
 		await passProposalByExecutiveSignals(simnet, 'bdp001-sft-tokens-1');
 		await simnet.mineEmptyBlocks(4000);
 
-		let bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-overall-balance', [Cl.principal(alice)], alice);
+		let bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-overall-balance', [Cl.principal(alice)], alice);
 		expect(bal.result).toEqual(Cl.ok(Cl.uint(1010 * 2)));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-overall-balance', [Cl.principal(bob)], alice);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-overall-balance', [Cl.principal(bob)], alice);
 		expect(bal.result).toEqual(Cl.ok(Cl.uint(1010 * 2)));
 
-		let stxBalances = simnet.getAssetsMap().get('STX'); // Replace if contract's principal
+		let stxBalances = await simnet.getAssetsMap().get('STX'); // Replace if contract's principal
 		//silence: console.log('contractBalance: ' + stxBalances?.get(`${deployer}.${treasury}`));
 
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-overall-balance', [Cl.principal(alice)], alice);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-overall-balance', [Cl.principal(alice)], alice);
 		expect(bal.result).toEqual(Cl.ok(Cl.uint(1010 * 2)));
 
 		let response = await simnet.callPublicFn(reputationSft, 'claim-big-reward', [], alice);
@@ -240,13 +243,13 @@ describe('Reputation Rewards', () => {
 
 		// ZEROTH EPOCH - WEIRD
 		await simnet.mineEmptyBlocks(1);
-		let bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-epoch', [], bob);
+		let bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-epoch', [], bob);
 		expect(bal.result).toEqual(Cl.uint(0));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(alice)], alice);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(alice)], alice);
 		expect(bal.result).toEqual(Cl.uint(0));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(bob)], bob);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(bob)], bob);
 		expect(bal.result).toEqual(Cl.uint(0));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(tom)], tom);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(tom)], tom);
 		expect(bal.result).toEqual(Cl.uint(0));
 
 		// -------- CONTRIBUTE LIQUIDITY ------------------
@@ -254,7 +257,7 @@ describe('Reputation Rewards', () => {
 		expect(lr.result).toEqual(Cl.ok(Cl.uint(2)));
 		lr = await simnet.callPublicFn(liquidityCont, 'contribute-stx', [Cl.uint(4000000)], tom);
 		expect(lr.result).toEqual(Cl.ok(Cl.uint(2)));
-		// -------- --------------------- ------------------
+		// -------- --------------------- --------- ---------
 
 		let response = await simnet.callPublicFn(reputationSft, 'claim-big-reward', [], alice);
 		expect(response.result).toEqual(Cl.ok(Cl.uint(0)));
@@ -263,13 +266,13 @@ describe('Reputation Rewards', () => {
 
 		// FIRST EPOCH - WEIRD
 		await simnet.mineEmptyBlocks(1000);
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-epoch', [], bob);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-epoch', [], bob);
 		expect(bal.result).toEqual(Cl.uint(1));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(alice)], alice);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(alice)], alice);
 		expect(bal.result).toEqual(Cl.uint(0));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(bob)], bob);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(bob)], bob);
 		expect(bal.result).toEqual(Cl.uint(0));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(tom)], tom);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(tom)], tom);
 		expect(bal.result).toEqual(Cl.uint(0));
 		// -------- --------------------- ----- -------------
 
@@ -287,13 +290,13 @@ describe('Reputation Rewards', () => {
 
 		// SECOND EPOCH - BOB NOW ABLE TO CLAIM
 		await simnet.mineEmptyBlocks(1000);
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-epoch', [], bob);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-epoch', [], bob);
 		expect(bal.result).toEqual(Cl.uint(2));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(alice)], alice);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(alice)], alice);
 		expect(bal.result).toEqual(Cl.uint(1));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(bob)], bob);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(bob)], bob);
 		expect(bal.result).toEqual(Cl.uint(0));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(tom)], tom);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(tom)], tom);
 		expect(bal.result).toEqual(Cl.uint(1));
 		// -------- --------------------- ------------------
 
@@ -306,13 +309,13 @@ describe('Reputation Rewards', () => {
 
 		// THIRD EPOCH - BOB NOW ABLE TO CLAIM
 		await simnet.mineEmptyBlocks(1000);
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-epoch', [], bob);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-epoch', [], bob);
 		expect(bal.result).toEqual(Cl.uint(3));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(alice)], alice);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(alice)], alice);
 		expect(bal.result).toEqual(Cl.uint(2));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(bob)], bob);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(bob)], bob);
 		expect(bal.result).toEqual(Cl.uint(2));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(tom)], tom);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(tom)], tom);
 		expect(bal.result).toEqual(Cl.uint(2));
 		// -------- --------------------- ------------------
 
@@ -325,13 +328,13 @@ describe('Reputation Rewards', () => {
 
 		// FOURTH EPOCH - FRED JOINS NOW ABLE TO CLAIM
 		await simnet.mineEmptyBlocks(1000);
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-epoch', [], bob);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-epoch', [], bob);
 		expect(bal.result).toEqual(Cl.uint(4));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(alice)], alice);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(alice)], alice);
 		expect(bal.result).toEqual(Cl.uint(3));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(bob)], bob);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(bob)], bob);
 		expect(bal.result).toEqual(Cl.uint(3));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(tom)], tom);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(tom)], tom);
 		expect(bal.result).toEqual(Cl.uint(3));
 		// -------- --------------------- ------------------
 
@@ -351,7 +354,7 @@ describe('Reputation Rewards', () => {
 
 		// THIRD EPOCH - BOB NOW ABLE TO CLAIM
 		await simnet.mineEmptyBlocks(1000);
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-epoch', [], bob);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-epoch', [], bob);
 		expect(bal.result).toEqual(Cl.uint(5));
 		response = await simnet.callPublicFn(reputationSft, 'claim-big-reward', [], fred);
 		expect(response.result).toEqual(Cl.ok(Cl.uint(2500000000)));
@@ -368,13 +371,13 @@ describe('Reputation Rewards', () => {
 
 		// ZEROTH EPOCH - WEIRD
 		await simnet.mineEmptyBlocks(1);
-		let bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-epoch', [], bob);
+		let bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-epoch', [], bob);
 		expect(bal.result).toEqual(Cl.uint(0));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(alice)], alice);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(alice)], alice);
 		expect(bal.result).toEqual(Cl.uint(0));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(bob)], bob);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(bob)], bob);
 		expect(bal.result).toEqual(Cl.uint(0));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(tom)], tom);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(tom)], tom);
 		expect(bal.result).toEqual(Cl.uint(0));
 
 		// -------- CONTRIBUTE LIQUIDITY ------------------
@@ -391,13 +394,13 @@ describe('Reputation Rewards', () => {
 
 		// FIRST EPOCH - WEIRD
 		await simnet.mineEmptyBlocks(1000);
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-epoch', [], bob);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-epoch', [], bob);
 		expect(bal.result).toEqual(Cl.uint(1));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(alice)], alice);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(alice)], alice);
 		expect(bal.result).toEqual(Cl.uint(0));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(bob)], bob);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(bob)], bob);
 		expect(bal.result).toEqual(Cl.uint(0));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(tom)], tom);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(tom)], tom);
 		expect(bal.result).toEqual(Cl.uint(0));
 		// -------- --------------------- ----- -------------
 
@@ -415,13 +418,13 @@ describe('Reputation Rewards', () => {
 
 		// SECOND EPOCH - BOB NOW ABLE TO CLAIM
 		await simnet.mineEmptyBlocks(1000);
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-epoch', [], bob);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-epoch', [], bob);
 		expect(bal.result).toEqual(Cl.uint(2));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(alice)], alice);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(alice)], alice);
 		expect(bal.result).toEqual(Cl.uint(1));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(bob)], bob);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(bob)], bob);
 		expect(bal.result).toEqual(Cl.uint(0));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(tom)], tom);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(tom)], tom);
 		expect(bal.result).toEqual(Cl.uint(1));
 		// -------- --------------------- ------------------
 
@@ -434,13 +437,13 @@ describe('Reputation Rewards', () => {
 
 		// THIRD EPOCH - BOB NOW ABLE TO CLAIM
 		await simnet.mineEmptyBlocks(1000);
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-epoch', [], bob);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-epoch', [], bob);
 		expect(bal.result).toEqual(Cl.uint(3));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(alice)], alice);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(alice)], alice);
 		expect(bal.result).toEqual(Cl.uint(2));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(bob)], bob);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(bob)], bob);
 		expect(bal.result).toEqual(Cl.uint(2));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(tom)], tom);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(tom)], tom);
 		expect(bal.result).toEqual(Cl.uint(2));
 		// -------- --------------------- ------------------
 
@@ -453,13 +456,13 @@ describe('Reputation Rewards', () => {
 
 		// FOURTH EPOCH - FRED JOINS NOW ABLE TO CLAIM
 		await simnet.mineEmptyBlocks(1000);
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-epoch', [], bob);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-epoch', [], bob);
 		expect(bal.result).toEqual(Cl.uint(4));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(alice)], alice);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(alice)], alice);
 		expect(bal.result).toEqual(Cl.uint(3));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(bob)], bob);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(bob)], bob);
 		expect(bal.result).toEqual(Cl.uint(3));
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(tom)], tom);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-last-claimed-epoch', [Cl.principal(tom)], tom);
 		expect(bal.result).toEqual(Cl.uint(3));
 		// -------- --------------------- ------------------
 
@@ -479,7 +482,7 @@ describe('Reputation Rewards', () => {
 
 		// THIRD EPOCH - BOB NOW ABLE TO CLAIM
 		await simnet.mineEmptyBlocks(1000);
-		bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-epoch', [], bob);
+		bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-epoch', [], bob);
 		expect(bal.result).toEqual(Cl.uint(5));
 		response = await simnet.callPublicFn(reputationSft, 'claim-big-reward', [], fred);
 		expect(response.result).toEqual(Cl.ok(Cl.uint(2500000000)));

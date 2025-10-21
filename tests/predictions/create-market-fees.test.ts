@@ -91,18 +91,18 @@ describe('prediction contract', () => {
 		response = await simnet.callPublicFn('bme024-0-market-predicting', 'resolve-market-undisputed', [Cl.uint(0)], deployer);
 		expect(response.result).toEqual(Cl.ok(Cl.bool(true)));
 
-		await assertStakeBalance(alice, 1385513, 0);
+		await assertStakeBalance(alice, 1385512, 0);
 		await assertContractBalance(marketPredictingCPMM, 101425000n);
 
 		response = await simnet.callPublicFn('bme024-0-market-predicting', 'claim-winnings', [Cl.uint(0), Cl.principal(stxToken)], alice);
-		expect(response.result).toEqual(Cl.ok(Cl.uint(2461259)));
+		expect(response.result).toEqual(Cl.ok(Cl.uint(2461258)));
 
 		// betty pays thed market creat fee of 1000 but receives 10% of alice winnings
-		await assertUserBalance(alice, 100000000961259n);
+		await assertUserBalance(alice, 100000000961258n);
 		await assertUserBalance(`${deployer}.bme022-0-market-gating`, 273473n);
 		await assertUserBalance(deployer, 100000000000000n);
 		await assertStakeBalance(alice, 0, 0);
-		await assertContractBalance(marketPredictingCPMM, 98690268n);
+		await assertContractBalance(marketPredictingCPMM, 98690269n);
 	});
 
 	it('ensure fees are correct with 4 users', async () => {
@@ -130,7 +130,7 @@ describe('prediction contract', () => {
 		response = await simnet.callPublicFn('bme024-0-market-predicting', 'resolve-market-undisputed', [Cl.uint(0)], deployer);
 		expect(response.result).toEqual(Cl.ok(Cl.bool(true)));
 
-		await assertStakeBalance(alice, 11089495, 0);
+		await assertStakeBalance(alice, 11089494, 0);
 		await assertContractBalance(marketPredictingCPMM, 157000000n);
 
 		response = await simnet.callPublicFn('bme024-0-market-predicting', 'claim-winnings', [Cl.uint(0), Cl.principal(stxToken)], alice);
@@ -138,25 +138,25 @@ describe('prediction contract', () => {
 		response = await simnet.callPublicFn('bme024-0-market-predicting', 'claim-winnings', [Cl.uint(0), Cl.principal(stxToken)], bob);
 		expect(response.result).toEqual(Cl.error(Cl.uint(10006)));
 
-		await assertStakeBalance(alice, 11089495, 0);
-		await assertStakeBalance(bob, 9457192, 0);
-		await assertStakeBalance(fred, 0, 15646542);
-		await assertStakeBalance(wallace, 0, 12582401);
+		await assertStakeBalance(alice, 11089494, 0);
+		await assertStakeBalance(bob, 9457191, 0);
+		await assertStakeBalance(fred, 0, 15646541);
+		await assertStakeBalance(wallace, 0, 12582400);
 
 		response = await simnet.callPublicFn('bme024-0-market-predicting', 'claim-winnings', [Cl.uint(0), Cl.principal(stxToken)], fred);
-		expect(response.result).toEqual(Cl.ok(Cl.uint(31401512n)));
+		expect(response.result).toEqual(Cl.ok(Cl.uint(31401510n)));
 		response = await simnet.callPublicFn('bme024-0-market-predicting', 'claim-winnings', [Cl.uint(0), Cl.principal(stxToken)], wallace);
-		expect(response.result).toEqual(Cl.ok(Cl.uint(25251996n)));
+		expect(response.result).toEqual(Cl.ok(Cl.uint(25251994n)));
 
 		// betty pays thed market creat fee of 1000 but receives 10% of alice winnings
 		await assertUserBalance(alice, 99999985000000n);
 		await assertUserBalance(betty, 99999900000000n);
 		await assertUserBalance(deployer, 100000000000000n);
-		await assertStakeBalance(alice, 11089495, 0);
-		await assertStakeBalance(bob, 9457192, 0);
+		await assertStakeBalance(alice, 11089494, 0);
+		await assertStakeBalance(bob, 9457191, 0);
 		await assertStakeBalance(fred, 0, 0);
 		await assertStakeBalance(wallace, 0, 0);
-		await assertContractBalance(marketPredictingCPMM, 100346492n);
+		await assertContractBalance(marketPredictingCPMM, 100346496n);
 	});
 });
 

@@ -18,10 +18,10 @@ contract_id = 'SM3VDXK3WZZSA84XXFKAFAF15NNZX32CTSG82JFQ4.sbtc-token'
 contract_id = 'SP2J933XB2CP2JQ1A4FGN8JA968BBG3NK3EKZ7Q9F.hk-merkle-tree-keccak160-v1'
 
 [[project.requirements]]
-contract_id = 'SP3R4F6C1J3JQWWCVZ3S7FRRYPMYG6ZW6RZK31FXY.pyth-storage-v3'
+contract_id = 'SP3R4F6C1J3JQWWCVZ3S7FRRYPMYG6ZW6RZK31FXY.pyth-storage-v4'
 
 [[project.requirements]]
-contract_id = 'SP3R4F6C1J3JQWWCVZ3S7FRRYPMYG6ZW6RZK31FXY.pyth-oracle-v3'
+contract_id = 'SP3R4F6C1J3JQWWCVZ3S7FRRYPMYG6ZW6RZK31FXY.pyth-oracle-v4'
 
 [[project.requirements]]
 contract_id = 'SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z.extension-trait'
@@ -161,13 +161,13 @@ path = 'contracts/external/pyth/hk/hk-cursor-v2.clar'
 clarity_version = 3
 epoch = 3.0
 
-[contracts.pyth-oracle-v3]
-path = 'contracts/external/pyth/pyth-oracle-v3.clar'
+[contracts.pyth-oracle-v4]
+path = 'contracts/external/pyth/pyth-oracle-v4.clar'
 clarity_version = 3
 epoch = 3.0
 
-[contracts.pyth-storage-v3]
-path = 'contracts/external/pyth/pyth-storage-v3.clar'
+[contracts.pyth-storage-v4]
+path = 'contracts/external/pyth/pyth-storage-v4.clar'
 clarity_version = 3
 epoch = 3.0
 

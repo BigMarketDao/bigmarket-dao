@@ -17,6 +17,7 @@
 (define-constant err-invalid-amount (err u3001))
 
 (define-constant share-fee-to 'SP1Y5YSTAHZ88XYK1VPDH24GY0HPX5J4JECTMY4A1.univ2-share-fee-to) 
+(define-constant SCALE u1000000)
 
 ;; --- Transferable traits
 (define-data-var slippage-bips uint u500) ;; default 5%
@@ -70,7 +71,9 @@
   (amount uint)
 )
   (let ((bips (var-get slippage-bips))
-        (min-amount (/ (* amount (- u10000 bips)) u10000)))
+		(min-amount-scaled (/ (* (* amount (- u10000 bips)) SCALE) u10000))
+		(min-amount (/ min-amount-scaled SCALE))
+	)
     (try! (is-dao-or-extension))
     (asserts! (> amount u0) err-invalid-amount)
     (asserts! (> amount min-amount) err-invalid-amount)
@@ -86,7 +89,10 @@
   (token-in <ft-velar-token>) (token-out <ft-velar-token>)
   (amount uint) (slip-bips uint)
 )
-  (let ((min-amount (/ (* amount (- u10000 slip-bips)) u10000)))
+  (let (
+		(min-amount-scaaled (/ (* (* amount (- u10000 slip-bips)) SCALE) u10000))
+		(min-amount (/ min-amount-scaaled SCALE))
+	)
     (try! (is-dao-or-extension))
     (asserts! (and (>= slip-bips u1) (<= slip-bips u3000)) err-invalid-amount)
     (asserts! (> amount u0) err-invalid-amount)

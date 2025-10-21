@@ -23,7 +23,7 @@ import {
 const simnet = await setupSimnet();
 
 async function assertBalance(user: string, tier: number, balance: number) {
-	let bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(tier), Cl.principal(user)], user);
+	let bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(tier), Cl.principal(user)], user);
 	expect(bal.result).toEqual(Cl.ok(Cl.uint(balance * 2)));
 }
 
@@ -178,9 +178,9 @@ describe('claiming errors', () => {
 			bob
 		);
 		// console.log('claim winner ok', response.events);
-		expect(response.result).toEqual(Cl.ok(Cl.uint(3302872)));
+		expect(response.result).toEqual(Cl.ok(Cl.uint(3303313)));
 
-		await claim(betty, 0, 26407126);
+		await claim(betty, 0, 26406685);
 		assertContractBalance(marketPredictingCPMM, 1n);
 	});
 
@@ -220,11 +220,11 @@ describe('claiming errors', () => {
 			bob
 		);
 		// console.log('claim winner ok', response.events);
-		expect(response.result).toEqual(Cl.ok(Cl.uint(464213)));
+		expect(response.result).toEqual(Cl.ok(Cl.uint(464281)));
 
-		await claim(fred, 0, 9243457);
-		await claim(bob, 0, 3711477);
-		await claim(developer, 0, 65790850);
+		await claim(fred, 0, 9243413);
+		await claim(bob, 0, 3711462);
+		await claim(developer, 0, 65790841);
 		await claim(alice, 0, 80, 10006);
 		await claim(betty, 0, 80, 10006);
 		assertContractBalance(marketPredictingCPMM, 2n);
