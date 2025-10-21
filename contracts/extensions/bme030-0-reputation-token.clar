@@ -48,11 +48,17 @@
 )
 
 (define-read-only (get-epoch)
-	 (/ burn-block-height epoch-duration)
+	(/ burn-block-height epoch-duration)
 )
 
 (define-read-only (get-last-claimed-epoch (user principal))
   (default-to u0 (map-get? last-claimed-epoch { who: user }))
+)
+
+(define-read-only (get-latest-claimable-epoch)
+  (let ((cur (get-epoch)))
+    (if (> cur u0) (- cur u1) u0) ;; floor and subtract 1, but never negative
+  )
 )
 
 ;; ------------------------
@@ -233,13 +239,14 @@
 (define-private (claim-big-reward-for-user (user principal)) ;; returns share or u0
   (let (
         (epoch (/ burn-block-height epoch-duration))
+        (claim-epoch (get-latest-claimable-epoch))
         (last (default-to u0 (map-get? last-claimed-epoch { who: user })))
         (joined (default-to epoch (map-get? join-epoch { who: user }))) ;; epoch they joined
         (total-live (unwrap! (get-weighted-supply) err-claims-zero-total))
         (minted-this-epoch (default-to u0 (map-get? minted-in-epoch { epoch: epoch })))
         (total (- total-live minted-this-epoch))
-      )
-    (if (and (< last epoch) (> epoch joined))
+    )
+    (if (and (< last claim-epoch) (> claim-epoch joined))
       (let (
             (rep (unwrap! (get-weighted-rep user) err-claims-zero-rep))
           )
