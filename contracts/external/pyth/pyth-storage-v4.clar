@@ -20,6 +20,8 @@
     (eth-id 0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace)
     (stx-id 0xec7a775f46379b5e943c3526b1c8d54cd49749176b0b98e02dde68d1bd335c17)
     (sol-id 0xef0d8b6fda2ceba41da15d4095d1da392a0d2f8ed0c6c7bc0f4cfac8c280b56d)
+    (big-id 0xff0d8b6fda2ceba41da15d4095d1da392a0d2f8ed0c6c7bc0f4cfac8c280b56d)
+    (bigr-id 0xfffd8b6fda2ceba41da15d4095d1da392a0d2f8ed0c6c7bc0f4cfac8c280b56d)
 
     (price (if (is-eq price-feed-id btc-id)
               9500000      ;; $95.000000 with expo -8
@@ -27,7 +29,7 @@
                   10500000  ;; $105.000000
                   (if (is-eq price-feed-id stx-id)
                       11500000
-                      12500000))))
+                      (if (is-eq price-feed-id big-id) 0 (if (is-eq price-feed-id bigr-id) 1000000000 12500000))))))
     )
     (ok {
       price: price,     ;; = 100.000000 with expo -8

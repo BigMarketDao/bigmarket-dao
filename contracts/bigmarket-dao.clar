@@ -11,6 +11,7 @@
 (define-constant err-unauthorised (err u1000))
 (define-constant err-already-executed (err u1001))
 (define-constant err-invalid-extension (err u1002))
+(define-constant err-invalid-caller (err u1003))
 
 (define-data-var executive principal tx-sender)
 (define-map executed-proposals principal uint)
@@ -80,7 +81,7 @@
 (define-public (request-extension-callback (extension <extension-trait>) (memo (buff 34)))
 	(let ((sender tx-sender))
 		(asserts! (is-extension contract-caller) err-invalid-extension)
-		(asserts! (is-eq contract-caller (contract-of extension)) err-invalid-extension)
+		(asserts! (is-eq contract-caller (contract-of extension)) err-invalid-caller)
 		(as-contract (contract-call? extension callback sender memo))
 	)
 )

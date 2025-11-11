@@ -18,6 +18,5 @@
 		"noUnusedParameters": true,
 		"noFallthroughCasesInSwitch": true
 	},
-	"include": ["node_modules/@hirosystems/clarinet-sdk/vitest-helpers/src", "tests"],
-	"exclude": ["node_modules/.svelte2tsx-language-server-files", "**/*.svelte"]
+	"include": ["node_modules/@hirosystems/clarinet-sdk/vitest-helpers/src", "tests"]
 }

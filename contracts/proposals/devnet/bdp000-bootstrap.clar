@@ -25,6 +25,7 @@
 				{extension: .bme024-0-market-scalar-pyth, enabled: true}
 				{extension: .bme030-0-reputation-token, enabled: true}
 				{extension: .bme040-0-shares-marketplace, enabled: true}
+				{extension: .bme032-0-scalar-strategy-hedge, enabled: true}
 			)
 		))
 
@@ -79,6 +80,7 @@
 		(try! (contract-call? .bme024-0-market-scalar-pyth set-dev-fee-bips u100))
 		(try! (contract-call? .bme024-0-market-scalar-pyth set-dispute-window-length u24))
 		(try! (contract-call? .bme024-0-market-scalar-pyth set-default-hedge-executor 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme032-0-scalar-strategy-hedge))
+		(try! (contract-call? .bme024-0-market-scalar-pyth set-max-staleness u86200000))
 		;; STXUSD
 		(try! (contract-call? .bme024-0-market-scalar-pyth set-price-band-width 0xec7a775f46379b5e943c3526b1c8d54cd49749176b0b98e02dde68d1bd335c17 u2000))
 		;; BTCUSD
