@@ -5,6 +5,7 @@
 
 (use-trait prediction-market-trait .prediction-market-trait.prediction-market-trait)
 (use-trait ft-token 'SP2AKWJYC7BNY18W1XXKPGP0YVEK63QJG4793Z2D4.sip-010-trait-ft-standard.sip-010-trait)
+(impl-trait 'SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z.extension-trait.extension-trait)
 
 ;; Errors
 (define-constant err-order-exists (err u40001))
@@ -71,4 +72,10 @@
     (print {event: "cancel-share-order", market: (contract-of market), market-id: market-id, outcome: outcome, seller: tx-sender})
     (ok true)
   )
+)
+
+;; --- Extension callback
+
+(define-public (callback (sender principal) (memo (buff 34)))
+	(ok true)
 )

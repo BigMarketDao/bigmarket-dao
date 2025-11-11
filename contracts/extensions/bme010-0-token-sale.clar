@@ -67,6 +67,7 @@
     (match (map-get? ido-purchases {stage: u3, buyer: who}) value value u0 )
     (match (map-get? ido-purchases {stage: u4, buyer: who}) value value u0 )
     (match (map-get? ido-purchases {stage: u5, buyer: who}) value value u0 )
+    (match (map-get? ido-purchases {stage: u6, buyer: who}) value value u0 )
   )
 )
 

@@ -10,7 +10,6 @@
 
 ;; Constants and Errors
 (define-constant err-unauthorised (err u5000))
-(define-constant err-zero-amount (err u5001))
 (define-constant err-minimum-stx (err u5002))
 
 (define-constant MICROSTX u1000000)
@@ -50,23 +49,33 @@
         (rate (var-get stx-to-bigr-rate))
         (dampener (var-get stx-to-bigr-dampener))
         (amount-stx (/ amount MICROSTX))
-        ;;(bigr-earned (/ (* (sqrti amount-stx) rate) dampener))
-
         (sqrt-amount (sqrti amount-stx))
         (bigr-earned-scaled (/ (* (* sqrt-amount rate) SCALE) dampener))
         (bigr-earned (/ bigr-earned-scaled SCALE))
-
         (existing (default-to u0 (map-get? stx-contributions {who: user})))
       )
-    (asserts! (>= amount MICROSTX) err-minimum-stx)
 
-    (try! (stx-transfer? amount user .bme006-0-treasury))
-    (map-set stx-contributions {who: user} (+ existing amount))
+    ;; if rate == 0, short-circuit no transfer, no mint
+    (if (is-eq rate u0)
+        (begin
+          (print {event: "liquidity_contribution_skipped", from: user, rate: rate})
+          (ok u0)
+        )
+        (begin
+          ;; must contribute at least 1 STX
+          (asserts! (>= amount MICROSTX) err-minimum-stx)
 
-    (try! (contract-call? .bme030-0-reputation-token mint user u4 bigr-earned))
+          ;; transfer STX to treasury
+          (try! (stx-transfer? amount user .bme006-0-treasury))
 
-    (print {event: "liquidity_contribution", from: user, amount: amount, bigr: bigr-earned})
-    (ok bigr-earned)
+          ;; record contribution and mint reputation
+          (map-set stx-contributions {who: user} (+ existing amount))
+          (try! (contract-call? .bme030-0-reputation-token mint user u4 bigr-earned))
+
+          (print {event: "liquidity_contribution", from: user, amount: amount, bigr: bigr-earned, rate: rate, dampener: dampener})
+          (ok bigr-earned)
+        )
+    )
   )
 )
 

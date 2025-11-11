@@ -22,6 +22,7 @@
 (impl-trait .prediction-market-trait.prediction-market-trait)
 (use-trait hedge-trait .hedge-trait.hedge-trait)
 (use-trait ft-velar-token 'SP2AKWJYC7BNY18W1XXKPGP0YVEK63QJG4793Z2D4.sip-010-trait-ft-standard.sip-010-trait)
+(impl-trait 'SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z.extension-trait.extension-trait)
 
 ;; ---------------- CONSTANTS & TYPES ----------------
 ;; Market Types (1 => categorical market)
@@ -829,3 +830,8 @@
   }
 )
 
+;; --- Extension callback
+
+(define-public (callback (sender principal) (memo (buff 34)))
+	(ok true)
+)
