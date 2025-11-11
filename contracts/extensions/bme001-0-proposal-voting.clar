@@ -27,17 +27,17 @@
 (define-constant err-disabled (err u3010))
 (define-constant err-not-majority (err u3011))
 
-(define-constant structured-data-prefix 0x534950303138)
-(define-constant message-domain-hash (sha256 (unwrap! (to-consensus-buff?
-	{
-		name: "BigMarket",
-		version: "1.0.0",
-		chain-id: chain-id
-	}
-    ) err-unauthorised)
-))
+;; (define-constant structured-data-prefix 0x534950303138)
+;; (define-constant message-domain-hash (sha256 (unwrap! (to-consensus-buff?
+;; 	{
+;; 		name: "BigMarket",
+;; 		version: "1.0.0",
+;; 		chain-id: chain-id
+;; 	}
+;;     ) err-unauthorised)
+;; ))
 (define-constant custom-majority-upper u10000)
-(define-constant structured-data-header (concat structured-data-prefix message-domain-hash))
+;; (define-constant structured-data-header (concat structured-data-prefix message-domain-hash))
 
 (define-map proposals
 	principal
@@ -93,64 +93,64 @@
   (process-vote-internal amount for proposal tx-sender reclaim-proposal)
 )
 
-(define-public (batch-vote (votes (list 50 {message: (tuple 
-                                                (attestation (string-ascii 100))
-                                                (proposal principal) 
-                                                (vote bool)
-                                                (voter principal)
-                                                (amount uint)
-                                                (reclaim-proposal (optional principal))), 
-                                   signature: (buff 65)})))
-  (begin
-    (ok (fold fold-vote votes u0))
-  )
-)
+;; (define-public (batch-vote (votes (list 50 {message: (tuple 
+;;                                                 (attestation (string-ascii 100))
+;;                                                 (proposal principal) 
+;;                                                 (vote bool)
+;;                                                 (voter principal)
+;;                                                 (amount uint)
+;;                                                 (reclaim-proposal (optional principal))), 
+;;                                    signature: (buff 65)})))
+;;   (begin
+;;     (ok (fold fold-vote votes u0))
+;;   )
+;; )
 
-(define-private (fold-vote  (input-vote {message: (tuple 
-                                                (attestation (string-ascii 100)) 
-                                                (proposal principal) 
-                                                (vote bool)
-                                                (voter principal)
-                                                (amount uint) (reclaim-proposal (optional principal))), 
-                                     signature: (buff 65)}) (current uint))
-  (let
-    (
-      (vote-result (process-vote input-vote))
-    )
-	(if (unwrap! vote-result u0)
-		(+ current u1)
-		current)
-  )
-)
+;; (define-private (fold-vote  (input-vote {message: (tuple 
+;;                                                 (attestation (string-ascii 100)) 
+;;                                                 (proposal principal) 
+;;                                                 (vote bool)
+;;                                                 (voter principal)
+;;                                                 (amount uint) (reclaim-proposal (optional principal))), 
+;;                                      signature: (buff 65)}) (current uint))
+;;   (let
+;;     (
+;;       (vote-result (process-vote input-vote))
+;;     )
+;; 	(if (unwrap! vote-result u0)
+;; 		(+ current u1)
+;; 		current)
+;;   )
+;; )
 
-(define-private (process-vote (input-vote {message: (tuple 
-                                                (attestation (string-ascii 100)) 
-                                                (proposal principal) 
-                                                (vote bool)
-                                                (voter principal)
-                                                (amount uint) (reclaim-proposal (optional principal))), 
-                                     signature: (buff 65)}))
-  (let
-    (
-      ;; Extract relevant fields from the message
-		(message-data (get message input-vote))
-		(proposal (get proposal message-data))
-		(reclaim-proposal (get reclaim-proposal message-data))
-		(voter (get voter message-data))
-		(amount (get amount message-data))
-		(for (get vote message-data))
-		(structured-data-hash (sha256 (unwrap! (to-consensus-buff? message-data) err-unauthorised)))
-		;; Verify the signature
-		(is-valid-sig (verify-signed-structured-data structured-data-hash (get signature input-vote) voter))
-    )
-    (if is-valid-sig
-		(process-vote-internal amount for proposal voter reclaim-proposal)
-	  	(begin 
-      		(ok false) ;; Invalid signature, skip vote
-	  	)
-    )
-  )
-)
+;; (define-private (process-vote (input-vote {message: (tuple 
+;;                                                 (attestation (string-ascii 100)) 
+;;                                                 (proposal principal) 
+;;                                                 (vote bool)
+;;                                                 (voter principal)
+;;                                                 (amount uint) (reclaim-proposal (optional principal))), 
+;;                                      signature: (buff 65)}))
+;;   (let
+;;     (
+;;       ;; Extract relevant fields from the message
+;; 		(message-data (get message input-vote))
+;; 		(proposal (get proposal message-data))
+;; 		(reclaim-proposal (get reclaim-proposal message-data))
+;; 		(voter (get voter message-data))
+;; 		(amount (get amount message-data))
+;; 		(for (get vote message-data))
+;; 		(structured-data-hash (sha256 (unwrap! (to-consensus-buff? message-data) err-unauthorised)))
+;; 		;; Verify the signature
+;; 		(is-valid-sig (verify-signed-structured-data structured-data-hash (get signature input-vote) voter))
+;;     )
+;;     (if is-valid-sig
+;; 		(process-vote-internal amount for proposal voter reclaim-proposal)
+;; 	  	(begin 
+;;       		(ok false) ;; Invalid signature, skip vote
+;; 	  	)
+;;     )
+;;   )
+;; )
 
 (define-private (process-vote-internal (amount uint) (for bool) (proposal principal) (voter principal) (reclaim-proposal (optional principal)))
 	(let
@@ -220,29 +220,29 @@
 	(ok true)
 )
 
-(define-read-only (verify-signature (hash (buff 32)) (signature (buff 65)) (signer principal))
-	(is-eq (principal-of? (unwrap! (secp256k1-recover? hash signature) false)) (ok signer))
-)
+;; (define-read-only (verify-signature (hash (buff 32)) (signature (buff 65)) (signer principal))
+;; 	(is-eq (principal-of? (unwrap! (secp256k1-recover? hash signature) false)) (ok signer))
+;; )
 
-(define-read-only (verify-signed-structured-data (structured-data-hash (buff 32)) (signature (buff 65)) (signer principal))
-	(verify-signature (sha256 (concat structured-data-header structured-data-hash)) signature signer)
-)
+;; (define-read-only (verify-signed-structured-data (structured-data-hash (buff 32)) (signature (buff 65)) (signer principal))
+;; 	(verify-signature (sha256 (concat structured-data-header structured-data-hash)) signature signer)
+;; )
 
-(define-read-only (verify-signed-tuple
-    (message-data (tuple 
-                    (attestation (string-ascii 100))
-                    (proposal principal)
-                    (vote bool)
-                    (voter principal)
-                    (amount uint)))
-    (signature (buff 65))
-    (signer principal))
-  (let
-    (
-      ;; Compute the structured data hash
-      	(structured-data-hash (sha256 (unwrap! (to-consensus-buff? message-data) err-unauthorised)))
-    )
-    ;; Verify the signature using the computed hash
-    (ok (verify-signed-structured-data structured-data-hash signature signer))
-  )
-)
+;; (define-read-only (verify-signed-tuple
+;;     (message-data (tuple 
+;;                     (attestation (string-ascii 100))
+;;                     (proposal principal)
+;;                     (vote bool)
+;;                     (voter principal)
+;;                     (amount uint)))
+;;     (signature (buff 65))
+;;     (signer principal))
+;;   (let
+;;     (
+;;       ;; Compute the structured data hash
+;;       	(structured-data-hash (sha256 (unwrap! (to-consensus-buff? message-data) err-unauthorised)))
+;;     )
+;;     ;; Verify the signature using the computed hash
+;;     (ok (verify-signed-structured-data structured-data-hash signature signer))
+;;   )
+;; )
