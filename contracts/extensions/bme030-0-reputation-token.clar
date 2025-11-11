@@ -8,6 +8,7 @@
 
 (impl-trait 'SPDBEG5X8XD50SPM1JJH0E5CTXGDV5NJTKAKKR5V.sip013-semi-fungible-token-trait.sip013-semi-fungible-token-trait)
 (impl-trait 'SPDBEG5X8XD50SPM1JJH0E5CTXGDV5NJTKAKKR5V.sip013-transfer-many-trait.sip013-transfer-many-trait)
+(impl-trait 'SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z.extension-trait.extension-trait)
 
 (define-constant err-unauthorised (err u30001))
 (define-constant err-already-minted (err u30002))
@@ -33,6 +34,7 @@
 (define-map tier-weights uint uint)
 (define-map join-epoch { who: principal } uint)
 (define-map minted-in-epoch { epoch: uint } uint)
+(define-map minted-in-epoch-by { epoch: uint, who: principal } uint)
 
 (define-data-var reward-per-epoch uint u10000000000) ;; 10,000 BIG per epoch (in micro units)
 (define-data-var overall-supply uint u0)
@@ -148,12 +150,17 @@
       (map-set supplies token-id (+ base-amount (default-to u0 (map-get? supplies token-id))))
       (var-set overall-supply (+ (var-get overall-supply) base-amount))
 
+      ;; track epoch joined to avoid overpaying rewards
       (if (is-none (map-get? join-epoch { who: recipient }))
             (map-set join-epoch { who: recipient } current-epoch)
             true)
+      
       ;; update minted for this epoch
       (map-set minted-in-epoch { epoch: current-epoch }
         (+ weighted-amount (default-to u0 (map-get? minted-in-epoch { epoch: current-epoch }))))
+      
+      (map-set minted-in-epoch-by { epoch: current-epoch, who: recipient }
+        (+ weighted-amount (default-to u0 (map-get? minted-in-epoch-by { epoch: current-epoch, who: recipient }))))
       
       (print { event: "sft_mint", token-id: token-id, amount: base-amount, recipient: recipient })
       (ok true)
@@ -162,14 +169,31 @@
 )
 
 (define-public (burn (owner principal) (token-id uint) (amount uint))
-  (begin
-    (try! (is-dao-or-extension))
-    (let ((current (default-to u0 (map-get? balances { token-id: token-id, owner: owner }))))
+  (let (
+    (current-epoch (/ burn-block-height epoch-duration))
+    (weight (default-to u1 (map-get? tier-weights token-id)))
+    (weighted-amount (* amount weight))
+    (current (default-to u0 (map-get? balances { token-id: token-id, owner: owner })))
+  )
+    (begin
+      (try! (is-dao-or-extension))
       (asserts! (>= current amount) err-insufficient-balance)
       (try! (ft-burn? bigr-token amount owner))
       (map-set balances { token-id: token-id, owner: owner } (- current amount))
       (map-set supplies token-id (- (unwrap-panic (get-total-supply token-id)) amount))
       (var-set overall-supply (- (var-get overall-supply) amount))
+
+      ;; Decrement epoch-level mint counters
+      (let (
+        (prev-total (default-to u0 (map-get? minted-in-epoch { epoch: current-epoch })))
+        (prev-user (default-to u0 (map-get? minted-in-epoch-by { epoch: current-epoch, who: owner })))
+      )
+        (map-set minted-in-epoch { epoch: current-epoch }
+          (if (> prev-total weighted-amount) (- prev-total weighted-amount) u0))
+        (map-set minted-in-epoch-by { epoch: current-epoch, who: owner }
+          (if (> prev-user weighted-amount) (- prev-user weighted-amount) u0))
+      )
+
       (try! (nft-burn? bigr-id { token-id: token-id, owner: owner } owner))
       (print { event: "sft_burn", token-id: token-id, amount: amount, sender: owner })
       (ok true)
@@ -184,7 +208,12 @@
   (begin
     (try! (is-dao-or-extension))
     (asserts! (> amount u0) err-zero-amount)
-    (let ((sender-balance (default-to u0 (map-get? balances { token-id: token-id, owner: sender }))))
+    (let (
+        (sender-balance (default-to u0 (map-get? balances { token-id: token-id, owner: sender })))
+        (weight (default-to u1 (map-get? tier-weights token-id)))
+        (weighted-amount (* amount weight))
+        (epoch (/ burn-block-height epoch-duration))
+      )
       (asserts! (>= sender-balance amount) err-insufficient-balance)
       (try! (ft-transfer? bigr-token amount sender recipient))
       (try! (tag-nft { token-id: token-id, owner: sender }))
@@ -192,6 +221,18 @@
       (map-set balances { token-id: token-id, owner: sender } (- sender-balance amount))
       (map-set balances { token-id: token-id, owner: recipient }
         (+ amount (default-to u0 (map-get? balances { token-id: token-id, owner: recipient }))))
+
+      ;; adjust minted-in-epoch-by so transferred tokens stay new for this epoch
+      (let (
+        (sender-prev (default-to u0 (map-get? minted-in-epoch-by {epoch: epoch, who: sender})))
+        (recipient-prev (default-to u0 (map-get? minted-in-epoch-by {epoch: epoch, who: recipient})))
+      )
+        (map-set minted-in-epoch-by {epoch: epoch, who: sender}
+          (if (> sender-prev weighted-amount) (- sender-prev weighted-amount) u0))
+        (map-set minted-in-epoch-by {epoch: epoch, who: recipient}
+          (+ recipient-prev weighted-amount))
+      )
+
       (print { event: "sft_transfer", token-id: token-id, amount: amount, sender: sender, recipient: recipient })
       (ok true)
     )
@@ -248,14 +289,18 @@
     )
     (if (and (< last claim-epoch) (> claim-epoch joined))
       (let (
-            (rep (unwrap! (get-weighted-rep user) err-claims-zero-rep))
+            (user-weighted-rep (unwrap! (get-weighted-rep user) err-claims-zero-rep))
+            (user-minted-this-epoch (default-to u0 (map-get? minted-in-epoch-by { epoch: epoch, who: user })))
+            (rep (if (> user-weighted-rep user-minted-this-epoch)
+                    (- user-weighted-rep user-minted-this-epoch)
+                    u0))
           )
         (if (and (> rep u0) (> total u0))
           (let (
               (share-scaled (/ (* (* rep (var-get reward-per-epoch)) SCALE) total))
               (share (/ share-scaled SCALE))
             )
-            (map-set last-claimed-epoch { who: user } epoch)
+            (map-set last-claimed-epoch { who: user } claim-epoch)
             (try! (contract-call? .bme006-0-treasury sip010-transfer share user none .bme000-0-governance-token))
             (print { event: "big-claim", user: user, epoch: epoch, amount: share, reward-per-epoch: (var-get reward-per-epoch) })
             (ok share)
@@ -326,4 +371,10 @@
   )
     (+ acc (* tier-supply weight))
   )
+)
+
+;; --- Extension callback
+
+(define-public (callback (sender principal) (memo (buff 34)))
+	(ok true)
 )
