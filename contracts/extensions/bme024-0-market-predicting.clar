@@ -80,7 +80,7 @@
 (define-constant err-arithmetic (err u11043))
 
 (define-constant marketplace .bme040-0-shares-marketplace)
-(define-constant MIN_POOL u1)
+(define-constant MIN_POOL u1000)
 
 
 (define-data-var market-counter uint u0)
@@ -281,7 +281,7 @@
       (asserts! (> market-duration-final u10) err-market-not-found)
       (asserts! (> cool-down-final u10) err-market-not-found)
 
-		  (asserts! (> (len categories) u1) err-too-few-categories)
+      (asserts! (and (> (len categories) u1) (<= (len categories) u10)) err-too-few-categories)
 		  (asserts! (<= market-fee-bips (var-get market-fee-bips-max)) err-max-market-fee-bips-exceeded)
       ;; ensure the trading token is allowed 
 		  (asserts! (is-allowed-token (contract-of token)) err-invalid-token)

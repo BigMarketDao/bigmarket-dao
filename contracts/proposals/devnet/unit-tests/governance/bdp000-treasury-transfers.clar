@@ -35,7 +35,7 @@
 				{amount: u1000, recipient: 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM, memo: none}
 				{amount: u1000, recipient: 'ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5, memo: none}) .tusdh)
 		)
-		(try! (contract-call? .bme006-0-treasury sip013-transfer u1 u1000 'ST2CY5V39NHDPWSXMW9QDT3HC3GD6Q6XX4CFRK9AG none 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme030-0-reputation-token))
+		(try! (contract-call? .bme006-0-treasury sip013-transfer u2 u1000 'ST2CY5V39NHDPWSXMW9QDT3HC3GD6Q6XX4CFRK9AG none 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.bme030-0-reputation-token))
 		(try! (contract-call? .bme006-0-treasury sip013-transfer-many (list
 				{token-id: u1, amount: u100, sender: .bme006-0-treasury, recipient: 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM}
 				{token-id: u1, amount: u100, sender: .bme006-0-treasury, recipient: 'ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5}) .bme030-0-reputation-token)

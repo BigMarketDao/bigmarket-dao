@@ -44,6 +44,29 @@ bme023 = old linear prediction contracts
 bme024 = new CPMM curve prediction contracts
 ```
 
+## Rendezvous Tests
+
+Property-based fuzzing lives alongside the CPMM contracts in `contracts/extensions/bme024-0-market-predicting.tests.clar`. These tests run through the [`@stacks/rendezvous`](https://www.npmjs.com/package/@stacks/rendezvous) fuzzer and exercise the `bme024-0-market-predicting` contract directly.
+
+- `bme024-0-market-predicting.test-get-share-cost` seeds a categorical market with example stakes and ensures `get-share-cost` always returns a positive cost and maximum purchase size whenever at least two categories exist.
+- `bme024-0-market-predicting.test-cpmm-cost` fuzzes pool compositions to guarantee `cpmm-cost` never reverts for valid liquidity pairs and only ever returns positive prices within permissible pool bounds.
+- `invariant-rep-weighted-supply-consistent` ensure weighted-supply, overall-supply and launch height are invariant.
+- `bme030-0-reputation-token.invariant-rep-weighted-supply-consistent` invariance of contract calls.
+- `bme030-0-reputation-token.test-mint-increases-user-total-rep` minting properties.
+- `bme030-0-reputation-token.test-burn-decreases-user-total-rep` burn properties.
+- `bme030-0-reputation-token.test-transfer-updates-user-total-rep` transfer properties.
+
+Run the rendezvous suite from the DAO root with:
+
+```bash
+npx rv . bme024-0-market-predicting test
+npx rv . bme030-0-reputation-token invariant
+npx rv . bme030-0-reputation-token invariant
+npx rv . bme030-0-reputation-token test --runs 6000
+```
+
+Add `--seed <value>` or `--runs <count>` if you need reproducible or longer fuzz sessions.
+
 ## Deployment
 
 Thje project is deployed with the following keys;

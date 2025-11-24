@@ -6,8 +6,8 @@ import { expect } from 'vitest';
 import { contractId2Key, generateMerkleProof, generateMerkleTreeUsingStandardPrincipal } from './gating/gating';
 
 export const accounts = simnet.getAccounts();
-export const alice = accounts.get('wallet_1')!; //ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5
 export const deployer = accounts.get('deployer')!; // ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+export const alice = accounts.get('wallet_1')!; //ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5
 export const bob = accounts.get('wallet_2')!; // ST2CY5V39NHDPWSXMW9QDT3HC3GD6Q6XX4CFRK9AG
 export const tom = accounts.get('wallet_3')!; // ST2JHG361ZXG51QTKY2NQCVBPPRRE2KZB1HR05NNC
 export const betty = accounts.get('wallet_4')!; // ST2NEB84ASENDXKYGJPQW86YXQCEFEX2ZQPG87ND

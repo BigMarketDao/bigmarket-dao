@@ -285,6 +285,11 @@ path = 'contracts/proposals/devnet/unit-tests/reputation/bdp000-sft-setters.clar
 clarity_version = 3
 epoch = 'latest'
 
+[contracts.bdp000-sft-tier-weights]
+path = 'contracts/proposals/devnet/unit-tests/reputation/bdp000-sft-tier-weights.clar'
+clarity_version = 3
+epoch = 'latest'
+
 [contracts.bdp000-liquidity]
 path = 'contracts/proposals/devnet/unit-tests/reputation/bdp000-liquidity.clar'
 clarity_version = 3
