@@ -20,6 +20,7 @@ git clone ..
 cp Clarinet-Devnet.toml Clarinet.toml // setup devnet and unit test config
 npm install
 npm run watch
+npm run watch 
 ```
 
 The Clarinet-Devnet.toml toml file contains all contracts needed for unit tests - this is quite a few because a proposal contract is needed to change the state of the dao;

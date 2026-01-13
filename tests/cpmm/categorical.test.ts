@@ -140,11 +140,11 @@ describe('claiming errors', () => {
 
 	it('claim winner ok', async () => {
 		await createCategoricalMarket(0, deployer, undefined, 9999);
-		let response = await predictCategory(alice, 0, 'lion', 3333, 0, stxToken, 10000000);
+		let response = await predictCategory(alice, 0, 'lion', 333, 0, stxToken, 10000);
 		// console.log('claim winner ok', response.events);
-		response = await predictCategory(bob, 0, 'tiger', 3333, 1, stxToken, 10000000);
+		response = await predictCategory(bob, 0, 'tiger', 333, 1, stxToken, 10000);
 		// console.log('claim winner ok', response.events);
-		response = await predictCategory(betty, 0, 'cheetah', 3333, 2, stxToken, 10000000);
+		response = await predictCategory(betty, 0, 'cheetah', 333, 2, stxToken, 10000);
 		// console.log('claim winner ok', response.events);
 		const result = await resolveMarket(0, 'cheetah', 2);
 
@@ -156,31 +156,31 @@ describe('claiming errors', () => {
 
 		simnet.mineEmptyBlocks(25);
 		await resolveMarketUndisputed(0);
-		assertContractBalance(simnet, marketPredictingCPMM, 29709999n);
+		assertContractBalance(simnet, marketPredictingCPMM, 39699n);
 		assertDataVarNumber(simnet, marketPredictingCPMM, 'dev-fee-bips', 100);
 		assertDataVarNumber(simnet, marketPredictingCPMM, 'market-fee-bips-max', 300);
 
 		// claim for the treasury seed fund
 		response = simnet.callPublicFn('bme006-0-treasury', 'claim-for-dao', [Cl.principal(deployer + '.bme024-0-market-predicting'), Cl.uint(0), Cl.principal(stxToken)], bob);
 		// console.log('claim winner ok', response.events);
-		expect(response.result).toEqual(Cl.ok(Cl.uint(3303313)));
+		expect(response.result).toEqual(Cl.ok(Cl.uint(7124)));
 
-		await claim(betty, 0, 26406685);
+		await claim(betty, 0, 32574);
 		assertContractBalance(simnet, marketPredictingCPMM, 1n);
 	});
 
 	it('claim winner ok', async () => {
 		await createCategoricalMarket(0, deployer, undefined, 9999);
 
-		let response = await predictCategory(deployer, 0, 'lion', 3333, 0, stxToken, 10000000);
-		response = await predictCategory(alice, 0, 'tiger', 3333, 1, stxToken, 10000000);
-		response = await predictCategory(bob, 0, 'cheetah', 3333, 2, stxToken, 10000000);
+		let response = await predictCategory(deployer, 0, 'lion', 333, 0, stxToken, 10000);
+		response = await predictCategory(alice, 0, 'tiger', 333, 1, stxToken, 10000);
+		response = await predictCategory(bob, 0, 'cheetah', 333, 2, stxToken, 10000);
 		// response = await predictCategory(tom, 0, 'lion', 3333, 0);
-		response = await predictCategory(betty, 0, 'tiger', 3333, 1, stxToken, 10000000);
-		response = await predictCategory(fred, 0, 'cheetah', 3333, 2, stxToken, 10000000);
-		response = await predictCategory(wallace, 0, 'lion', 3333, 0, stxToken, 10000000);
-		response = await predictCategory(piedro, 0, 'tiger', 3333, 1, stxToken, 10000000);
-		response = await predictCategory(developer, 0, 'cheetah', 3333, 2, stxToken, 10000000);
+		response = await predictCategory(betty, 0, 'tiger', 333, 1, stxToken, 10000);
+		response = await predictCategory(fred, 0, 'cheetah', 333, 2, stxToken, 10000);
+		response = await predictCategory(wallace, 0, 'lion', 333, 0, stxToken, 10000);
+		response = await predictCategory(piedro, 0, 'tiger', 333, 1, stxToken, 10000);
+		response = await predictCategory(developer, 0, 'cheetah', 333, 2, stxToken, 10000);
 
 		const result = await resolveMarket(0, 'cheetah', 2);
 
@@ -192,18 +192,18 @@ describe('claiming errors', () => {
 
 		simnet.mineEmptyBlocks(25);
 		await resolveMarketUndisputed(0);
-		assertContractBalance(simnet, marketPredictingCPMM, 79209999n);
+		assertContractBalance(simnet, marketPredictingCPMM, 89199n);
 		assertDataVarNumber(simnet, marketPredictingCPMM, 'dev-fee-bips', 100);
 		assertDataVarNumber(simnet, marketPredictingCPMM, 'market-fee-bips-max', 300);
 
 		// claim for the treasury seed fund
 		response = simnet.callPublicFn('bme006-0-treasury', 'claim-for-dao', [Cl.principal(deployer + '.bme024-0-market-predicting'), Cl.uint(0), Cl.principal(stxToken)], bob);
 		// console.log('claim winner ok', response.events);
-		expect(response.result).toEqual(Cl.ok(Cl.uint(464281)));
+		expect(response.result).toEqual(Cl.ok(Cl.uint(5927)));
 
-		await claim(fred, 0, 9243413);
-		await claim(bob, 0, 3711462);
-		await claim(developer, 0, 65790841);
+		await claim(fred, 0, 20094);
+		await claim(bob, 0, 27101);
+		await claim(developer, 0, 36075);
 		await claim(alice, 0, 80, 10006);
 		await claim(betty, 0, 80, 10006);
 		assertContractBalance(simnet, marketPredictingCPMM, 2n);
