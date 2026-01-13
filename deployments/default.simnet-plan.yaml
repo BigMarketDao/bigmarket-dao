@@ -58,10 +58,17 @@ genesis:
     - pox-4
     - signers
     - signers-voting
-    - costs-4
 plan:
   batches:
     - id: 0
+      transactions:
+        - emulated-contract-publish:
+            contract-name: nft-trait
+            emulated-sender: SP2PABAF9FTAJYNFZH93XENAJ8FVY99RRM50D2JG9
+            path: ".cache/requirements/SP2PABAF9FTAJYNFZH93XENAJ8FVY99RRM50D2JG9.nft-trait.clar"
+            clarity-version: 1
+      epoch: "2.0"
+    - id: 1
       transactions:
         - emulated-contract-publish:
             contract-name: extension-trait
@@ -88,13 +95,8 @@ plan:
             emulated-sender: SP2AKWJYC7BNY18W1XXKPGP0YVEK63QJG4793Z2D4
             path: ".cache/requirements/SP2AKWJYC7BNY18W1XXKPGP0YVEK63QJG4793Z2D4.sip-010-trait-ft-standard.clar"
             clarity-version: 1
-        - emulated-contract-publish:
-            contract-name: nft-trait
-            emulated-sender: SP2PABAF9FTAJYNFZH93XENAJ8FVY99RRM50D2JG9
-            path: ".cache/requirements/SP2PABAF9FTAJYNFZH93XENAJ8FVY99RRM50D2JG9.nft-trait.clar"
-            clarity-version: 1
-      epoch: "2.1"
-    - id: 1
+      epoch: "2.05"
+    - id: 2
       transactions:
         - emulated-contract-publish:
             contract-name: ft-plus-trait
@@ -117,7 +119,7 @@ plan:
             path: ".cache/requirements/SP2PABAF9FTAJYNFZH93XENAJ8FVY99RRM50D2JG9.clarity-bitcoin-lib-v5.clar"
             clarity-version: 2
       epoch: "2.4"
-    - id: 2
+    - id: 3
       transactions:
         - emulated-contract-publish:
             contract-name: sbtc-registry
@@ -135,7 +137,7 @@ plan:
             path: ".cache/requirements/SM3VDXK3WZZSA84XXFKAFAF15NNZX32CTSG82JFQ4.sbtc-deposit.clar"
             clarity-version: 3
       epoch: "3.0"
-    - id: 3
+    - id: 4
       transactions:
         - emulated-contract-publish:
             contract-name: wormhole-traits-v2
@@ -263,7 +265,7 @@ plan:
             path: contracts/external/sbtc.clar
             clarity-version: 3
       epoch: "3.2"
-    - id: 4
+    - id: 5
       transactions:
         - emulated-contract-publish:
             contract-name: tpepe
@@ -391,7 +393,7 @@ plan:
             path: contracts/extensions/bme010-0-token-sale.clar
             clarity-version: 3
       epoch: "3.2"
-    - id: 5
+    - id: 6
       transactions:
         - emulated-contract-publish:
             contract-name: bdp000-token-sale
@@ -519,7 +521,7 @@ plan:
             path: contracts/proposals/devnet/bdp001-gating-true-testnet.clar
             clarity-version: 3
       epoch: "3.2"
-    - id: 6
+    - id: 7
       transactions:
         - emulated-contract-publish:
             contract-name: bdp001-initialise-token-sale
@@ -647,7 +649,7 @@ plan:
             path: contracts/external/pyth/wormhole/wormhole-traits-v1.clar
             clarity-version: 3
       epoch: "3.2"
-    - id: 7
+    - id: 8
       transactions:
         - emulated-contract-publish:
             contract-name: wormhole-core-v3

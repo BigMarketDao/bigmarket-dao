@@ -38,9 +38,6 @@ contract_id = 'SP1Y5YSTAHZ88XYK1VPDH24GY0HPX5J4JECTMY4A1.univ2-share-fee-to'
 [[project.requirements]]
 contract_id = 'SP1Y5YSTAHZ88XYK1VPDH24GY0HPX5J4JECTMY4A1.univ2-share-fee-to-trait'
 
-[[project.requirements]]
-contract_id = 'SP1CGXWEAMG6P6FT04W66NVGJ7PQWMDAC19R7PJ0Y.pyth-traits-v2'
-
 [contracts.bdbp001-set-manual-fallback]
 path = 'contracts/proposals/devnet/unit-tests/bdbp001-set-manual-fallback.clar'
 clarity_version = 3
@@ -490,6 +487,11 @@ path = 'contracts/external/pyth/pyth-traits-v2.clar'
 clarity_version = 3
 epoch = 'latest'
 
+[contracts.wormhole-traits-v2]
+path = 'contracts/external/pyth/wormhole-traits-v2.clar'
+clarity_version = 3
+epoch = 'latest'
+
 [contracts.sbtc]
 path = 'contracts/external/sbtc.clar'
 clarity_version = 3
@@ -527,16 +529,6 @@ epoch = 'latest'
 
 [contracts.univ2-share-fee-to]
 path = 'contracts/external/velar/univ2-share-fee-to.clar'
-clarity_version = 3
-epoch = 'latest'
-
-[contracts.wormhole-core-v3]
-path = 'contracts/external/pyth/wormhole/wormhole-core-v3.clar'
-clarity_version = 3
-epoch = 'latest'
-
-[contracts.wormhole-traits-v1]
-path = 'contracts/external/pyth/wormhole/wormhole-traits-v1.clar'
 clarity_version = 3
 epoch = 'latest'
 

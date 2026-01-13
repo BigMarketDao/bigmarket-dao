@@ -8,6 +8,7 @@
 ;; Implements trait specified in wormhole-core-trait contract
 (impl-trait .wormhole-traits-v1.core-trait)
 
+
 ;;;; Constants
 
 ;; VAA version not supported

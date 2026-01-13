@@ -358,16 +358,6 @@ path = 'contracts/external/tusdh.clar'
 clarity_version = 3
 epoch = 3.0
 
-[contracts.wormhole-core-v3]
-path = 'contracts/external/pyth/wormhole/wormhole-core-v3.clar'
-clarity_version = 3
-epoch = 3.0
-
-[contracts.wormhole-traits-v1]
-path = 'contracts/external/pyth/wormhole/wormhole-traits-v1.clar'
-clarity_version = 3
-epoch = 3.0
-
 [contracts.wrapped-stx]
 path = 'contracts/external/wrapped-stx.clar'
 clarity_version = 3
