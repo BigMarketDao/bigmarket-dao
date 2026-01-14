@@ -20,9 +20,10 @@
 (define-constant err-claims-zero-total (err u30008))
 (define-constant err-invalid-tier (err u30009))
 (define-constant err-too-high (err u30010))
+(define-constant err-epoch-too-short (err u30011))
+(define-constant err-epoch-too-long  (err u30012))
 
 (define-constant max-tier u20)
-(define-constant epoch-duration u1000)
 (define-constant SCALE u1000000)
 
 (define-fungible-token bigr-token)
@@ -39,6 +40,7 @@
 (define-map user-total-rep { who: principal } uint)         ;; running total, lifetime reputation
 
 (define-data-var reward-per-epoch uint u10000000000) ;; 10,000 BIG per epoch (in micro units)
+(define-data-var epoch-duration uint u2000) ;; roughly fortnightly
 (define-data-var overall-supply uint u0)
 (define-data-var token-name (string-ascii 32) "BigMarket Reputation Token")
 (define-data-var token-symbol (string-ascii 10) "BIGR")
@@ -53,7 +55,7 @@
 )
 
 (define-read-only (get-epoch)
-	(/ burn-block-height epoch-duration)
+	(/ burn-block-height (var-get epoch-duration))
 )
 
 (define-read-only (get-last-claimed-epoch (user principal))
@@ -79,6 +81,16 @@
     (asserts! (is-eq (var-get launch-height) u0) err-unauthorised)
     (var-set launch-height burn-block-height)
     (ok (var-get launch-height))
+  )
+)
+
+(define-public (set-epoch-duration (duration uint))
+  (begin
+    (try! (is-dao-or-extension))
+    (asserts! (>= duration u100) err-epoch-too-short)
+    (asserts! (<= duration u100000) err-epoch-too-long)
+    (var-set epoch-duration duration)
+    (ok (var-get epoch-duration))
   )
 )
 
@@ -146,7 +158,7 @@
 
 (define-private (mint-core (recipient principal) (token-id uint) (amount uint))
   (let (
-    (current-epoch (/ burn-block-height epoch-duration))
+    (current-epoch (/ burn-block-height (var-get epoch-duration)))
     (weight (default-to u1 (map-get? tier-weights token-id)))
     (weighted-amount (* amount weight))
     (old-supply (default-to u0 (map-get? supplies token-id)))
@@ -195,7 +207,7 @@
 )
 (define-private (burn-core (owner principal) (token-id uint) (amount uint))
   (let (
-    (current-epoch (/ burn-block-height epoch-duration))
+    (current-epoch (/ burn-block-height (var-get epoch-duration)))
     (weight (default-to u1 (map-get? tier-weights token-id)))
     (weighted-amount (* amount weight))
     (current (default-to u0 (map-get? balances { token-id: token-id, owner: owner })))
@@ -260,7 +272,7 @@
         (sender-balance (default-to u0 (map-get? balances { token-id: token-id, owner: sender })))
         (weight (default-to u1 (map-get? tier-weights token-id)))
         (weighted-amount (* amount weight))
-        (epoch (/ burn-block-height epoch-duration))
+        (epoch (/ burn-block-height (var-get epoch-duration)))
       )
       (asserts! (>= sender-balance amount) err-insufficient-balance)
       (try! (ft-transfer? bigr-token amount sender recipient))
@@ -336,7 +348,7 @@
 
 (define-private (claim-big-reward-for-user (user principal))
   (let (
-        (epoch (/ burn-block-height epoch-duration))
+        (epoch (/ burn-block-height (var-get epoch-duration)))
         (claim-epoch (get-latest-claimable-epoch))
         (last-claim (default-to u0 (map-get? last-claimed-epoch { who: user })))
         (joined (default-to epoch (map-get? join-epoch { who: user })))

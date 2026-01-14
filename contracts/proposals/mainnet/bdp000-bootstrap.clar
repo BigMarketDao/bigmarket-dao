@@ -40,8 +40,8 @@
 		(try! (contract-call? .bme024-0-market-predicting set-dev-fund 'SM38XBR119DCN8D3WTBGWYYXC3K8X0FY0F9TSD8AF))
 		(try! (contract-call? .bme024-0-market-predicting set-dao-treasury .bme006-0-treasury))
 		(try! (contract-call? .bme024-0-market-predicting set-creation-gated true))
-		(try! (contract-call? .bme024-0-market-predicting set-allowed-token .big-play true))
 		(try! (contract-call? .bme024-0-market-predicting set-market-fee-bips-max u1000))
+		(try! (contract-call? .bme024-0-market-predicting set-allowed-token .big-play true))
 		(try! (contract-call? .bme024-0-market-predicting set-token-minimum-seed .big-play u1000000000))
 
 		;; Scalar contract setting
@@ -49,8 +49,8 @@
 		(try! (contract-call? .bme024-0-market-scalar-pyth set-dev-fund 'SM38XBR119DCN8D3WTBGWYYXC3K8X0FY0F9TSD8AF))
 		(try! (contract-call? .bme024-0-market-scalar-pyth set-dao-treasury .bme006-0-treasury))
 		(try! (contract-call? .bme024-0-market-scalar-pyth set-creation-gated true))
-		(try! (contract-call? .bme024-0-market-scalar-pyth set-allowed-token .big-play true))
 		(try! (contract-call? .bme024-0-market-scalar-pyth set-market-fee-bips-max u1000))
+		(try! (contract-call? .bme024-0-market-scalar-pyth set-allowed-token .big-play true))
 		(try! (contract-call? .bme024-0-market-scalar-pyth set-token-minimum-seed .big-play u1000000000))
 
 		;; STXUSD / BTCUSD / SOLUSD / ETHUSD / SUIUSD / TONUSD

@@ -4,7 +4,8 @@
 ;; Allows the deployer to mint a pool for market liquidity - ie
 ;; allows us to simulate stable CPMM curve behaviour.
 
-(impl-trait 'SP2AKWJYC7BNY18W1XXKPGP0YVEK63QJG4793Z2D4.sip-010-trait-ft-standard.sip-010-trait)
+;;(impl-trait 'SP2AKWJYC7BNY18W1XXKPGP0YVEK63QJG4793Z2D4.sip-010-trait-ft-standard.sip-010-trait)
+(impl-trait 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM.sip-010-trait-ft-standard.sip-010-trait)
 
 (define-fungible-token bmg-play)
 
