@@ -61,23 +61,59 @@
 		(try! (contract-call? .bme024-0-market-scalar-pyth set-price-band-width 0x23d7315113f5b1d3ba7a83604c44b94d79f4fd69af77f804fc7f920a6dc65744 u900))
 		(try! (contract-call? .bme024-0-market-scalar-pyth set-price-band-width 0x8963217838ab4cf5cadc172203c1f0b763fbaa45f346d8ee50ba994bbcac3026 u600))
 
-		 ;; premint BIG for reputation and a small amount (100) for initial operations 
+		 ;; Mint BIG (100) for initial governance operations (note the dao has no executive/all powerfull actions/teams) 
 		(try! (contract-call? .bme000-0-governance-token bmg-mint-many
 			(list
 				{amount: (/ (* u1500 token-supply) u10000), recipient: .bme006-0-treasury}
-				{amount: u100000000, recipient: 'SP3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX52CR6XQ}
+				{amount: u100000000, recipient: 'SP1SCD8ERMTFYE6CK9S0MHWQCP6SY4NAVFJ538A27}
 				{amount: u100000000, recipient: 'SPEZD95XQ194X67C1QJW4PHKDG8F5D66ZCT8BY29}
 				{amount: u100000000, recipient: 'SP2XFH8D1MM2G11C0S6AZRSNP031RAY92XCARPRSQ}
-				{amount: u100000000, recipient: 'SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z}
 				{amount: u100000000, recipient: 'SP2Z2CBMGWB9MQZAF5Z8X56KS69XRV3SJF4WKJ7J9}
 				{amount: u100000000, recipient: 'SPQE3J7XMMK0DN0BWJZHGE6B05VDYQRXRMDV734D}
 			)
 		))
 
+		 ;; Premint BIG (3096) for early contributors - phase 1:
+		 ;; 3096 is the average of all the BIG earned in V1 since a proportional mint was not possible due to
+		 ;; the bug bigmarket-dao/issues/16
+		(try! (contract-call? .bme000-0-governance-token bmg-mint-many
+			(list
+				{amount: u3096936301, recipient: 'SP167Z6WFHMV0FZKFCRNWZ33WTB0DFBCW9QRVJ627}
+				{amount: u3096936301, recipient: 'SP1KFDTNWYHYRJP7QP342KCFC0T2FXMKN5Z7ZNVX9}
+				{amount: u3096936301, recipient: 'SP22SW60674C0V6B5E234C7ZD2YR8WXKXXVC48GZR}
+				{amount: u3096936301, recipient: 'SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z}
+				{amount: u3096936301, recipient: 'SP246C0KRV7HKXMRB0H7Y6HCYGRCTZMVB9KP3391R}
+				{amount: u3096936301, recipient: 'SP2XFH8D1MM2G11C0S6AZRSNP031RAY92XCARPRSQ}
+				{amount: u3096936301, recipient: 'SP2YBH2S583CD60NYJHN165WJQDNDMPH69CZAQ78B}
+				{amount: u3096936301, recipient: 'SP2Z2CBMGWB9MQZAF5Z8X56KS69XRV3SJF4WKJ7J9}
+				{amount: u3096936301, recipient: 'SP3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX52CR6XQ}
+				{amount: u3096936301, recipient: 'SPA8AHVNV690M9G555C614YZYMYXD3X5RQE34S31}
+				{amount: u3096936301, recipient: 'SPEZD95XQ194X67C1QJW4PHKDG8F5D66ZCT8BY29}
+				{amount: u3096936301, recipient: 'SPQE3J7XMMK0DN0BWJZHGE6B05VDYQRXRMDV734D}
+			)
+		))
+		;; Mint early contributors a reserved SFT
+        (try! (contract-call? .bme030-0-reputation-token mint 'ST22SW60674C0V6B5E234C7ZD2YR8WXKXXTW2EQVB u20 u10))
+		(try! (contract-call? .bme030-0-reputation-token mint 'SP167Z6WFHMV0FZKFCRNWZ33WTB0DFBCW9QRVJ627 u20 u10))
+		(try! (contract-call? .bme030-0-reputation-token mint 'SP1KFDTNWYHYRJP7QP342KCFC0T2FXMKN5Z7ZNVX9 u20 u10))
+		(try! (contract-call? .bme030-0-reputation-token mint 'SP22SW60674C0V6B5E234C7ZD2YR8WXKXXVC48GZR u20 u10))
+		(try! (contract-call? .bme030-0-reputation-token mint 'SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z u20 u10))
+		(try! (contract-call? .bme030-0-reputation-token mint 'SP246C0KRV7HKXMRB0H7Y6HCYGRCTZMVB9KP3391R u20 u10))
+		(try! (contract-call? .bme030-0-reputation-token mint 'SP2XFH8D1MM2G11C0S6AZRSNP031RAY92XCARPRSQ u20 u10))
+		(try! (contract-call? .bme030-0-reputation-token mint 'SP2YBH2S583CD60NYJHN165WJQDNDMPH69CZAQ78B u20 u10))
+		(try! (contract-call? .bme030-0-reputation-token mint 'SP2Z2CBMGWB9MQZAF5Z8X56KS69XRV3SJF4WKJ7J9 u20 u10))
+		(try! (contract-call? .bme030-0-reputation-token mint 'SP3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX52CR6XQ u20 u10))
+		(try! (contract-call? .bme030-0-reputation-token mint 'SPA8AHVNV690M9G555C614YZYMYXD3X5RQE34S31 u20 u10))
+		(try! (contract-call? .bme030-0-reputation-token mint 'SPEZD95XQ194X67C1QJW4PHKDG8F5D66ZCT8BY29 u20 u10))
+		(try! (contract-call? .bme030-0-reputation-token mint 'SPQE3J7XMMK0DN0BWJZHGE6B05VDYQRXRMDV734D u20 u10))
+
 		(try! (contract-call? .bme030-0-reputation-token set-launch-height))
 
 		;; for simulating deep markets with play token
 		(try! (contract-call? .big-play seed-once))
+
+		;; Move V1 treasury to V2 DAO - requires a DAO proposal after this dao treasury is deployed
+		;; (try! (contract-call? 'SP3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX52CR6XQ.bme006-0-treasury stx-transfer u67604061 'SP1SCD8ERMTFYE6CK9S0MHWQCP6SY4NAVFJ538A27.bme006-0-treasury none))
 
 		(print "BigMarket DAO has risen.")
 		(ok true)

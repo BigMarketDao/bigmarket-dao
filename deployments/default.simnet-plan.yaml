@@ -582,6 +582,11 @@ plan:
             path: contracts/proposals/testnet/bdp005-update-liquidity-ext.clar
             clarity-version: 3
         - emulated-contract-publish:
+            contract-name: sip-010-trait-ft-standard
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/traits/sips/sip-010-trait-ft-standard.clar
+            clarity-version: 3
+        - emulated-contract-publish:
             contract-name: big-play
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/external/big-play.clar
@@ -615,11 +620,6 @@ plan:
             contract-name: nft-trait
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/traits/sips/nft-trait.clar
-            clarity-version: 3
-        - emulated-contract-publish:
-            contract-name: sip-010-trait-ft-standard
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/traits/sips/sip-010-trait-ft-standard.clar
             clarity-version: 3
         - emulated-contract-publish:
             contract-name: trait-dia-oracle

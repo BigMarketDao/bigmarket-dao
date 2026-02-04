@@ -173,8 +173,8 @@ describe('gating market  creation', () => {
 		await constructDao(simnet);
 		await passProposalByExecutiveSignals(simnet, 'bdp001-gating');
 		let allowedCreators = [
-			'ST3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX77J7SV0',
-			'ST2XFH8D1MM2G11C0S6AZRSNP031RAY92XFABDE58',
+			'ST1CV2YGRJA5X8BWS0GP31J9HF56M06CQK8998TSX',
+			'ST33YD6D9E9XSERRKVKY06D7XW5TRZGSRVZ920ECB',
 			'ST167Z6WFHMV0FZKFCRNWZ33WTB0DFBCW9M1FW3AY',
 			'ST105HCS1RTR7D61EZET8CWNEF24ENEN3V6ARBYBJ',
 			'ST3SJD6KV86N90W0MREGRTM1GWXN8Z91PF6W0BQKM',
@@ -182,13 +182,14 @@ describe('gating market  creation', () => {
 		];
 		let { tree, root } = generateMerkleTreeUsingStandardPrincipal(allowedCreators);
 		let merklProof = generateMerkleProof(tree, 'ST3RR3HF25CQ9A5DEWS4R1WKJSBCFKQXFBYPJK3WV');
-		const lookupRootKey = contractId2Key('ST3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX77J7SV0.bme023-0-market-scalar-pyth');
+		const lookupRootKey = contractId2Key('ST1CV2YGRJA5X8BWS0GP31J9HF56M06CQK8998TSX.bme023-0-market-scalar-pyth');
 		console.log(
-			'ST3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX77J7SV0, ST2XFH8D1MM2G11C0S6AZRSNP031RAY92XFABDE58, ST167Z6WFHMV0FZKFCRNWZ33WTB0DFBCW9M1FW3AY, ST105HCS1RTR7D61EZET8CWNEF24ENEN3V6ARBYBJ, ST3SJD6KV86N90W0MREGRTM1GWXN8Z91PF6W0BQKM, STEZD95XQ194X67C1QJW4PHKDG8F5D66ZCYFX27A '
+			'ST1CV2YGRJA5X8BWS0GP31J9HF56M06CQK8998TSX, ST33YD6D9E9XSERRKVKY06D7XW5TRZGSRVZ920ECB, ST167Z6WFHMV0FZKFCRNWZ33WTB0DFBCW9M1FW3AY, ST105HCS1RTR7D61EZET8CWNEF24ENEN3V6ARBYBJ, ST3SJD6KV86N90W0MREGRTM1GWXN8Z91PF6W0BQKM, STEZD95XQ194X67C1QJW4PHKDG8F5D66ZCYFX27A '
 		);
 		console.log('--------------------------------------------------------------------------------------------------------------');
+		console.log(allowedCreators);
 		console.log(
-			'TESTNET: MERKLE ROOTS FOR MARKET CREATION: \nST3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX77J7SV0.bme023-0-market-scalar-pyth: \nkey= 0x' + lookupRootKey + '\nroot= 0x' + root
+			'TESTNET: MERKLE ROOTS FOR MARKET CREATION: \nST1CV2YGRJA5X8BWS0GP31J9HF56M06CQK8998TSX.bme023-0-market-scalar-pyth: \nkey= 0x' + lookupRootKey + '\nroot= 0x' + root
 			//tree
 		);
 		console.log('--------------------------------------------------------------------------------------------------------------');
@@ -203,7 +204,7 @@ describe('gating market  creation', () => {
 		];
 		let newRoot = generateMerkleTreeUsingStandardPrincipal(allowedCreators);
 		//let merklProof1 = generateMerkleProof(newRoot.tree, 'ST3RR3HF25CQ9A5DEWS4R1WKJSBCFKQXFBYPJK3WV');
-		const lookupRootKey1 = contractId2Key('ST3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX77J7SV0.bme023-0-market-scalar-pyth');
+		const lookupRootKey1 = contractId2Key('ST1CV2YGRJA5X8BWS0GP31J9HF56M06CQK8998TSX.bme023-0-market-scalar-pyth');
 		console.log('--------------------------------------------------------------------------------------------------------------');
 		console.log(allowedCreators);
 		console.log(
@@ -217,14 +218,14 @@ describe('gating market  creation', () => {
 		console.log('--------------------------------------------------------------------------------------------------------------');
 		// Allowed = ["ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM", "ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5", "ST2CY5V39NHDPWSXMW9QDT3HC3GD6Q6XX4CFRK9AG", "ST2JHG361ZXG51QTKY2NQCVBPPRRE2KZB1HR05NNC"];
 		allowedCreators = [
-			'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM',
+			'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM'
 			// 'ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5',
 			// 'ST2CY5V39NHDPWSXMW9QDT3HC3GD6Q6XX4CFRK9AG',
 			// 'ST2JHG361ZXG51QTKY2NQCVBPPRRE2KZB1HR05NNC'
 		];
 		newRoot = generateMerkleTreeUsingStandardPrincipal(allowedCreators);
 		//let merklProof1 = generateMerkleProof(newRoot.tree, 'ST3RR3HF25CQ9A5DEWS4R1WKJSBCFKQXFBYPJK3WV');
-		const lookupRootKey2 = contractId2Key('ST3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX77J7SV0.bme023-0-market-scalar-pyth');
+		const lookupRootKey2 = contractId2Key('ST1CV2YGRJA5X8BWS0GP31J9HF56M06CQK8998TSX.bme023-0-market-scalar-pyth');
 		console.log('--------------------------------------------------------------------------------------------------------------');
 		console.log(allowedCreators);
 		console.log(

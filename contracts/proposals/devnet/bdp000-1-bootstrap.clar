@@ -39,8 +39,8 @@
 		(try! (contract-call? .bme022-0-market-gating set-merkle-root-by-principal .bme024-0-market-scalar-pyth 0x26067618f71da1da6fa33c9b7f8d989b87f71ade892e1c55ce3b46ac79a7e64e))
 
 		;; Category contract setting
-		(try! (contract-call? .bme024-0-market-predicting set-resolution-agent 'SP3NS9010CQ9AK3M6XN3XD9EHNTDZVGYSMFWZ288Z))
-		(try! (contract-call? .bme024-0-market-predicting set-dev-fund 'SM38XBR119DCN8D3WTBGWYYXC3K8X0FY0F9TSD8AF))
+		(try! (contract-call? .bme024-0-market-predicting set-resolution-agent 'ST2CY5V39NHDPWSXMW9QDT3HC3GD6Q6XX4CFRK9AG))
+		(try! (contract-call? .bme024-0-market-predicting set-dev-fund 'ST2JHG361ZXG51QTKY2NQCVBPPRRE2KZB1HR05NNC))
 		(try! (contract-call? .bme024-0-market-predicting set-dao-treasury .bme006-0-treasury))
 		(try! (contract-call? .bme024-0-market-predicting set-creation-gated true))
 		(try! (contract-call? .bme024-0-market-predicting set-market-fee-bips-max u1000))
@@ -50,8 +50,8 @@
 		(try! (contract-call? .bme024-0-market-predicting set-token-minimum-seed .big-play u1000000000))
 
 		;; Scalar contract setting
-		(try! (contract-call? .bme024-0-market-scalar-pyth set-resolution-agent 'SP3NS9010CQ9AK3M6XN3XD9EHNTDZVGYSMFWZ288Z))
-		(try! (contract-call? .bme024-0-market-scalar-pyth set-dev-fund 'SM38XBR119DCN8D3WTBGWYYXC3K8X0FY0F9TSD8AF))
+		(try! (contract-call? .bme024-0-market-scalar-pyth set-resolution-agent 'ST2CY5V39NHDPWSXMW9QDT3HC3GD6Q6XX4CFRK9AG))
+		(try! (contract-call? .bme024-0-market-scalar-pyth set-dev-fund 'ST2JHG361ZXG51QTKY2NQCVBPPRRE2KZB1HR05NNC))
 		(try! (contract-call? .bme024-0-market-scalar-pyth set-dao-treasury .bme006-0-treasury))
 		(try! (contract-call? .bme024-0-market-scalar-pyth set-creation-gated true))
 		(try! (contract-call? .bme024-0-market-scalar-pyth set-market-fee-bips-max u1000))
@@ -131,8 +131,25 @@
 			)
 		))
 
-		(try! (contract-call? .bme030-0-reputation-token set-epoch-duration u50)) ;; makes duration 3 hourly on devnet
+		(try! (contract-call? .bme030-0-reputation-token set-epoch-duration u100)) ;; makes duration 3 hourly on devnet
 		(try! (contract-call? .bme030-0-reputation-token set-launch-height))
+
+		;; Premint BIG (42668067218) for early contributors - phase 1:
+		;; 3096 is the average of all the BIG earned in V1 since a proportional mint was not possible due to
+		;; the bug bigmarket-dao/issues/16
+		(try! (contract-call? .bme000-0-governance-token bmg-mint-many
+			(list
+				{amount: u42668067218, recipient: 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM}
+				{amount: u42668067218, recipient: 'ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5}
+				{amount: u42668067218, recipient: 'ST2CY5V39NHDPWSXMW9QDT3HC3GD6Q6XX4CFRK9AG}
+				{amount: u42668067218, recipient: 'ST2JHG361ZXG51QTKY2NQCVBPPRRE2KZB1HR05NNC}
+			)
+		))
+		;; Mint early contributors a reserved SFT
+        (try! (contract-call? .bme030-0-reputation-token mint 'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM u20 u10))
+        (try! (contract-call? .bme030-0-reputation-token mint 'ST1CV2YGRJA5X8BWS0GP31J9HF56M06CQK8998TSX u20 u10))
+        (try! (contract-call? .bme030-0-reputation-token mint 'ST2CY5V39NHDPWSXMW9QDT3HC3GD6Q6XX4CFRK9AG u20 u10))
+        (try! (contract-call? .bme030-0-reputation-token mint 'ST2JHG361ZXG51QTKY2NQCVBPPRRE2KZB1HR05NNC u20 u10))
 
 
 		(print "BigMarket DAO has risen.")
