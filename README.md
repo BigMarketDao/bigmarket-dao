@@ -108,7 +108,26 @@ Pre-requisites for running the application on devnet:
 We use Mongo Cloud and connect locally eg
 
 ```bash
-mongosh mongodb+srv://<user>>:<password>@<cluster.name>/<devnet-dbname> --apiVersion 1
+mongosh mongodb+srv://<user>:<password>@<cluster.name>/<devnet-dbname> --apiVersion 1
+```
+
+Backup:
+
+```bash
+mongodump \
+  --uri="mongodb+srv://<username>:<password>@<cluster-name>.mongodb.net" \
+  --out ./mongo-backup-$(date +%Y-%m-%d)
+```
+
+Drop in replacements;
+
+```bash
+mongorestore \
+  --uri="mongodb+srv://<user>:<pass>@<cluster>.mongodb.net" \
+  --db bmdb-mainnet \
+  --collection forumMessageBoardCollection \
+  --drop \
+  mongo-dumps/mongo-backup-2026-02-04/forumMessageBoardCollection.bson
 ```
 
 #### Collections
