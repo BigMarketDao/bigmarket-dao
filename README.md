@@ -92,7 +92,7 @@ clarinet deployments apply -p deployments/default.devnet-plan.yaml --no-dashboar
 
 or deploy manually using sandbox in order following address [ST1CV2YGRJA5X8BWS0GP31J9HF56M06CQK8998TSX](https://explorer.hiro.so/address/ST1CV2YGRJA5X8BWS0GP31J9HF56M06CQK8998TSX?chain=testnet);
 
-SP3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX52CR6XQ.bme008-0-resolution-coordinator
+SP1SCD8ERMTFYE6CK9S0MHWQCP6SY4NAVFJ538A27.bme008-0-resolution-coordinator
 
 ## Local Development
 
@@ -243,3 +243,12 @@ To: -
 ```bash
 stx make_keychain
 ```
+
+
+
+The new DAO will startup with the config in this bootstrap proposal. The end of this mints everyone who took part in V1 an amount of BIG token 3096.936301 (the average of all BIG earned by users taking part).
+
+It also mints each early participant a unique reputation token (SFT) which we can play with as and when the project takes off.
+
+
+https://explorer.hiro.so/txid/0x89aefeeaa8724a9ebb947aaed04b4ed3d31ec0ac72de6f007f1da8d796d04116?chain=mainnet

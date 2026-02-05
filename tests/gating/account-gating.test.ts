@@ -193,18 +193,16 @@ describe('gating market  creation', () => {
 			//tree
 		);
 		console.log('--------------------------------------------------------------------------------------------------------------');
-		// Allowed = ["SP3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX52CR6XQ", "SPEZD95XQ194X67C1QJW4PHKDG8F5D66ZCT8BY29", "SP2XFH8D1MM2G11C0S6AZRSNP031RAY92XCARPRSQ", "SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z"];
 		allowedCreators = [
-			'SP3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX52CR6XQ'
-			// 'SPEZD95XQ194X67C1QJW4PHKDG8F5D66ZCT8BY29', //am
-			// 'SP2XFH8D1MM2G11C0S6AZRSNP031RAY92XCARPRSQ',
-			// 'SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z', // daoguy
-			// 'SP2Z2CBMGWB9MQZAF5Z8X56KS69XRV3SJF4WKJ7J9', // deorg
-			// 'SPQE3J7XMMK0DN0BWJZHGE6B05VDYQRXRMDV734D' // jb
+			'SP1SCD8ERMTFYE6CK9S0MHWQCP6SY4NAVFJ538A27',
+			'SPEZD95XQ194X67C1QJW4PHKDG8F5D66ZCT8BY29', //am
+			'SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z', // daoguy
+			'SP2Z2CBMGWB9MQZAF5Z8X56KS69XRV3SJF4WKJ7J9', // deorg
+			'SPQE3J7XMMK0DN0BWJZHGE6B05VDYQRXRMDV734D' // jb
 		];
 		let newRoot = generateMerkleTreeUsingStandardPrincipal(allowedCreators);
 		//let merklProof1 = generateMerkleProof(newRoot.tree, 'ST3RR3HF25CQ9A5DEWS4R1WKJSBCFKQXFBYPJK3WV');
-		const lookupRootKey1 = contractId2Key('ST1CV2YGRJA5X8BWS0GP31J9HF56M06CQK8998TSX.bme023-0-market-scalar-pyth');
+		const lookupRootKey1 = contractId2Key('SP1SCD8ERMTFYE6CK9S0MHWQCP6SY4NAVFJ538A27.bme023-0-market-scalar-pyth');
 		console.log('--------------------------------------------------------------------------------------------------------------');
 		console.log(allowedCreators);
 		console.log(

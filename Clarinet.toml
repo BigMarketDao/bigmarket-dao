@@ -38,8 +38,8 @@ contract_id = 'SP1Y5YSTAHZ88XYK1VPDH24GY0HPX5J4JECTMY4A1.univ2-share-fee-to'
 [[project.requirements]]
 contract_id = 'SP1Y5YSTAHZ88XYK1VPDH24GY0HPX5J4JECTMY4A1.univ2-share-fee-to-trait'
 
-[contracts.bdbp001-set-manual-fallback]
-path = 'contracts/proposals/devnet/unit-tests/bdbp001-set-manual-fallback.clar'
+[contracts.bdbp001-set-bips]
+path = 'contracts/proposals/devnet/unit-tests/bdbp001-set-bips.clar'
 clarity_version = 3
 epoch = 'latest'
 
@@ -48,13 +48,18 @@ path = 'contracts/proposals/devnet/unit-tests/bdbp001-set-bips-error.clar'
 clarity_version = 3
 epoch = 'latest'
 
-[contracts.bdbp001-set-bips]
-path = 'contracts/proposals/devnet/unit-tests/bdbp001-set-bips.clar'
+[contracts.bdbp001-set-manual-fallback]
+path = 'contracts/proposals/devnet/unit-tests/bdbp001-set-manual-fallback.clar'
 clarity_version = 3
 epoch = 'latest'
 
 [contracts.bdp000-bootstrap]
 path = 'contracts/proposals/devnet/bdp000-bootstrap.clar'
+clarity_version = 3
+epoch = 'latest'
+
+[contracts.bdp000-callback]
+path = 'contracts/proposals/devnet/unit-tests/callback/bdp000-callback.clar'
 clarity_version = 3
 epoch = 'latest'
 
@@ -73,18 +78,83 @@ path = 'contracts/proposals/devnet/unit-tests/governance/bdp000-governance-sette
 clarity_version = 3
 epoch = 'latest'
 
-[contracts.bdp000-callback]
-path = 'contracts/proposals/devnet/unit-tests/callback/bdp000-callback.clar'
+[contracts.bdp000-hedge-bad-token-pairs1]
+path = 'contracts/proposals/devnet/unit-tests/hedging/bdp000-hedge-bad-token-pairs1.clar'
+clarity_version = 3
+epoch = 'latest'
+
+[contracts.bdp000-hedge-bad-token-pairs2]
+path = 'contracts/proposals/devnet/unit-tests/hedging/bdp000-hedge-bad-token-pairs2.clar'
+clarity_version = 3
+epoch = 'latest'
+
+[contracts.bdp000-hedge-bad-token-pairs3]
+path = 'contracts/proposals/devnet/unit-tests/hedging/bdp000-hedge-bad-token-pairs3.clar'
+clarity_version = 3
+epoch = 'latest'
+
+[contracts.bdp000-hedge-disable]
+path = 'contracts/proposals/devnet/unit-tests/hedging/bdp000-hedge-disable.clar'
+clarity_version = 3
+epoch = 'latest'
+
+[contracts.bdp000-hedge-disable-token]
+path = 'contracts/proposals/devnet/unit-tests/hedging/bdp000-hedge-disable-token.clar'
+clarity_version = 3
+epoch = 'latest'
+
+[contracts.bdp000-hedge1]
+path = 'contracts/proposals/devnet/unit-tests/hedging/bdp000-hedge1.clar'
+clarity_version = 3
+epoch = 'latest'
+
+[contracts.bdp000-hedge2]
+path = 'contracts/proposals/devnet/unit-tests/hedging/bdp000-hedge2.clar'
+clarity_version = 3
+epoch = 'latest'
+
+[contracts.bdp000-hedge3]
+path = 'contracts/proposals/devnet/unit-tests/hedging/bdp000-hedge3.clar'
+clarity_version = 3
+epoch = 'latest'
+
+[contracts.bdp000-hedge4]
+path = 'contracts/proposals/devnet/unit-tests/hedging/bdp000-hedge4.clar'
+clarity_version = 3
+epoch = 'latest'
+
+[contracts.bdp000-liquidity]
+path = 'contracts/proposals/devnet/unit-tests/reputation/bdp000-liquidity.clar'
+clarity_version = 3
+epoch = 'latest'
+
+[contracts.bdp000-liquidity-zero]
+path = 'contracts/proposals/devnet/unit-tests/reputation/bdp000-liquidity-zero.clar'
+clarity_version = 3
+epoch = 'latest'
+
+[contracts.bdp000-scalar1]
+path = 'contracts/proposals/devnet/unit-tests/resolution/bdp000-scalar1.clar'
+clarity_version = 3
+epoch = 'latest'
+
+[contracts.bdp000-sft-setters]
+path = 'contracts/proposals/devnet/unit-tests/reputation/bdp000-sft-setters.clar'
+clarity_version = 3
+epoch = 'latest'
+
+[contracts.bdp000-sft-tier-weights]
+path = 'contracts/proposals/devnet/unit-tests/reputation/bdp000-sft-tier-weights.clar'
+clarity_version = 3
+epoch = 'latest'
+
+[contracts.bdp000-token-sale]
+path = 'contracts/proposals/devnet/unit-tests/governance/bdp000-token-sale.clar'
 clarity_version = 3
 epoch = 'latest'
 
 [contracts.bdp000-treasury-setters]
 path = 'contracts/proposals/devnet/unit-tests/governance/bdp000-treasury-setters.clar'
-clarity_version = 3
-epoch = 'latest'
-
-[contracts.bdp000-treasury-transfers]
-path = 'contracts/proposals/devnet/unit-tests/governance/bdp000-treasury-transfers.clar'
 clarity_version = 3
 epoch = 'latest'
 
@@ -113,6 +183,11 @@ path = 'contracts/proposals/devnet/unit-tests/governance/bdp000-treasury-setters
 clarity_version = 3
 epoch = 'latest'
 
+[contracts.bdp000-treasury-transfers]
+path = 'contracts/proposals/devnet/unit-tests/governance/bdp000-treasury-transfers.clar'
+clarity_version = 3
+epoch = 'latest'
+
 [contracts.bdp000-voting-propose]
 path = 'contracts/proposals/devnet/unit-tests/governance/bdp000-voting-propose.clar'
 clarity_version = 3
@@ -120,18 +195,6 @@ epoch = 'latest'
 
 [contracts.bdp000-voting-propose-sunset]
 path = 'contracts/proposals/devnet/unit-tests/governance/bdp000-voting-propose-sunset.clar'
-clarity_version = 3
-epoch = 'latest'
-
-[contracts.bdp000-token-sale]
-path = 'contracts/proposals/devnet/unit-tests/governance/bdp000-token-sale.clar'
-clarity_version = 3
-epoch = 'latest'
-
-
-
-[contracts.bdp000-scalar1]
-path = 'contracts/proposals/devnet/unit-tests/resolution/bdp000-scalar1.clar'
 clarity_version = 3
 epoch = 'latest'
 
@@ -185,52 +248,6 @@ path = 'contracts/proposals/devnet/unit-tests/bdp001-cancel-stage.clar'
 clarity_version = 3
 epoch = 'latest'
 
-
-[contracts.bdp000-hedge1]
-path = 'contracts/proposals/devnet/unit-tests/hedging/bdp000-hedge1.clar'
-clarity_version = 3
-epoch = 'latest'
-
-[contracts.bdp000-hedge2]
-path = 'contracts/proposals/devnet/unit-tests/hedging/bdp000-hedge2.clar'
-clarity_version = 3
-epoch = 'latest'
-
-[contracts.bdp000-hedge3]
-path = 'contracts/proposals/devnet/unit-tests/hedging/bdp000-hedge3.clar'
-clarity_version = 3
-epoch = 'latest'
-
-[contracts.bdp000-hedge4]
-path = 'contracts/proposals/devnet/unit-tests/hedging/bdp000-hedge4.clar'
-clarity_version = 3
-epoch = 'latest'
-
-[contracts.bdp000-hedge-disable]
-path = 'contracts/proposals/devnet/unit-tests/hedging/bdp000-hedge-disable.clar'
-clarity_version = 3
-epoch = 'latest'
-
-[contracts.bdp000-hedge-disable-token]
-path = 'contracts/proposals/devnet/unit-tests/hedging/bdp000-hedge-disable-token.clar'
-clarity_version = 3
-epoch = 'latest'
-
-[contracts.bdp000-hedge-bad-token-pairs1]
-path = 'contracts/proposals/devnet/unit-tests/hedging/bdp000-hedge-bad-token-pairs1.clar'
-clarity_version = 3
-epoch = 'latest'
-
-[contracts.bdp000-hedge-bad-token-pairs2]
-path = 'contracts/proposals/devnet/unit-tests/hedging/bdp000-hedge-bad-token-pairs2.clar'
-clarity_version = 3
-epoch = 'latest'
-
-[contracts.bdp000-hedge-bad-token-pairs3]
-path = 'contracts/proposals/devnet/unit-tests/hedging/bdp000-hedge-bad-token-pairs3.clar'
-clarity_version = 3
-epoch = 'latest'
-
 [contracts.bdp001-gating]
 path = 'contracts/proposals/devnet/bdp001-gating.clar'
 clarity_version = 3
@@ -266,34 +283,8 @@ path = 'contracts/proposals/devnet/unit-tests/bdp001-reset-allocation.clar'
 clarity_version = 3
 epoch = 'latest'
 
-[contracts.bdp001-resolution-add-agent]
-path = 'contracts/proposals/mainnet/bdp001-resolution-add-agent.clar'
-clarity_version = 3
-epoch = 'latest'
-
 [contracts.bdp001-set-dev-fee-zero]
 path = 'contracts/proposals/devnet/unit-tests/bdp001-set-dev-fee-zero.clar'
-clarity_version = 3
-epoch = 'latest'
-
-
-[contracts.bdp000-sft-setters]
-path = 'contracts/proposals/devnet/unit-tests/reputation/bdp000-sft-setters.clar'
-clarity_version = 3
-epoch = 'latest'
-
-[contracts.bdp000-sft-tier-weights]
-path = 'contracts/proposals/devnet/unit-tests/reputation/bdp000-sft-tier-weights.clar'
-clarity_version = 3
-epoch = 'latest'
-
-[contracts.bdp000-liquidity]
-path = 'contracts/proposals/devnet/unit-tests/reputation/bdp000-liquidity.clar'
-clarity_version = 3
-epoch = 'latest'
-
-[contracts.bdp000-liquidity-zero]
-path = 'contracts/proposals/devnet/unit-tests/reputation/bdp000-liquidity-zero.clar'
 clarity_version = 3
 epoch = 'latest'
 
@@ -329,11 +320,6 @@ epoch = 'latest'
 
 [contracts.bdp001-sft-tokens-5]
 path = 'contracts/proposals/devnet/unit-tests/reputation/bdp001-sft-tokens-5.clar'
-clarity_version = 3
-epoch = 'latest'
-
-[contracts.bdp005-update-liquidity-ext]
-path = 'contracts/proposals/testnet/bdp005-update-liquidity-ext.clar'
 clarity_version = 3
 epoch = 'latest'
 
@@ -487,11 +473,6 @@ path = 'contracts/external/pyth/pyth-traits-v2.clar'
 clarity_version = 3
 epoch = 'latest'
 
-[contracts.wormhole-traits-v2]
-path = 'contracts/external/pyth/wormhole-traits-v2.clar'
-clarity_version = 3
-epoch = 'latest'
-
 [contracts.sbtc]
 path = 'contracts/external/sbtc.clar'
 clarity_version = 3
@@ -532,12 +513,19 @@ path = 'contracts/external/velar/univ2-share-fee-to.clar'
 clarity_version = 3
 epoch = 'latest'
 
+[contracts.wormhole-traits-v2]
+path = 'contracts/external/pyth/wormhole-traits-v2.clar'
+clarity_version = 3
+epoch = 'latest'
+
 [contracts.wrapped-stx]
 path = 'contracts/external/wrapped-stx.clar'
 clarity_version = 3
 epoch = 'latest'
 [repl.analysis]
 passes = []
+
+[repl.analysis.lints]
 
 [repl.analysis.check_checker]
 strict = false

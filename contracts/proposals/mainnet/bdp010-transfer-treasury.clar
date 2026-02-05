@@ -2,7 +2,7 @@
 ;; Author(s): mijoco.btc
 ;; Move V1 treasury to V2 DAO and close down the dao
 
-(impl-trait  .proposal-trait.proposal-trait)
+(impl-trait  'SP3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX52CR6XQ.proposal-trait.proposal-trait)
 
 (define-public (execute (sender principal))
 	(begin
@@ -21,8 +21,7 @@
 				{extension: 'SP3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX52CR6XQ.bme024-0-market-scalar-pyth, enabled: false}
 				{extension: 'SP3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX52CR6XQ.bme024-0-market-predicting, enabled: false}
 				{extension: 'SP3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX52CR6XQ.bme030-0-reputation-token, enabled: false}
-				{extension: 'SP3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX52CR6XQ.bme032-0-scalar-strategy-hedge, enabled: false}
-				;;{extension: .bme040-0-shares-marketplace, enabled: false}
+				{extension: 'SP3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX52CR6XQ.bme008-0-resolution-coordinator, enabled: false}
 			)
 		))
 		(ok true)
