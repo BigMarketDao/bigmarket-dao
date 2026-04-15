@@ -221,16 +221,6 @@ plan:
             path: contracts/proposals/devnet/unit-tests/bdbp001-set-manual-fallback.clar
             clarity-version: 3
         - emulated-contract-publish:
-            contract-name: bme030-1-reputation-token
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/extensions/bme030-1-reputation-token.clar
-            clarity-version: 3
-        - emulated-contract-publish:
-            contract-name: bme030-2-reputation-token
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/extensions/bme030-2-reputation-token.clar
-            clarity-version: 3
-        - emulated-contract-publish:
             contract-name: bme001-0-proposal-voting
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/extensions/bme001-0-proposal-voting.clar
@@ -265,9 +255,6 @@ plan:
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/external/sbtc.clar
             clarity-version: 3
-      epoch: "3.3"
-    - id: 5
-      transactions:
         - emulated-contract-publish:
             contract-name: tpepe
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
@@ -278,6 +265,9 @@ plan:
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/external/tusdh.clar
             clarity-version: 3
+      epoch: "3.3"
+    - id: 5
+      transactions:
         - emulated-contract-publish:
             contract-name: bdp000-bootstrap
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
@@ -393,9 +383,6 @@ plan:
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/extensions/bme010-0-token-sale.clar
             clarity-version: 3
-      epoch: "3.3"
-    - id: 6
-      transactions:
         - emulated-contract-publish:
             contract-name: bdp000-token-sale
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
@@ -406,6 +393,9 @@ plan:
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/proposals/devnet/unit-tests/governance/bdp000-treasury-setters.clar
             clarity-version: 3
+      epoch: "3.3"
+    - id: 6
+      transactions:
         - emulated-contract-publish:
             contract-name: bdp000-treasury-setters-error1
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
@@ -521,9 +511,6 @@ plan:
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/proposals/devnet/bdp001-gating-true-testnet.clar
             clarity-version: 3
-      epoch: "3.3"
-    - id: 7
-      transactions:
         - emulated-contract-publish:
             contract-name: bdp001-initialise-token-sale
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
@@ -534,6 +521,9 @@ plan:
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/proposals/devnet/unit-tests/bdp001-market-fees.clar
             clarity-version: 3
+      epoch: "3.3"
+    - id: 7
+      transactions:
         - emulated-contract-publish:
             contract-name: bdp001-market-fees-1
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
@@ -595,6 +585,11 @@ plan:
             path: contracts/external/big-play.clar
             clarity-version: 3
         - emulated-contract-publish:
+            contract-name: bme024-1-market-predicting
+            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
+            path: contracts/extensions/bme024-1-market-predicting.clar
+            clarity-version: 3
+        - emulated-contract-publish:
             contract-name: bme040-0-shares-marketplace
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/extensions/bme040-0-shares-marketplace.clar
@@ -623,11 +618,6 @@ plan:
             contract-name: nft-trait
             emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
             path: contracts/traits/sips/nft-trait.clar
-            clarity-version: 3
-        - emulated-contract-publish:
-            contract-name: reputation-trait
-            emulated-sender: ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM
-            path: contracts/traits/reputation-trait.clar
             clarity-version: 3
         - emulated-contract-publish:
             contract-name: trait-dia-oracle

@@ -24,6 +24,8 @@
 				{extension: .bme030-0-reputation-token, enabled: true}
 				{extension: .bme032-0-scalar-strategy-hedge, enabled: true}
 				{extension: .bme040-0-shares-marketplace, enabled: true}
+				{extension: .bme008-0-resolution-coordinator, enabled: true}
+
 			)
 		))
 		;; Set core team members.
