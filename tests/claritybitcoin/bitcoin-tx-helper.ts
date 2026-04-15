@@ -52,7 +52,7 @@ export function buildMockBitcoinSegwitTransaction(): btc.Transaction {
 			p: Cl.principal('ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5')
 		})
 	);
-	const encodedData = hex.encode(data);
+	const encodedData = data;
 	//silence: console.log('buildMockBitcoinSegwitTransaction: encodedData: ' + encodedData);
 	transaction.addOutput({
 		script: btc.Script.encode(['RETURN', hex.decode(encodedData)]),
@@ -109,7 +109,7 @@ export function buildMockBitcoinLegacyTransaction(): btc.Transaction {
 	const data = Cl.serialize(Cl.tuple({ o: Cl.uint(2), i: Cl.uint(4), p: Cl.principal('ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM') }));
 
 	transaction.addOutput({
-		script: btc.Script.encode(['RETURN', hex.decode(hex.encode(data))]), // OP_RETURN Data
+		script: btc.Script.encode(['RETURN', hex.decode(data)]), // OP_RETURN Data
 		amount: BigInt(0)
 	});
 	transaction.addOutputAddress(btcAddress, BigInt(50000), REGTEST_NETWORK); // Market wallet

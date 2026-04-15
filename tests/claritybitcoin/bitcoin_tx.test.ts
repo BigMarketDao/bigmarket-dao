@@ -1,6 +1,6 @@
 import { Cl } from '@stacks/transactions';
 import { describe, expect, it } from 'vitest';
-import { constructDao, deployer, metadataHash, setupSimnet } from '../helpers';
+import { constructDao, deployer, metadataHash } from '../dao_helpers';
 import { getWif } from './bitcoin-tx-helper';
 
 const proofData = {
@@ -18,7 +18,7 @@ const proofData = {
 async function createCategoricalBitcoinMarket(marketId: number, creator?: string) {
 	getWif('');
 	await constructDao(simnet);
-	let response = await simnet.callPublicFn(
+	let response = simnet.callPublicFn(
 		'bme023-0-market-bitcoin',
 		'create-market',
 		[
@@ -33,7 +33,7 @@ async function createCategoricalBitcoinMarket(marketId: number, creator?: string
 	expect(response.result).toEqual(Cl.ok(Cl.uint(marketId)));
 }
 async function predictCategory(user: string, marketId: number, category: string, amount: number, code: number) {
-	const height = await simnet.blockHeight;
+	const height = simnet.blockHeight;
 	// (wtx (buff 4096))
 	// (header (buff 80))
 	// (tx-index uint)
@@ -44,19 +44,17 @@ async function predictCategory(user: string, marketId: number, category: string,
 	// (ctx (buff 1024))
 	// (cproof (list 14 (buff 32))))
 	const functionArgs = [Cl.uint(marketId), Cl.uint(amount), Cl.stringAscii(category)];
-	let response = await simnet.callPublicFn('bme023-0-market-bitcoin', 'predict-category', functionArgs, user);
+	let response = simnet.callPublicFn('bme023-0-market-bitcoin', 'predict-category', functionArgs, user);
 	expect(response.result).toEqual(Cl.ok(Cl.uint(code)));
 	return response;
 }
-
-const simnet = await setupSimnet();
 
 describe('clarity bitcoin', () => {
 	it('check parse random mempool segwit', async () => {
 		const txid = '7ec19cf11e4f7686aea09273ab01f7584953dad9fc9a57ef8c39ecfb9f71216f';
 		const txHex =
 			'02000000000101690229f4efc7902ab27dd94b3c114abca8ac46fde629f7a276c1ed30609334f70000000017160014ea22e269d8edf24954708789c07e8286d7ce0fbe01000000014e5b6605000000001976a914674a8527a29f25613552267d0edfd181212becdc88ac0247304402201da873b8738a6db149c4810b658eba67f09ab6969fd4066631b0f15f184252160220154966c003f817ff57e0736fa39f8f24609ac7e830647835761e84665efddf74012103ac2362ac29f935b88e9c7acbc26f8697fd03cbd7d302041b1d7d9706f3e22d8b00000000';
-		let response = await simnet.callReadOnlyFn('bme023-0-market-bitcoin', 'get-output-segwit', [Cl.bufferFromHex(txHex), Cl.uint(0)], deployer);
+		let response = simnet.callReadOnlyFn('bme023-0-market-bitcoin', 'get-output-segwit', [Cl.bufferFromHex(txHex), Cl.uint(0)], deployer);
 		//silence: console.log('check parse random mempool segwit', txHex);
 		expect(response.result).toMatchObject(
 			Cl.ok(
@@ -70,7 +68,7 @@ describe('clarity bitcoin', () => {
 	// it('check get-output segwit 0', async () => {
 	// 	const transaction = buildMockBitcoinSegwitTransaction();
 	// 	const txHex = hex.encode(transaction.toBytes(true, true));
-	// 	let response = await simnet.callReadOnlyFn('bme023-0-market-bitcoin', 'get-output-segwit', [Cl.bufferFromHex(txHex), Cl.uint(0)], deployer);
+	// 	let response = simnet.callReadOnlyFn('bme023-0-market-bitcoin', 'get-output-segwit', [Cl.bufferFromHex(txHex), Cl.uint(0)], deployer);
 	// 	//silence: console.log('check get-output segwit 0', hex.encode((response.result as any).value.data.scriptPubKey.buffer));
 	// 	expect(response.result).toMatchObject(
 	// 		Cl.ok(
@@ -86,7 +84,7 @@ describe('clarity bitcoin', () => {
 	// it('check get-output segwit 1', async () => {
 	// 	const transaction = buildMockBitcoinSegwitTransaction();
 	// 	const txHex = hex.encode(transaction.toBytes(true, true));
-	// 	let response = await simnet.callReadOnlyFn('bme023-0-market-bitcoin', 'get-output-segwit', [Cl.bufferFromHex(txHex), Cl.uint(1)], deployer);
+	// 	let response = simnet.callReadOnlyFn('bme023-0-market-bitcoin', 'get-output-segwit', [Cl.bufferFromHex(txHex), Cl.uint(1)], deployer);
 	// 	//silence: console.log('check get-output segwit 1', hex.encode((response.result as any).value.data.scriptPubKey.buffer));
 	// 	expect(response.result).toMatchObject(
 	// 		Cl.ok(
@@ -117,7 +115,7 @@ describe('clarity bitcoin', () => {
 
 	// 	//let tx = '6a6e48656c6c6f20537461636b73'; // OP_RETURN + custom marker + "Hello Stacks"
 	// 	const txHex = hex.encode(transaction.toBytes(true, false));
-	// 	let response = await simnet.callReadOnlyFn('bme023-0-market-bitcoin', 'get-output-legacy', [Cl.bufferFromHex(txHex), Cl.uint(0)], deployer);
+	// 	let response = simnet.callReadOnlyFn('bme023-0-market-bitcoin', 'get-output-legacy', [Cl.bufferFromHex(txHex), Cl.uint(0)], deployer);
 	// 	//console.log('check get-output legacy 0', txHex);
 
 	// 	expect(response.result).toMatchObject(
@@ -135,7 +133,7 @@ describe('clarity bitcoin', () => {
 	// 	//let tx = '6a6e48656c6c6f20537461636b73'; // OP_RETURN + custom marker + "Hello Stacks"
 	// 	const txHex = hex.encode(transaction.toBytes(true, false));
 	// 	//console.log('check get-output legacy 1', txHex);
-	// 	let response = await simnet.callReadOnlyFn('bme023-0-market-bitcoin', 'get-output-legacy', [Cl.bufferFromHex(txHex), Cl.uint(1)], deployer);
+	// 	let response = simnet.callReadOnlyFn('bme023-0-market-bitcoin', 'get-output-legacy', [Cl.bufferFromHex(txHex), Cl.uint(1)], deployer);
 
 	// 	expect(response.result).toMatchObject(
 	// 		Cl.ok(
@@ -151,7 +149,7 @@ describe('clarity bitcoin', () => {
 
 	// 	//let tx = '6a6e48656c6c6f20537461636b73'; // OP_RETURN + custom marker + "Hello Stacks"
 	// 	const txHex = hex.encode(transaction.toBytes(true, false));
-	// 	let response = await simnet.callReadOnlyFn('bme023-0-market-bitcoin', 'parse-payload-legacy', [Cl.bufferFromHex(txHex)], deployer);
+	// 	let response = simnet.callReadOnlyFn('bme023-0-market-bitcoin', 'parse-payload-legacy', [Cl.bufferFromHex(txHex)], deployer);
 	// 	//silence: console.log('\n\n check parse legacy op_return', (response.result as any).value.data);
 
 	// 	const data = Cl.serialize(Cl.tuple({ idx: Cl.uint(2), amt: Cl.uint(3), id: Cl.uint(4), addr: Cl.principal('ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM') }));
@@ -172,7 +170,7 @@ describe('clarity bitcoin', () => {
 	// it('check parse segwit op_return', async () => {
 	// 	const transaction = buildMockBitcoinSegwitTransaction();
 	// 	const txHex = hex.encode(transaction.toBytes(true, true));
-	// 	let response = await simnet.callReadOnlyFn('bme023-0-market-bitcoin', 'parse-payload-segwit', [Cl.bufferFromHex(txHex)], deployer);
+	// 	let response = simnet.callReadOnlyFn('bme023-0-market-bitcoin', 'parse-payload-segwit', [Cl.bufferFromHex(txHex)], deployer);
 	// 	// console.log('\n\ncheck parse segwit op_return', (response.result as any).value.data);
 	// 	expect(response.result).toMatchObject(
 	// 		Cl.ok(
@@ -191,7 +189,7 @@ describe('clarity bitcoin', () => {
 	// // 	predictCategory(alice, 0, 'lion', 100, 100001);
 	// // 	const transaction = buildMockBitcoinSegwitTransaction();
 	// // 	const txHex = hex.encode(transaction.toBytes(true, true));
-	// // 	let response = await simnet.callReadOnlyFn('bme023-0-market-bitcoin', 'parse-payload-segwit', [Cl.bufferFromHex(txHex)], deployer);
+	// // 	let response = simnet.callReadOnlyFn('bme023-0-market-bitcoin', 'parse-payload-segwit', [Cl.bufferFromHex(txHex)], deployer);
 	// // 	// console.log('\n\ncheck parse segwit op_return', (response.result as any).value.data);
 	// // 	expect(response.result).toMatchObject(
 	// // 		Cl.ok(

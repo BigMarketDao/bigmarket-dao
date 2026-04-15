@@ -103,6 +103,7 @@
     (
       	(vesting (unwrap! (map-get? core-team-vesting {current-key: (var-get current-key), recipient: tx-sender}) err-no-vesting-schedule))
 		(current-block burn-block-height)
+		(user tx-sender)
 		(start-block (get start-block vesting))
 		(duration (get duration vesting))
 		(total-amount (get total-amount vesting))
@@ -118,7 +119,7 @@
     
 	(asserts! (> burn-block-height midpoint) err-cliff-not-reached) 
 	(asserts! (> claimable u0) err-nothing-to-claim) 
-	(try! (as-contract (ft-mint? bmg-token claimable tx-sender)))
+	(try! (as-contract (ft-mint? bmg-token claimable user)))
 
     (map-set core-team-vesting {current-key: (var-get current-key), recipient: tx-sender}
         (merge vesting {claimed: (+ claimed claimable)}))
@@ -257,6 +258,7 @@
 	(get-balance who)
 )
 
+;; governance-weight threshold check - does who own at least factor per cent of total supply
 (define-read-only (bmg-has-percentage-balance (who principal) (factor uint))
 	(ok (>= (* (unwrap-panic (get-balance who)) factor) (* (unwrap-panic (get-total-supply)) u1000)))
 )

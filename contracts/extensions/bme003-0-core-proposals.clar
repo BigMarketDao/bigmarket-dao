@@ -22,7 +22,7 @@
 (define-constant err-ends-too-late (err u3305))
 
 (define-constant MIN_PROPOSAL_DELAY u3)       ;; at least 3 blocks in future
-(define-constant MAX_PROPOSAL_DURATION u4380) ;; approx. 1 month
+(define-constant MAX_PROPOSAL_DURATION u1000) ;; approx. 1 week
 
 (define-map core-team principal bool)
 

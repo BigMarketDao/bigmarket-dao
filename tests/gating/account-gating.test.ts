@@ -13,15 +13,14 @@ import {
 	metadataHash,
 	passProposalByCoreVote,
 	passProposalByExecutiveSignals,
-	setupSimnet,
 	stxToken,
 	tom,
 	wallace
-} from '../helpers';
+} from '../dao_helpers';
 import { contractId2Key, generateMerkleProof, generateMerkleTreeUsingStandardPrincipal, proofToClarityValue } from './gating';
 
 async function createBinaryMarket(marketId: number, creator?: string, token?: string) {
-	let response = await simnet.callPublicFn(
+	let response = simnet.callPublicFn(
 		'bme024-0-market-predicting',
 		'create-market',
 		[
@@ -43,7 +42,7 @@ async function createBinaryMarket(marketId: number, creator?: string, token?: st
 }
 
 async function createBinaryMarketWithGating(marketId: number, proof: any, key?: any, creator?: string, token?: string, fee?: number) {
-	let response = await simnet.callPublicFn(
+	let response = simnet.callPublicFn(
 		'bme024-0-market-predicting',
 		'create-market',
 		[
@@ -68,11 +67,16 @@ async function createBinaryMarketWithGating(marketId: number, proof: any, key?: 
 	return response;
 }
 
-const simnet = await setupSimnet();
 /*
   The test below is an example. Learn more in the clarinet-sdk readme:
   https://github.com/hirosystems/clarinet/blob/develop/components/clarinet-sdk/README.md
 */
+describe('gating market  coverage', () => {
+	it('err-expecting-merkle-root-for-poll', async () => {
+		await constructDao(simnet);
+		let response = await createBinaryMarket(0, deployer, stxToken);
+	});
+});
 
 describe('gating market  creation', () => {
 	it('err-expecting-merkle-root-for-poll', async () => {
@@ -82,7 +86,7 @@ describe('gating market  creation', () => {
 
 	it('err-unauthorised', async () => {
 		await constructDao(simnet);
-		let response = await simnet.callPublicFn(
+		let response = simnet.callPublicFn(
 			'bme022-0-market-gating',
 			'set-merkle-root',
 			[
@@ -111,7 +115,7 @@ describe('gating market  creation', () => {
 		//   const allowedCreators = [deployer];
 		const { tree, root } = generateMerkleTreeUsingStandardPrincipal(allowedCreators);
 
-		let data = await simnet.callReadOnlyFn('bme022-0-market-gating', 'get-merkle-root', [Cl.bufferFromHex(lookupRootKey)], alice);
+		let data = simnet.callReadOnlyFn('bme022-0-market-gating', 'get-merkle-root', [Cl.bufferFromHex(lookupRootKey)], alice);
 		expect(data.result).toEqual(
 			// see bdp001-gating
 			Cl.some(Cl.tuple({ 'merkle-root': Cl.bufferFromHex(root) }))
@@ -129,7 +133,7 @@ describe('gating market  creation', () => {
 		const { tree } = generateMerkleTreeUsingStandardPrincipal(allowedCreators);
 		const { proof } = generateMerkleProof(tree, bob);
 
-		let data = await simnet.callReadOnlyFn('bme022-0-market-gating', 'get-merkle-root', [Cl.bufferFromHex(lookupRootKey)], alice);
+		let data = simnet.callReadOnlyFn('bme022-0-market-gating', 'get-merkle-root', [Cl.bufferFromHex(lookupRootKey)], alice);
 		expect(data.result).toEqual(Cl.none());
 
 		let response = await createBinaryMarketWithGating(2214, proofToClarityValue(proof), metadataHash(), deployer, stxToken);
@@ -169,8 +173,8 @@ describe('gating market  creation', () => {
 		await constructDao(simnet);
 		await passProposalByExecutiveSignals(simnet, 'bdp001-gating');
 		let allowedCreators = [
-			'ST3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX77J7SV0',
-			'ST2XFH8D1MM2G11C0S6AZRSNP031RAY92XFABDE58',
+			'ST1CV2YGRJA5X8BWS0GP31J9HF56M06CQK8998TSX',
+			'ST33YD6D9E9XSERRKVKY06D7XW5TRZGSRVZ920ECB',
 			'ST167Z6WFHMV0FZKFCRNWZ33WTB0DFBCW9M1FW3AY',
 			'ST105HCS1RTR7D61EZET8CWNEF24ENEN3V6ARBYBJ',
 			'ST3SJD6KV86N90W0MREGRTM1GWXN8Z91PF6W0BQKM',
@@ -178,33 +182,53 @@ describe('gating market  creation', () => {
 		];
 		let { tree, root } = generateMerkleTreeUsingStandardPrincipal(allowedCreators);
 		let merklProof = generateMerkleProof(tree, 'ST3RR3HF25CQ9A5DEWS4R1WKJSBCFKQXFBYPJK3WV');
-		const lookupRootKey = contractId2Key('ST3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX77J7SV0.bme023-0-market-scalar-pyth');
+		const lookupRootKey = contractId2Key('ST1CV2YGRJA5X8BWS0GP31J9HF56M06CQK8998TSX.bme023-0-market-scalar-pyth');
 		console.log(
-			'ST3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX77J7SV0, ST2XFH8D1MM2G11C0S6AZRSNP031RAY92XFABDE58, ST167Z6WFHMV0FZKFCRNWZ33WTB0DFBCW9M1FW3AY, ST105HCS1RTR7D61EZET8CWNEF24ENEN3V6ARBYBJ, ST3SJD6KV86N90W0MREGRTM1GWXN8Z91PF6W0BQKM, STEZD95XQ194X67C1QJW4PHKDG8F5D66ZCYFX27A '
+			'ST1CV2YGRJA5X8BWS0GP31J9HF56M06CQK8998TSX, ST33YD6D9E9XSERRKVKY06D7XW5TRZGSRVZ920ECB, ST167Z6WFHMV0FZKFCRNWZ33WTB0DFBCW9M1FW3AY, ST105HCS1RTR7D61EZET8CWNEF24ENEN3V6ARBYBJ, ST3SJD6KV86N90W0MREGRTM1GWXN8Z91PF6W0BQKM, STEZD95XQ194X67C1QJW4PHKDG8F5D66ZCYFX27A '
 		);
 		console.log('--------------------------------------------------------------------------------------------------------------');
+		console.log(allowedCreators);
 		console.log(
-			'TESTNET: MERKLE ROOTS FOR MARKET CREATION: \nST3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX77J7SV0.bme023-0-market-scalar-pyth: \nkey= 0x' + lookupRootKey + '\nroot= 0x' + root
+			'TESTNET: MERKLE ROOTS FOR MARKET CREATION: \nST1CV2YGRJA5X8BWS0GP31J9HF56M06CQK8998TSX.bme023-0-market-scalar-pyth: \nkey= 0x' + lookupRootKey + '\nroot= 0x' + root
 			//tree
 		);
 		console.log('--------------------------------------------------------------------------------------------------------------');
-		// Allowed = ["SP3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX52CR6XQ", "SPEZD95XQ194X67C1QJW4PHKDG8F5D66ZCT8BY29", "SP2XFH8D1MM2G11C0S6AZRSNP031RAY92XCARPRSQ", "SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z"];
 		allowedCreators = [
-			'SP3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX52CR6XQ',
+			'SP1SCD8ERMTFYE6CK9S0MHWQCP6SY4NAVFJ538A27',
 			'SPEZD95XQ194X67C1QJW4PHKDG8F5D66ZCT8BY29', //am
-			'SP2XFH8D1MM2G11C0S6AZRSNP031RAY92XCARPRSQ',
 			'SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z', // daoguy
 			'SP2Z2CBMGWB9MQZAF5Z8X56KS69XRV3SJF4WKJ7J9', // deorg
 			'SPQE3J7XMMK0DN0BWJZHGE6B05VDYQRXRMDV734D' // jb
 		];
 		let newRoot = generateMerkleTreeUsingStandardPrincipal(allowedCreators);
 		//let merklProof1 = generateMerkleProof(newRoot.tree, 'ST3RR3HF25CQ9A5DEWS4R1WKJSBCFKQXFBYPJK3WV');
-		const lookupRootKey1 = contractId2Key('ST3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX77J7SV0.bme023-0-market-scalar-pyth');
+		const lookupRootKey1 = contractId2Key('SP1SCD8ERMTFYE6CK9S0MHWQCP6SY4NAVFJ538A27.bme023-0-market-scalar-pyth');
 		console.log('--------------------------------------------------------------------------------------------------------------');
 		console.log(allowedCreators);
 		console.log(
 			'MAINNET: MERKLE ROOTS FOR MARKET CREATION: \nSP22SW60674C0V6B5E234C7ZD2YR8WXKXXVC48GZR.bme023-0-market-scalar-pyth: \nkey= 0x' +
 				lookupRootKey1 +
+				'\nroot= 0x' +
+				newRoot.root
+			//tree
+		);
+
+		console.log('--------------------------------------------------------------------------------------------------------------');
+		// Allowed = ["ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM", "ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5", "ST2CY5V39NHDPWSXMW9QDT3HC3GD6Q6XX4CFRK9AG", "ST2JHG361ZXG51QTKY2NQCVBPPRRE2KZB1HR05NNC"];
+		allowedCreators = [
+			'ST1PQHQKV0RJXZFY1DGX8MNSNYVE3VGZJSRTPGZGM'
+			// 'ST1SJ3DTE5DN7X54YDH5D64R3BCB6A2AG2ZQ8YPD5',
+			// 'ST2CY5V39NHDPWSXMW9QDT3HC3GD6Q6XX4CFRK9AG',
+			// 'ST2JHG361ZXG51QTKY2NQCVBPPRRE2KZB1HR05NNC'
+		];
+		newRoot = generateMerkleTreeUsingStandardPrincipal(allowedCreators);
+		//let merklProof1 = generateMerkleProof(newRoot.tree, 'ST3RR3HF25CQ9A5DEWS4R1WKJSBCFKQXFBYPJK3WV');
+		const lookupRootKey2 = contractId2Key('ST1CV2YGRJA5X8BWS0GP31J9HF56M06CQK8998TSX.bme023-0-market-scalar-pyth');
+		console.log('--------------------------------------------------------------------------------------------------------------');
+		console.log(allowedCreators);
+		console.log(
+			'DEVNET: MERKLE ROOTS FOR MARKET CREATION: \nSP22SW60674C0V6B5E234C7ZD2YR8WXKXXVC48GZR.bme023-0-market-scalar-pyth: \nkey= 0x' +
+				lookupRootKey2 +
 				'\nroot= 0x' +
 				newRoot.root
 			//tree
@@ -230,7 +254,7 @@ describe('gating market  creation', () => {
 		//silence: console.log('lookupRootKey=' + lookupRootKey);
 		//silence: console.log('RooT=' + root);
 
-		let data = await simnet.callReadOnlyFn('bme022-0-market-gating', 'get-merkle-root', [Cl.bufferFromHex(lookupRootKey)], alice);
+		let data = simnet.callReadOnlyFn('bme022-0-market-gating', 'get-merkle-root', [Cl.bufferFromHex(lookupRootKey)], alice);
 		expect(data.result).toEqual(Cl.some(Cl.tuple({ 'merkle-root': Cl.bufferFromHex(root!) })));
 
 		// bob can create a market

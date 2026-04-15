@@ -1,10 +1,4 @@
 ;; Title: pyth-traits
-;; Version: v1
-;; Check for latest version: https://github.com/Trust-Machines/stacks-pyth-bridge#latest-version
-;; Report an issue: https://github.com/Trust-Machines/stacks-pyth-bridge/issues
-
-
-;; Title: pyth-traits
 ;; Version: v2
 ;; Check for latest version: https://github.com/Trust-Machines/stacks-pyth-bridge#latest-version
 ;; Report an issue: https://github.com/Trust-Machines/stacks-pyth-bridge/issues
@@ -22,4 +16,5 @@
 			prev-publish-time: uint,
 		} uint))
 
-  ))
+	)
+)

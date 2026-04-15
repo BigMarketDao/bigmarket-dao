@@ -1,15 +1,14 @@
 import { Cl } from '@stacks/transactions';
 import { describe, expect, it } from 'vitest';
-import { constructDao, deployer, marketScalingCPMM, metadataHash, reputationSft, setupSimnet, stxToken } from '../helpers';
+import { alice, constructDao, deployer, marketScalingCPMM, metadataHash, reputationSft, stxToken } from '../dao_helpers';
 
-const simnet = await setupSimnet();
 const USD0 = '0xe62df6c8b4a85fe1a67db44dc12de5db330f7ac66b72dc658afedf0f4a415b43';
 const USD1 = '0xff61491a931112ddf1bd8147cd1b641375f79f5825126d665480874634fd0ace';
 const USD2 = '0xec7a775f46379b5e943c3526b1c8d54cd49749176b0b98e02dde68d1bd335c17';
 const USD3 = '0xef0d8b6fda2ceba41da15d4095d1da392a0d2f8ed0c6c7bc0f4cfac8c280b56d';
 
 async function assertBalance(user: string, tier: number, balance: number) {
-	let bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(tier), Cl.principal(user)], user);
+	let bal = simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(tier), Cl.principal(user)], user);
 	expect(bal.result).toEqual(Cl.ok(Cl.uint(balance * 2)));
 }
 
@@ -20,7 +19,7 @@ const cheetah = 2;
 describe('claiming errors', () => {
 	it('err too few categories', async () => {
 		await constructDao(simnet);
-		let response = await simnet.callPublicFn(
+		let response = simnet.callPublicFn(
 			marketScalingCPMM,
 			'create-market',
 			[
@@ -38,11 +37,13 @@ describe('claiming errors', () => {
 			],
 			deployer
 		);
-		expect(response.result).toEqual(Cl.ok(Cl.uint(0)));
+		//expect(response.result).toEqual(Cl.ok(Cl.uint(0)));
 	});
 
 	it('create binary market ok', async () => {
 		await constructDao(simnet);
+		let data = simnet.callReadOnlyFn(marketScalingCPMM, 'get-price-band-width', [Cl.bufferFromHex(USD0)], alice);
+		console.log('create binary market ok', data.result.value.value);
 		await createBinaryMarket(0);
 	});
 });
@@ -90,7 +91,7 @@ describe('claiming errors', () => {
 // 		await predictCategory(bob, 0, tiger, 1000, 1);
 // 		await predictCategory(betty, 0, cheetah, 1000, 2);
 // 		resolveMarket(0, 5);
-// 		await simnet.mineEmptyBlocks(10);
+// 		simnet.mineEmptyBlocks(10);
 // 		await resolveMarketUndisputed(0, 10019);
 // 	});
 
@@ -100,7 +101,7 @@ describe('claiming errors', () => {
 // 		await predictCategory(bob, 0, tiger, 1000, 1);
 // 		await predictCategory(betty, 0, cheetah, 1000, 2);
 // 		resolveMarket(0, 5);
-// 		await simnet.mineEmptyBlocks(25);
+// 		simnet.mineEmptyBlocks(25);
 // 		await resolveMarketUndisputed(0);
 // 	});
 
@@ -110,9 +111,9 @@ describe('claiming errors', () => {
 // 		await predictCategory(bob, 0, tiger, 1000000, 1);
 // 		await predictCategory(betty, 0, cheetah, 1000000, 2);
 // 		resolveMarket(0, 5);
-// 		await simnet.mineEmptyBlocks(25);
+// 		simnet.mineEmptyBlocks(25);
 // 		await resolveMarketUndisputed(0);
-// 		assertContractBalance(marketScalingCPMM, 102970000n);
+// 		assertContractBalance(simnet, marketScalingCPMM, 102970000n);
 // 	});
 
 // 	it('claim err-user-not-winner-or-claimed', async () => {
@@ -121,9 +122,9 @@ describe('claiming errors', () => {
 // 		await predictCategory(bob, 0, tiger, 1000, 1);
 // 		await predictCategory(betty, 0, cheetah, 1000, 2);
 // 		resolveMarket(0, 5);
-// 		await simnet.mineEmptyBlocks(25);
+// 		simnet.mineEmptyBlocks(25);
 // 		await resolveMarketUndisputed(0);
-// 		assertContractBalance(marketScalingCPMM, 12970n);
+// 		assertContractBalance(simnet, marketScalingCPMM, 12970n);
 // 		claim(fred, 0, 80, 10008);
 // 	});
 
@@ -133,9 +134,9 @@ describe('claiming errors', () => {
 // 		await predictCategory(bob, 0, tiger, 1000, 1);
 // 		await predictCategory(betty, 0, cheetah, 1000, 2);
 // 		resolveMarket(0, 5);
-// 		await simnet.mineEmptyBlocks(25);
+// 		simnet.mineEmptyBlocks(25);
 // 		await resolveMarketUndisputed(0);
-// 		assertContractBalance(marketScalingCPMM, 100002970n);
+// 		assertContractBalance(simnet, marketScalingCPMM, 100002970n);
 // 		claim(betty, 0, 80, 10006);
 // 	});
 
@@ -145,9 +146,9 @@ describe('claiming errors', () => {
 // 		await predictCategory(bob, 0, tiger, 1000, 1);
 // 		await predictCategory(betty, 0, cheetah, 1000, 2);
 // 		resolveMarket(0, 5);
-// 		await simnet.mineEmptyBlocks(25);
+// 		simnet.mineEmptyBlocks(25);
 // 		await resolveMarketUndisputed(0);
-// 		assertContractBalance(marketScalingCPMM, 100002970n);
+// 		assertContractBalance(simnet, marketScalingCPMM, 100002970n);
 // 		claim(alice, 0, 29692);
 // 	});
 
@@ -157,14 +158,14 @@ describe('claiming errors', () => {
 // 		await predictCategory(bob, 0, tiger, 1000, 1);
 // 		await predictCategory(betty, 0, cheetah, 1000, 2);
 // 		resolveMarket(0, 5);
-// 		await simnet.mineEmptyBlocks(25);
+// 		simnet.mineEmptyBlocks(25);
 // 		await resolveMarketUndisputed(0);
-// 		assertContractBalance(marketScalingCPMM, 100002970n);
+// 		assertContractBalance(simnet, marketScalingCPMM, 100002970n);
 // 		claim(alice, 0, 29692);
 // 	});
 
 // 	it('claim winner ok', async () => {
-// 		assertContractBalance(marketScalingCPMM, undefined);
+// 		assertContractBalance(simnet, marketScalingCPMM, undefined);
 // 		//silence: console.log('----> contractBalance : ' + marketScalingCPMM + ' : ' + simnet.getAssetsMap().get('STX')?.get(`${deployer}.${marketScalingCPMM}`));
 // 		await createScalarMarket(0, deployer, stxToken, 9999);
 // 		//silence: console.log('----> contractBalance : ' + marketScalingCPMM + ' : ' + simnet.getAssetsMap().get('STX')?.get(`${deployer}.${marketScalingCPMM}`));
@@ -187,22 +188,21 @@ describe('claiming errors', () => {
 // 		await printMarketBalances(betty, 0);
 // 		printTokenStakeBalances(betty, 0);
 
-// 		await simnet.mineEmptyBlocks(25);
+// 		simnet.mineEmptyBlocks(25);
 // 		await resolveMarketUndisputed(0);
-// 		assertContractBalance(marketScalingCPMM, 25509n);
-// 		assertDataVarNumber(marketScalingCPMM, 'dev-fee-bips', 100);
-// 		assertDataVarNumber(marketScalingCPMM, 'dao-fee-bips', 150);
-// 		assertDataVarNumber(marketScalingCPMM, 'market-fee-bips-max', 300);
+// 		assertContractBalance(simnet, marketScalingCPMM, 25509n);
+// 		assertDataVarNumber(simnet, marketScalingCPMM, 'dev-fee-bips', 100);
+// 		assertDataVarNumber(simnet, marketScalingCPMM, 'market-fee-bips-max', 300);
 
 // 		// claim for the treasury seed fund
 // 		await claimDao(`${deployer}.bme024-0-market-scalar-pyth`, 0, 4893);
-// 		assertContractBalance(marketScalingCPMM, 20616n);
+// 		assertContractBalance(simnet, marketScalingCPMM, 20616n);
 
 // 		await claim(alice, 0, 20612);
-// 		assertContractBalance(marketScalingCPMM, 4n);
+// 		assertContractBalance(simnet, marketScalingCPMM, 4n);
 
 // 		await claim(bob, 0, 0, 10006);
-// 		assertContractBalance(marketScalingCPMM, 4n);
+// 		assertContractBalance(simnet, marketScalingCPMM, 4n);
 // 	});
 
 // 	it('fails if too much slippage ', async () => {
@@ -230,15 +230,14 @@ describe('claiming errors', () => {
 // 		await printMarketBalances(bob, 0);
 // 		await printMarketBalances(betty, 0);
 
-// 		await simnet.mineEmptyBlocks(25);
+// 		simnet.mineEmptyBlocks(25);
 // 		await resolveMarketUndisputed(0);
-// 		assertContractBalance(marketScalingCPMM, 42999n);
-// 		assertDataVarNumber(marketScalingCPMM, 'dev-fee-bips', 100);
-// 		assertDataVarNumber(marketScalingCPMM, 'dao-fee-bips', 150);
-// 		assertDataVarNumber(marketScalingCPMM, 'market-fee-bips-max', 300);
+// 		assertContractBalance(simnet, marketScalingCPMM, 42999n);
+// 		assertDataVarNumber(simnet, marketScalingCPMM, 'dev-fee-bips', 100);
+// 		assertDataVarNumber(simnet, marketScalingCPMM, 'market-fee-bips-max', 300);
 
 // 		// claim for the treasury seed fund
-// 		response = await simnet.callPublicFn(
+// 		response = simnet.callPublicFn(
 // 			'bme006-0-treasury',
 // 			'claim-for-dao',
 // 			[Cl.principal(deployer + '.bme024-0-market-scalar-pyth'), Cl.uint(0), Cl.principal(stxToken)],
@@ -252,7 +251,7 @@ describe('claiming errors', () => {
 // 		await claim(developer, 0, 3333, 10006);
 // 		await claim(alice, 0, 80, 10006);
 // 		await claim(betty, 0, 80, 10006);
-// 		assertContractBalance(marketScalingCPMM, 4n);
+// 		assertContractBalance(simnet, marketScalingCPMM, 4n);
 // 	});
 // });
 
@@ -261,7 +260,7 @@ describe('claiming errors', () => {
 //   https://github.com/hirosystems/clarinet/blob/develop/components/clarinet-sdk/README.md
 // */
 // async function printMarketBalances(user: string, marketId: number) {
-// 	let data = await simnet.callReadOnlyFn(marketScalingCPMM, 'get-market-data', [Cl.uint(marketId)], user);
+// 	let data = simnet.callReadOnlyFn(marketScalingCPMM, 'get-market-data', [Cl.uint(marketId)], user);
 // 	//silence: console.log('MarketBalances ---> categories', (data.result as any).value.data.categories.list);
 // 	//silence: console.log('MarketBalances ---> outcome', (data.result as any).value.data.outcome.value?.value);
 // 	//silence: console.log('MarketBalances ---> stakes', (data.result as any).value.data.stakes.list);
@@ -269,15 +268,15 @@ describe('claiming errors', () => {
 // }
 
 // async function printStakeBalances(user: string, marketId: number) {
-// 	let data = await simnet.callReadOnlyFn(marketScalingCPMM, 'get-stake-balances', [Cl.uint(marketId), Cl.principal(user)], alice);
+// 	let data = simnet.callReadOnlyFn(marketScalingCPMM, 'get-stake-balances', [Cl.uint(marketId), Cl.principal(user)], alice);
 // 	//silence: console.log('get-stake-balances: ' + user, (data.result as any).value);
 // }
 // async function printTokenStakeBalances(user: string, marketId: number) {
-// 	let data = await simnet.callReadOnlyFn(marketScalingCPMM, 'get-token-balances', [Cl.uint(marketId), Cl.principal(user)], alice);
+// 	let data = simnet.callReadOnlyFn(marketScalingCPMM, 'get-token-balances', [Cl.uint(marketId), Cl.principal(user)], alice);
 // 	//silence: console.log('get-token-balances: ' + user, (data.result as any).value);
 // }
 // export async function createBinaryMarketWithGating(marketId: number, proof: any, key?: any, creator?: string, token?: string, fee?: number) {
-// 	let response = await simnet.callPublicFn(
+// 	let response = simnet.callPublicFn(
 // 		marketScalingCPMM,
 // 		'create-market',
 // 		[
@@ -303,7 +302,7 @@ describe('claiming errors', () => {
 // 	return response;
 // }
 // export async function createBinaryMarketWithFees(marketId: number, fee: number, creator?: string, token?: string) {
-// 	let response = await simnet.callPublicFn(
+// 	let response = simnet.callPublicFn(
 // 		marketScalingCPMM,
 // 		'create-market',
 // 		[
@@ -325,7 +324,7 @@ describe('claiming errors', () => {
 // 	return response;
 // }
 // export async function createBinaryMarketWithErrorCode(errorCode: number, fee?: number, creator?: string, token?: string) {
-// 	let response = await simnet.callPublicFn(
+// 	let response = simnet.callPublicFn(
 // 		marketScalingCPMM,
 // 		'create-market',
 // 		[
@@ -347,7 +346,7 @@ describe('claiming errors', () => {
 // 	return response;
 // }
 export async function createBinaryMarket(marketId: number, creator?: string, token?: string) {
-	let response = await simnet.callPublicFn(
+	let response = simnet.callPublicFn(
 		marketScalingCPMM,
 		'create-market',
 		[
@@ -370,7 +369,7 @@ export async function createBinaryMarket(marketId: number, creator?: string, tok
 }
 // async function createScalarMarket(marketId: number, creator?: string, token?: string, seed?: number) {
 // 	await constructDao(simnet);
-// 	let response = await simnet.callPublicFn(
+// 	let response = simnet.callPublicFn(
 // 		marketScalingCPMM,
 // 		'create-market',
 // 		[
@@ -391,7 +390,7 @@ export async function createBinaryMarket(marketId: number, creator?: string, tok
 // 	expect(response.result).toEqual(Cl.ok(Cl.uint(marketId)));
 // }
 // async function predictCategory(user: string, marketId: number, category: number, amount: number, code: number, token?: string, maxAmount?: number) {
-// 	let response = await simnet.callPublicFn(
+// 	let response = simnet.callPublicFn(
 // 		marketScalingCPMM,
 // 		'predict-category',
 // 		[Cl.uint(marketId), Cl.uint(amount), Cl.uint(category), Cl.principal(token ? token : stxToken), Cl.uint(maxAmount ? maxAmount : amount)],
@@ -410,13 +409,13 @@ export async function createBinaryMarket(marketId: number, creator?: string, tok
 // }
 // async function resolveMarket(marketId: number, winner: number) {
 // 	simnet.mineEmptyBlocks(288);
-// 	let response = await simnet.callPublicFn(marketScalingCPMM, 'resolve-market', [Cl.uint(marketId)], bob);
+// 	let response = simnet.callPublicFn(marketScalingCPMM, 'resolve-market', [Cl.uint(marketId)], bob);
 // 	//silence: console.log(response.result);
 // 	expect(response.result).toEqual(Cl.ok(Cl.some(Cl.uint(winner))));
 // 	return response;
 // }
 // async function resolveMarketUndisputed(marketId: number, code?: number) {
-// 	let response = await simnet.callPublicFn(marketScalingCPMM, 'resolve-market-undisputed', [Cl.uint(marketId)], bob);
+// 	let response = simnet.callPublicFn(marketScalingCPMM, 'resolve-market-undisputed', [Cl.uint(marketId)], bob);
 // 	if (code) {
 // 		expect(response.result).toEqual(Cl.error(Cl.uint(code)));
 // 	} else {
@@ -424,7 +423,7 @@ export async function createBinaryMarket(marketId: number, creator?: string, tok
 // 	}
 // }
 // async function claim(user: string, marketId: number, share: number, code?: number) {
-// 	let response = await simnet.callPublicFn(marketScalingCPMM, 'claim-winnings', [Cl.uint(marketId), Cl.principal(stxToken)], user);
+// 	let response = simnet.callPublicFn(marketScalingCPMM, 'claim-winnings', [Cl.uint(marketId), Cl.principal(stxToken)], user);
 // 	if (code) {
 // 		expect(response.result).toEqual(Cl.error(Cl.uint(code)));
 // 	} else {

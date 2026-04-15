@@ -23,6 +23,7 @@
 (impl-trait .prediction-market-trait.prediction-market-trait)
 (use-trait hedge-trait .hedge-trait.hedge-trait)
 (use-trait ft-velar-token 'SP2AKWJYC7BNY18W1XXKPGP0YVEK63QJG4793Z2D4.sip-010-trait-ft-standard.sip-010-trait)
+(impl-trait 'SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z.extension-trait.extension-trait)
 
 ;; ---------------- CONSTANTS & TYPES ----------------
 ;; Market Types (2 => range based markets)
@@ -77,7 +78,7 @@
 (define-constant err-hedging-disabled (err u10038))
 (define-constant err-insufficient-liquidity (err u11041))
 (define-constant err-arithmetic (err u11043))
-(define-constant err-oracle (err u10039))
+(define-constant err-oracle-start-price (err u10039))
 (define-constant err-band-not-set (err u10040))
 (define-constant err-oracle-stale (err u10150))
 (define-constant err-oracle-uncertain (err u10151))
@@ -86,6 +87,10 @@
 (define-constant err-oracle-zero-price (err u10154))
 (define-constant err-oracle-zero-delta (err u10155))
 (define-constant err-invalid-param (err u10156))
+(define-constant err-oracle-call-failed (err u10157))
+(define-constant err-oracle-expo (err u10158))
+(define-constant err-hedge-window (err u10101))
+(define-constant err-market-ended (err u10102))
 
 (define-constant marketplace .bme040-0-shares-marketplace)
 (define-constant MIN_POOL u1)
@@ -203,6 +208,9 @@
     (ok true)
   )
 )
+(define-read-only (get-price-band-width (feed-id (buff 32)))
+  (ok (map-get? price-band-widths {feed-id: feed-id}))
+)
 
 (define-public (set-creation-gated (gated bool))
   (begin
@@ -269,7 +277,7 @@
 (define-public (set-max-staleness (secs uint))
   (begin
     (try! (is-dao-or-extension))
-    (asserts! (and (> secs u60) (< secs u86400)) err-invalid-param)
+    (asserts! (and (> secs u60) (< secs u86400000)) err-invalid-param)
     (var-set max-staleness-secs secs)
     (ok true)
   )
@@ -326,8 +334,10 @@
         (market-duration-final (default-to DEFAULT_MARKET_DURATION market-duration))
         (cool-down-final (default-to DEFAULT_COOL_DOWN_PERIOD cool-down-period))
         (current-block burn-block-height)
-        (start-price (unwrap! (get-current-price-safe price-feed-id) err-oracle))
+        (start-price (try! (get-current-price-safe price-feed-id)))
+        ;;(start-price (match start-price-wrapped price price price u0))
         (band-bips (get band-bips (unwrap! (map-get? price-band-widths {feed-id: price-feed-id}) err-band-not-set)))
+        
         (delta (/ (* start-price band-bips) u10000))
         (categories (category-bands start-price delta))
         (num-categories (len categories))
@@ -336,8 +346,8 @@
         (user-stake-list (list seed seed seed seed seed seed seed seed seed seed))
         (share-list (zero-after-n user-stake-list num-categories))
       )
-      (asserts! (> band-bips u0) err-band-not-set)
       (asserts! (> start-price u0) err-oracle-zero-price)
+      (asserts! (> band-bips u0) err-band-not-set)
       (asserts! (> delta u0) err-oracle-zero-delta)
       (asserts! (> market-duration-final u10) err-market-not-found)
       (asserts! (> cool-down-final u10) err-market-not-found)
@@ -506,7 +516,7 @@
     (asserts! (>= max-cost u100) err-amount-too-low)
     (asserts! (>= sender-balance max-cost) err-insufficient-balance)
     (asserts! (<= max-cost u50000000000000) err-amount-too-high)
-    (asserts! (< burn-block-height market-end) err-market-not-open)
+    (asserts! (< burn-block-height market-end) err-market-ended)
     ;; ensure the user cannot overpay for shares - this can skew liquidity in other pools
     (asserts! (<= cost-of-shares max-cost-of-shares) err-overbuy)
     (asserts! (< amount-shares other-pool) err-overbuy)
@@ -622,8 +632,8 @@
     (asserts! (is-eq (contract-of hedge-executor) stored-hedge-executor) err-unauthorised)
 
     ;; Time window check
-    (asserts! (>= burn-block-height market-end) err-market-wrong-state)
-    (asserts! (< burn-block-height (+ market-end (get cool-down-period md))) err-market-wrong-state)
+    (asserts! (>= burn-block-height market-end) err-hedge-window)
+    (asserts! (< burn-block-height (+ market-end (get cool-down-period md))) err-hedge-window)
 
     ;; Compute crowd-predicted outcome
     (try! (contract-call? hedge-executor perform-swap-hedge market-id predicted feed-id token0 token1 token-in token-out))
@@ -677,7 +687,7 @@
   (let (
       (md (unwrap! (map-get? markets market-id) err-market-not-found)) 
         ;; ensure user has a stake
-      (stake-data (unwrap! (map-get? stake-balances { market-id: market-id, user: disputer }) err-disputer-must-have-stake)) 
+      (stake-data (unwrap! (map-get? stake-balances { market-id: market-id, user: disputer }) err-disputer-must-have-stake))
     )
     ;; user call create-market-vote in the voting contract to start a dispute
     (try! (is-dao-or-extension))
@@ -686,7 +696,7 @@
     ;; prevent market getting locked in unresolved state
     (asserts! (<= burn-block-height (+ (get resolution-burn-height md) (var-get dispute-window-length))) err-dispute-window-elapsed)
 
-    (asserts! (is-eq (get resolution-state md) RESOLUTION_RESOLVING) err-market-not-resolving) 
+    (asserts! (is-eq (get resolution-state md) RESOLUTION_RESOLVING) err-market-not-resolving)
 
     (map-set markets market-id
       (merge md { resolution-state: RESOLUTION_DISPUTED }))
@@ -905,7 +915,7 @@
 
 (define-private (get-current-price-safe (feed-id (buff 32)))
   (let (
-      (d         (unwrap! (contract-call? .pyth-oracle-v4 get-price feed-id .pyth-storage-v4) err-oracle))
+      (d         (unwrap! (contract-call? .pyth-oracle-v4 get-price feed-id .pyth-storage-v4) err-oracle-call-failed))
       (raw-price (to-uint (abs-int (get price d))))
       (raw-conf  (get conf d))          ;; uint
       (expo      (get expo d))          ;; int
@@ -916,11 +926,12 @@
       (now       (now-seconds))
     )
     (begin
-      (asserts! (< (abs-int expo) 20) err-oracle-uncertain)
-      ;; freshness check in seconds
-      (asserts! (<= (- now ts) (var-get max-staleness-secs)) err-oracle-stale)
+      (asserts! (> price u0) err-oracle-zero-price)
+      (asserts! (< (abs-int expo) 20) err-oracle-expo)
       ;; confidence bound
       (asserts! (<= conf-bips (var-get max-conf-bips)) err-oracle-uncertain)
+      ;; freshness check in seconds
+      ;;(asserts! (<= (- now ts) (var-get max-staleness-secs)) err-oracle-stale)
       (ok price)
     )
   )
@@ -958,13 +969,12 @@
 )
 
 (define-private (scale-pyth (val uint) (expo int)) ;; -> uint
-  (let (
-        (v-abs (abs-int (to-int val)))
-       )
-    (if (>= expo 0)
-        (to-uint (* v-abs (to-int (pow u10 (to-uint expo)))))
-        (to-uint (/ v-abs (to-int (pow u10 (to-uint (- 0 expo))))))
-    )
+  (let ((v-abs (abs-int (to-int val))))
+    (if (< expo 0)
+        ;; multiply for negative exponent
+        (to-uint (* v-abs (to-int (pow u10 (to-uint (abs-int expo))))))
+        ;; divide for positive exponent
+        (to-uint (/ v-abs (to-int (pow u10 (to-uint expo))))))
   )
 )
 
@@ -979,3 +989,9 @@
   )
 )
 
+
+;; --- Extension callback
+
+(define-public (callback (sender principal) (memo (buff 34)))
+	(ok true)
+)

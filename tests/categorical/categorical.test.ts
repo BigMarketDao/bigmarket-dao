@@ -1,3 +1,4 @@
+import { Simnet } from '@hirosystems/clarinet-sdk';
 import { Cl } from '@stacks/transactions';
 import { describe, expect, it } from 'vitest';
 import {
@@ -11,35 +12,14 @@ import {
 	fred,
 	marketPredictingCPMM,
 	metadataHash,
-	reputationSft,
-	setupSimnet,
 	stxToken,
 	tom
-} from '../helpers';
-// SP3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX52CR6XQ.bme021-0-market-voting
+} from '../dao_helpers';
 
-// SP3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX52CR6XQ.bme000-0-governance-token
-// SP3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX52CR6XQ.bme001-0-proposal-voting
-// SP3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX52CR6XQ.bme003-0-core-proposals
-// SP3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX52CR6XQ.bme006-0-treasury
-// SP3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX52CR6XQ.bme010-0-liquidity-contribution
-// SP3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX52CR6XQ.bme022-0-market-gating
-// SP3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX52CR6XQ.bme024-0-market-scalar-pyth
-// SP3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX52CR6XQ.bme024-0-market-predicting
-// SP3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX52CR6XQ.bme030-0-reputation-token
-// SP3HAHEV768GAMP34MTEC83PJ4PG6ZSGBX52CR6XQ.bme032-0-scalar-strategy-hedge
-
-const simnet = await setupSimnet();
-
-async function assertBalance(user: string, tier: number, balance: number) {
-	let bal = await simnet.callReadOnlyFn(`${deployer}.${reputationSft}`, 'get-balance', [Cl.uint(tier), Cl.principal(user)], user);
-	expect(bal.result).toEqual(Cl.ok(Cl.uint(balance * 2)));
-}
-
-describe('claiming errors', () => {
+describe('claiming errors', async () => {
 	it('err too few categories', async () => {
 		await constructDao(simnet);
-		let response = await simnet.callPublicFn(
+		let response = simnet.callPublicFn(
 			'bme024-0-market-predicting',
 			'create-market',
 			[
@@ -107,7 +87,7 @@ describe('claiming errors', () => {
 		await predictCategory(alice, 0, 'lion', 1000, 0);
 		await predictCategory(bob, 0, 'tiger', 1000, 1);
 		await predictCategory(betty, 0, 'cheetah', 1000, 2);
-		await resolveMarket(0, 'cheetah', 2);
+		await resolveMarket(simnet, 0, 'cheetah', 2);
 	});
 
 	it('resolve undisputed requires window to elapse', async () => {
@@ -116,9 +96,9 @@ describe('claiming errors', () => {
 		await predictCategory(alice, 0, 'lion', 1000, 0);
 		await predictCategory(bob, 0, 'tiger', 1000, 1);
 		await predictCategory(betty, 0, 'cheetah', 1000, 2);
-		await resolveMarket(0, 'cheetah', 2);
-		await simnet.mineEmptyBlocks(10);
-		await resolveMarketUndisputed(0, 10019);
+		await resolveMarket(simnet, 0, 'cheetah', 2);
+		simnet.mineEmptyBlocks(10);
+		await resolveMarketUndisputed(simnet, 0, 10019);
 	});
 
 	it('resolve undisputed requires window to elapse', async () => {
@@ -127,9 +107,9 @@ describe('claiming errors', () => {
 		await predictCategory(alice, 0, 'lion', 1000, 0);
 		await predictCategory(bob, 0, 'tiger', 1000, 1);
 		await predictCategory(betty, 0, 'cheetah', 1000, 2);
-		await resolveMarket(0, 'cheetah', 2);
-		await simnet.mineEmptyBlocks(25);
-		await resolveMarketUndisputed(0);
+		await resolveMarket(simnet, 0, 'cheetah', 2);
+		simnet.mineEmptyBlocks(25);
+		await resolveMarketUndisputed(simnet, 0);
 	});
 
 	it('resolve undisputed requires window to elapse', async () => {
@@ -138,10 +118,10 @@ describe('claiming errors', () => {
 		await predictCategory(alice, 0, 'lion', 1000, 0);
 		await predictCategory(bob, 0, 'tiger', 1000, 1);
 		await predictCategory(betty, 0, 'cheetah', 1000, 2);
-		await resolveMarket(0, 'cheetah', 2);
-		await simnet.mineEmptyBlocks(25);
-		await resolveMarketUndisputed(0);
-		assertContractBalance(marketPredictingCPMM, 200005940n);
+		await resolveMarket(simnet, 0, 'cheetah', 2);
+		simnet.mineEmptyBlocks(25);
+		await resolveMarketUndisputed(simnet, 0);
+		assertContractBalance(simnet, marketPredictingCPMM, 200005940n);
 	});
 
 	it('claim err-user-not-winner-or-claimed', async () => {
@@ -150,11 +130,11 @@ describe('claiming errors', () => {
 		await predictCategory(alice, 0, 'lion', 1000, 0);
 		await predictCategory(bob, 0, 'tiger', 1000, 1);
 		await predictCategory(betty, 0, 'cheetah', 1000, 2);
-		await resolveMarket(0, 'cheetah', 2);
-		await simnet.mineEmptyBlocks(25);
-		await resolveMarketUndisputed(0);
-		assertContractBalance(marketPredictingCPMM, 200005940n);
-		await claim(fred, 0, 80, 10008);
+		await resolveMarket(simnet, 0, 'cheetah', 2);
+		simnet.mineEmptyBlocks(25);
+		await resolveMarketUndisputed(simnet, 0);
+		assertContractBalance(simnet, marketPredictingCPMM, 200005940n);
+		await claim(simnet, fred, 0, 80, 10008);
 	});
 
 	it('claim loser ok', async () => {
@@ -163,11 +143,11 @@ describe('claiming errors', () => {
 		await predictCategory(alice, 0, 'lion', 1000, 0);
 		await predictCategory(bob, 0, 'tiger', 1000, 1);
 		await predictCategory(betty, 0, 'cheetah', 1000, 2);
-		await resolveMarket(0, 'cheetah', 2);
-		await simnet.mineEmptyBlocks(25);
-		await resolveMarketUndisputed(0);
-		assertContractBalance(marketPredictingCPMM, 200005940n);
-		await claim(alice, 0, 80, 10006);
+		await resolveMarket(simnet, 0, 'cheetah', 2);
+		simnet.mineEmptyBlocks(25);
+		await resolveMarketUndisputed(simnet, 0);
+		assertContractBalance(simnet, marketPredictingCPMM, 200005940n);
+		await claim(simnet, alice, 0, 80, 10006);
 	});
 
 	it('claim winner ok', async () => {
@@ -176,7 +156,7 @@ describe('claiming errors', () => {
 		await predictCategory(alice, 0, 'lion', 1000, 0);
 		await predictCategory(bob, 0, 'tiger', 1000, 1);
 		await predictCategory(betty, 0, 'cheetah', 1000, 2);
-		const result = await resolveMarket(0, 'cheetah', 2);
+		const result = await resolveMarket(simnet, 0, 'cheetah', 2);
 		//console.log("claim winner ok",result.events[0].data.value)
 
 		await printMarketBalances(alice, 0);
@@ -185,14 +165,13 @@ describe('claiming errors', () => {
 		await printMarketBalances(bob, 0);
 		await printMarketBalances(betty, 0);
 
-		await simnet.mineEmptyBlocks(25);
-		await resolveMarketUndisputed(0);
-		assertContractBalance(marketPredictingCPMM, 200005940n);
-		assertDataVarNumber(marketPredictingCPMM, 'dev-fee-bips', 100);
-		assertDataVarNumber(marketPredictingCPMM, 'dao-fee-bips', 150);
-		assertDataVarNumber(marketPredictingCPMM, 'market-fee-bips-max', 300);
+		simnet.mineEmptyBlocks(25);
+		await resolveMarketUndisputed(simnet, 0);
+		assertContractBalance(simnet, marketPredictingCPMM, 200005940n);
+		assertDataVarNumber(simnet, marketPredictingCPMM, 'dev-fee-bips', 100);
+		assertDataVarNumber(simnet, marketPredictingCPMM, 'market-fee-bips-max', 300);
 
-		await claim(betty, 0, 11879);
+		await claim(simnet, betty, 0, 11879);
 	});
 });
 
@@ -201,18 +180,18 @@ describe('claiming errors', () => {
   https://github.com/hirosystems/clarinet/blob/develop/components/clarinet-sdk/README.md
 */
 async function printMarketBalances(user: string, marketId: number) {
-	let data = await simnet.callReadOnlyFn('bme024-0-market-predicting', 'get-market-data', [Cl.uint(marketId)], user);
+	let data = simnet.callReadOnlyFn('bme024-0-market-predicting', 'get-market-data', [Cl.uint(marketId)], user);
 	//console.log("categories", (data.result as any).value.data.categories)
 	//console.log("outcome", (data.result as any).value.data.outcome)
 	//console.log("stakes", (data.result as any).value.data.stakes)
 }
 
 async function printStakeBalances(user: string, marketId: number) {
-	let data = await simnet.callReadOnlyFn('bme024-0-market-predicting', 'get-stake-balances', [Cl.uint(marketId), Cl.principal(user)], alice);
+	let data = simnet.callReadOnlyFn('bme024-0-market-predicting', 'get-stake-balances', [Cl.uint(marketId), Cl.principal(user)], alice);
 	//console.log("get-stake-balances: " + user, (data.result as any).value)
 }
 export async function createBinaryMarketWithGating(marketId: number, proof: any, key?: any, creator?: string, token?: string, fee?: number) {
-	let response = await simnet.callPublicFn(
+	let response = simnet.callPublicFn(
 		'bme024-0-market-predicting',
 		'create-market',
 		[
@@ -237,7 +216,7 @@ export async function createBinaryMarketWithGating(marketId: number, proof: any,
 	return response;
 }
 export async function createBinaryMarketWithFees(marketId: number, fee: number, creator?: string, token?: string) {
-	let response = await simnet.callPublicFn(
+	let response = simnet.callPublicFn(
 		'bme024-0-market-predicting',
 		'create-market',
 		[
@@ -259,7 +238,7 @@ export async function createBinaryMarketWithFees(marketId: number, fee: number, 
 	return response;
 }
 export async function createBinaryMarketWithErrorCode(errorCode: number, fee?: number, creator?: string, token?: string) {
-	let response = await simnet.callPublicFn(
+	let response = simnet.callPublicFn(
 		'bme024-0-market-predicting',
 		'create-market',
 		[
@@ -280,7 +259,7 @@ export async function createBinaryMarketWithErrorCode(errorCode: number, fee?: n
 	return response;
 }
 export async function createBinaryMarket(marketId: number, creator?: string, token?: string) {
-	let response = await simnet.callPublicFn(
+	let response = simnet.callPublicFn(
 		'bme024-0-market-predicting',
 		'create-market',
 		[
@@ -302,7 +281,7 @@ export async function createBinaryMarket(marketId: number, creator?: string, tok
 }
 async function createCategoricalMarket(marketId: number, creator?: string, token?: string) {
 	await constructDao(simnet);
-	let response = await simnet.callPublicFn(
+	let response = simnet.callPublicFn(
 		'bme024-0-market-predicting',
 		'create-market',
 		[
@@ -323,7 +302,7 @@ async function createCategoricalMarket(marketId: number, creator?: string, token
 	return response;
 }
 export async function predictCategory(user: string, marketId: number, category: string, amount: number, code: number, token?: string) {
-	let response = await simnet.callPublicFn(
+	let response = simnet.callPublicFn(
 		'bme024-0-market-predicting',
 		'predict-category',
 		[Cl.uint(marketId), Cl.uint(amount), Cl.stringAscii(category), Cl.principal(token ? token : stxToken), Cl.uint(amount * 2)],
@@ -340,22 +319,22 @@ export async function predictCategory(user: string, marketId: number, category: 
 	}
 	return response;
 }
-async function resolveMarket(marketId: number, category: string, winner: number, token?: string) {
+async function resolveMarket(simnet: Simnet, marketId: number, category: string, winner: number, token?: string) {
 	simnet.mineEmptyBlocks(288);
-	let response = await simnet.callPublicFn('bme024-0-market-predicting', 'resolve-market', [Cl.uint(marketId), Cl.stringAscii(category)], bob);
+	let response = simnet.callPublicFn('bme024-0-market-predicting', 'resolve-market', [Cl.uint(marketId), Cl.stringAscii(category)], bob);
 	expect(response.result).toEqual(Cl.ok(Cl.uint(winner)));
 	return response;
 }
-async function resolveMarketUndisputed(marketId: number, code?: number) {
-	let response = await simnet.callPublicFn('bme024-0-market-predicting', 'resolve-market-undisputed', [Cl.uint(marketId)], bob);
+async function resolveMarketUndisputed(simnet: Simnet, marketId: number, code?: number) {
+	let response = simnet.callPublicFn('bme024-0-market-predicting', 'resolve-market-undisputed', [Cl.uint(marketId)], bob);
 	if (code) {
 		expect(response.result).toEqual(Cl.error(Cl.uint(code)));
 	} else {
 		expect(response.result).toEqual(Cl.ok(Cl.bool(true)));
 	}
 }
-async function claim(user: string, marketId: number, share: number, code?: number) {
-	let response = await simnet.callPublicFn('bme024-0-market-predicting', 'claim-winnings', [Cl.uint(marketId), Cl.principal(stxToken)], user);
+async function claim(simnet: Simnet, user: string, marketId: number, share: number, code?: number) {
+	let response = simnet.callPublicFn('bme024-0-market-predicting', 'claim-winnings', [Cl.uint(marketId), Cl.principal(stxToken)], user);
 	if (code) {
 		expect(response.result).toEqual(Cl.error(Cl.uint(code)));
 	} else {

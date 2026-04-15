@@ -1,8 +1,6 @@
 import { Cl } from '@stacks/transactions';
 import { describe, expect, it } from 'vitest';
-import { alice, bob, constructDao, coreProposals, deployer, proposalVoting, setupSimnet } from '../helpers';
-
-const simnet = await setupSimnet();
+import { alice, bob, constructDao, coreProposals, deployer, proposalVoting } from '../dao_helpers';
 
 describe('custom majority tests', () => {
 	it('check value set by proposal', async () => {
@@ -41,10 +39,10 @@ describe('custom majority tests', () => {
 		await constructDao(simnet);
 		const proposal = 'bdp001-initialise-token-sale';
 		await corePropose(deployer, proposal);
-		await simnet.mineEmptyBurnBlocks(20);
+		simnet.mineEmptyBurnBlocks(20);
 		vote(bob, proposal, 100, false);
 		vote(alice, proposal, 100, true);
-		await simnet.mineEmptyBurnBlocks(20);
+		simnet.mineEmptyBurnBlocks(20);
 		ensureProposalDataMatches(proposal, 100, 100, -1, deployer, false, false);
 		conclude(proposal, true, 3009);
 	});
@@ -53,12 +51,12 @@ describe('custom majority tests', () => {
 		await constructDao(simnet);
 		const proposal = 'bdp001-initialise-token-sale';
 		await corePropose(deployer, proposal);
-		await simnet.mineEmptyBurnBlocks(20);
+		simnet.mineEmptyBurnBlocks(20);
 		vote(bob, proposal, 100, false);
 		vote(alice, proposal, 100, true);
-		await simnet.mineEmptyBurnBlocks(20);
+		simnet.mineEmptyBurnBlocks(20);
 		ensureProposalDataMatches(proposal, 100, 100, -1, deployer, false, false);
-		await simnet.mineEmptyBurnBlocks(200);
+		simnet.mineEmptyBurnBlocks(200);
 		conclude(proposal, false);
 	});
 
@@ -66,12 +64,12 @@ describe('custom majority tests', () => {
 		await constructDao(simnet);
 		const proposal = 'bdp001-initialise-token-sale';
 		await corePropose(deployer, proposal, 5001);
-		await simnet.mineEmptyBurnBlocks(20);
+		simnet.mineEmptyBurnBlocks(20);
 		vote(bob, proposal, 10001, false);
 		vote(alice, proposal, 10002, true);
-		await simnet.mineEmptyBurnBlocks(20);
+		simnet.mineEmptyBurnBlocks(20);
 		ensureProposalDataMatches(proposal, 10002, 10001, 5001, deployer, false, false);
-		await simnet.mineEmptyBurnBlocks(200);
+		simnet.mineEmptyBurnBlocks(200);
 		conclude(proposal, false);
 	});
 
@@ -79,12 +77,12 @@ describe('custom majority tests', () => {
 		await constructDao(simnet);
 		const proposal = 'bdp001-initialise-token-sale';
 		await corePropose(deployer, proposal, 5001);
-		await simnet.mineEmptyBurnBlocks(20);
+		simnet.mineEmptyBurnBlocks(20);
 		vote(bob, proposal, 10001, false);
 		vote(alice, proposal, 10002, true);
-		await simnet.mineEmptyBurnBlocks(20);
+		simnet.mineEmptyBurnBlocks(20);
 		ensureProposalDataMatches(proposal, 10002, 10001, 5001, deployer, false, false);
-		await simnet.mineEmptyBurnBlocks(200);
+		simnet.mineEmptyBurnBlocks(200);
 		conclude(proposal, false);
 	});
 
@@ -92,12 +90,12 @@ describe('custom majority tests', () => {
 		await constructDao(simnet);
 		const proposal = 'bdp001-initialise-token-sale';
 		await corePropose(deployer, proposal, 5001);
-		await simnet.mineEmptyBurnBlocks(20);
+		simnet.mineEmptyBurnBlocks(20);
 		vote(bob, proposal, 10000, false);
 		vote(alice, proposal, 10005, true);
-		await simnet.mineEmptyBurnBlocks(20);
+		simnet.mineEmptyBurnBlocks(20);
 		ensureProposalDataMatches(proposal, 10005, 10000, 5001, deployer, false, false);
-		await simnet.mineEmptyBurnBlocks(200);
+		simnet.mineEmptyBurnBlocks(200);
 		conclude(proposal, true);
 	});
 });
@@ -105,7 +103,7 @@ describe('custom majority tests', () => {
 // ==========================================================================================
 // Helper functions
 async function conclude(proposal: string, outcome: boolean, errorCode?: number) {
-	const response = await simnet.callPublicFn(proposalVoting, 'conclude', [Cl.principal(`${deployer}.${proposal}`)], bob);
+	const response = simnet.callPublicFn(proposalVoting, 'conclude', [Cl.principal(`${deployer}.${proposal}`)], bob);
 	if (errorCode) {
 		expect(response.result).toEqual(Cl.error(Cl.uint(errorCode)));
 	} else {
@@ -113,7 +111,7 @@ async function conclude(proposal: string, outcome: boolean, errorCode?: number) 
 	}
 }
 async function vote(voter: string, proposal: string, amount: number, yes: boolean, errorCode?: number) {
-	const response = await simnet.callPublicFn(proposalVoting, 'vote', [Cl.uint(amount), Cl.bool(yes), Cl.principal(`${deployer}.${proposal}`), Cl.none()], voter);
+	const response = simnet.callPublicFn(proposalVoting, 'vote', [Cl.uint(amount), Cl.bool(yes), Cl.principal(`${deployer}.${proposal}`), Cl.none()], voter);
 	if (errorCode) {
 		expect(response.result).toEqual(Cl.error(Cl.uint(errorCode)));
 	} else {
@@ -121,7 +119,7 @@ async function vote(voter: string, proposal: string, amount: number, yes: boolea
 	}
 }
 async function corePropose(proposer: string, proposal: string, customMajority?: number, errorCode?: number) {
-	const response = await simnet.callPublicFn(
+	const response = simnet.callPublicFn(
 		coreProposals,
 		'core-propose',
 		[Cl.principal(`${deployer}.${proposal}`), Cl.uint(simnet.burnBlockHeight + 10), Cl.uint(100), !customMajority ? Cl.none() : Cl.some(Cl.uint(customMajority))],
@@ -142,7 +140,7 @@ async function ensureProposalDataMatches(
 	concluded: boolean,
 	passed: boolean
 ) {
-	let response = await simnet.callReadOnlyFn(proposalVoting, 'get-proposal-data', [Cl.principal(`${deployer}.${proposal}`)], alice);
+	let response = simnet.callReadOnlyFn(proposalVoting, 'get-proposal-data', [Cl.principal(`${deployer}.${proposal}`)], alice);
 	expect(response.result).toMatchObject(
 		Cl.some(
 			Cl.tuple({

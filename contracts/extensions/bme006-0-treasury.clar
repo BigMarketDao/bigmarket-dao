@@ -15,21 +15,13 @@
 
 (define-constant err-unauthorised (err u3000))
 (define-constant err-invalid-amount (err u3001))
+(define-constant err-invalid-slippage (err u3002))
 
 (define-constant share-fee-to 'SP1Y5YSTAHZ88XYK1VPDH24GY0HPX5J4JECTMY4A1.univ2-share-fee-to) 
 (define-constant SCALE u1000000)
 
 ;; --- Transferable traits
 (define-data-var slippage-bips uint u500) ;; default 5%
-
-(define-public (set-slippage-bips (bips uint))
-  (begin
-    (try! (is-dao-or-extension))
-    (asserts! (and (>= bips u1) (<= bips u3000)) err-invalid-amount) ;; 0.01%..30% bounds
-    (var-set slippage-bips bips)
-    (ok true)
-  )
-)
 
 (define-trait sip009-transferable
 	(
@@ -65,6 +57,15 @@
 
 ;; --- Internal DAO functions
 
+(define-public (set-slippage-bips (bips uint))
+  (begin
+    (try! (is-dao-or-extension))
+    (asserts! (and (>= bips u1) (<= bips u3000)) err-invalid-amount) ;; 0.01%..30% bounds
+    (var-set slippage-bips bips)
+    (ok true)
+  )
+)
+
 (define-public (swap-tokens
   (token0 <ft-velar-token>) (token1 <ft-velar-token>)
   (token-in <ft-velar-token>) (token-out <ft-velar-token>)
@@ -75,14 +76,14 @@
 		(min-amount (/ min-amount-scaled SCALE))
 	)
     (try! (is-dao-or-extension))
-    (asserts! (> amount u0) err-invalid-amount)
-    (asserts! (> amount min-amount) err-invalid-amount)
+    (asserts! (>= amount min-amount) err-invalid-amount)
     (try! (as-contract (contract-call? .univ2-router swap-exact-tokens-for-tokens
            u0 token0 token1 token-in token-out share-fee-to amount min-amount)))
     (print {event:"swap-tokens", amount:amount, min-amount:min-amount})
     (ok true)
   )
 )
+
 ;;entrypoint to pass slippage per trade
 (define-public (swap-tokens-with-slippage
   (token0 <ft-velar-token>) (token1 <ft-velar-token>)
@@ -94,8 +95,7 @@
 		(min-amount (/ min-amount-scaaled SCALE))
 	)
     (try! (is-dao-or-extension))
-    (asserts! (and (>= slip-bips u1) (<= slip-bips u3000)) err-invalid-amount)
-    (asserts! (> amount u0) err-invalid-amount)
+    (asserts! (and (>= slip-bips u1) (<= slip-bips u3000)) err-invalid-slippage)
     (asserts! (> amount min-amount) err-invalid-amount)
     (try! (as-contract (contract-call? .univ2-router swap-exact-tokens-for-tokens
            u0 token0 token1 token-in token-out share-fee-to amount min-amount)))
@@ -132,6 +132,7 @@
 
 (define-public (sip009-transfer-many (data (list 200 {token-id: uint, recipient: principal})) (asset <sip009-transferable>))
 	(begin
+		(try! (is-dao-or-extension))
 		(as-contract (fold sip009-transfer-many-iter data asset))
 		(ok true)
 	)
@@ -148,6 +149,7 @@
 
 (define-public (sip010-transfer-many (data (list 200 {amount: uint, recipient: principal, memo: (optional (buff 34))})) (asset <sip010-transferable>))
 	(begin
+		(try! (is-dao-or-extension))
 		(as-contract (fold sip010-transfer-many-iter data asset))
 		(ok true)
 	)

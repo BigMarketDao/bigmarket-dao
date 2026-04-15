@@ -22,7 +22,6 @@
 (define-constant err-already-voted (err u2106))
 (define-constant err-proposal-start-no-reached (err u2109))
 (define-constant err-expecting-root (err u2110))
-(define-constant err-invalid-signature (err u2111))
 (define-constant err-proposal-already-concluded (err u2112))
 (define-constant err-end-burn-height-not-reached (err u2113))
 (define-constant err-no-votes-to-return (err u2114))
@@ -31,17 +30,17 @@
 (define-constant err-invalid-extension (err u2117))
 
 
-(define-constant structured-data-prefix 0x534950303138)
-(define-constant message-domain-hash (sha256 (unwrap! (to-consensus-buff?
-	{
-		name: "BigMarket",
-		version: "1.0.0",
-		chain-id: chain-id
-	}
-    ) err-unauthorised)
-))
+;; (define-constant structured-data-prefix 0x534950303138)
+;; (define-constant message-domain-hash (sha256 (unwrap! (to-consensus-buff?
+;; 	{
+;; 		name: "BigMarket",
+;; 		version: "1.0.0",
+;; 		chain-id: chain-id
+;; 	}
+;;     ) err-unauthorised)
+;; ))
 
-(define-constant structured-data-header (concat structured-data-prefix message-domain-hash))
+;; (define-constant structured-data-header (concat structured-data-prefix message-domain-hash))
 
 (define-data-var voting-duration uint u288)
 
@@ -132,74 +131,74 @@
 )
 
 
-(define-public (batch-vote (votes (list 50 {message: (tuple 
-                                                (market principal)
-                                                (market-id uint)
-                                                (attestation (string-ascii 100)) 
-                                                (timestamp uint) 
-                                                (category-for uint)
-                                                (amount uint)
-                                                (voter principal)
-                                                (prev-market-id (optional uint))),
-                                   signature: (buff 65)})))
-  (begin
-    (ok (fold fold-vote votes u0))
-  )
-)
+;; (define-public (batch-vote (votes (list 50 {message: (tuple 
+;;                                                 (market principal)
+;;                                                 (market-id uint)
+;;                                                 (attestation (string-ascii 100)) 
+;;                                                 (timestamp uint) 
+;;                                                 (category-for uint)
+;;                                                 (amount uint)
+;;                                                 (voter principal)
+;;                                                 (prev-market-id (optional uint))),
+;;                                    signature: (buff 65)})))
+;;   (begin
+;;     (ok (fold fold-vote votes u0))
+;;   )
+;; )
 
-(define-private (fold-vote  (input-vote {message: (tuple 
-                                                (market principal)
-                                                (market-id uint)
-                                                (attestation (string-ascii 100)) 
-                                                (timestamp uint) 
-                                                (category-for uint)
-                                                (amount uint)
-                                                (voter principal)
-                                                (prev-market-id (optional uint))),
-                                     signature: (buff 65)}) (current uint))
-  (let
-    (
-      (vote-result (process-vote input-vote))
-    )
-    (if (is-ok vote-result)
-        (if (unwrap! vote-result u0)
-            (+ current u1)
-            current) 
-        current)
-  )
-)
+;; (define-private (fold-vote  (input-vote {message: (tuple 
+;;                                                 (market principal)
+;;                                                 (market-id uint)
+;;                                                 (attestation (string-ascii 100)) 
+;;                                                 (timestamp uint) 
+;;                                                 (category-for uint)
+;;                                                 (amount uint)
+;;                                                 (voter principal)
+;;                                                 (prev-market-id (optional uint))),
+;;                                      signature: (buff 65)}) (current uint))
+;;   (let
+;;     (
+;;       (vote-result (process-vote input-vote))
+;;     )
+;;     (if (is-ok vote-result)
+;;         (if (unwrap! vote-result u0)
+;;             (+ current u1)
+;;             current) 
+;;         current)
+;;   )
+;; )
 
-(define-private (process-vote
-    (input-vote {message: (tuple 
-                            (market principal)
-                            (market-id uint)
-                            (attestation (string-ascii 100)) 
-                            (timestamp uint) 
-                            (category-for uint)
-                            (amount uint)
-                            (voter principal)
-                            (prev-market-id (optional uint))),
-                 signature: (buff 65)}))
-  (let
-      (
-        ;; Extract relevant fields from the message
-        (message-data (get message input-vote))
-        (attestation (get attestation message-data))
-        (timestamp (get timestamp message-data))
-        (market (get market message-data))
-        (market-id (get market-id message-data))
-        (voter (get voter message-data))
-        (category-for (get category-for message-data))
-        (amount (get amount message-data))
-        ;; Verify the signature
-        (message (tuple (attestation attestation) (market-id market-id) (timestamp timestamp) (vote (get category-for message-data))))
-        (structured-data-hash (sha256 (unwrap! (to-consensus-buff? message) err-unauthorised)))
-        (is-valid-sig (verify-signed-structured-data structured-data-hash (get signature input-vote) voter))
-      )
-    (if is-valid-sig
-        (process-market-vote market market-id voter category-for amount true (get prev-market-id message-data) )
-        (ok false)) ;; Invalid signature
-  ))
+;; (define-private (process-vote
+;;     (input-vote {message: (tuple 
+;;                             (market principal)
+;;                             (market-id uint)
+;;                             (attestation (string-ascii 100)) 
+;;                             (timestamp uint) 
+;;                             (category-for uint)
+;;                             (amount uint)
+;;                             (voter principal)
+;;                             (prev-market-id (optional uint))),
+;;                  signature: (buff 65)}))
+;;   (let
+;;       (
+;;         ;; Extract relevant fields from the message
+;;         (message-data (get message input-vote))
+;;         (attestation (get attestation message-data))
+;;         (timestamp (get timestamp message-data))
+;;         (market (get market message-data))
+;;         (market-id (get market-id message-data))
+;;         (voter (get voter message-data))
+;;         (category-for (get category-for message-data))
+;;         (amount (get amount message-data))
+;;         ;; Verify the signature
+;;         (message (tuple (attestation attestation) (market-id market-id) (timestamp timestamp) (vote (get category-for message-data))))
+;;         (structured-data-hash (sha256 (unwrap! (to-consensus-buff? message) err-unauthorised)))
+;;         (is-valid-sig (verify-signed-structured-data structured-data-hash (get signature input-vote) voter))
+;;       )
+;;     (if is-valid-sig
+;;         (process-market-vote market market-id voter category-for amount true (get prev-market-id message-data) )
+;;         (ok false)) ;; Invalid signature
+;;   ))
 
 
 (define-private (process-market-vote
@@ -252,25 +251,25 @@
 	(default-to u0 (map-get? member-total-votes {market-id: market-id, voter: voter}))
 )
 
-(define-read-only (verify-signature (hash (buff 32)) (signature (buff 65)) (signer principal))
-	(is-eq (principal-of? (unwrap! (secp256k1-recover? hash signature) false)) (ok signer))
-)
+;; (define-read-only (verify-signature (hash (buff 32)) (signature (buff 65)) (signer principal))
+;; 	(is-eq (principal-of? (unwrap! (secp256k1-recover? hash signature) false)) (ok signer))
+;; )
 
-(define-read-only (verify-signed-structured-data (structured-data-hash (buff 32)) (signature (buff 65)) (signer principal))
-	(verify-signature (sha256 (concat structured-data-header structured-data-hash)) signature signer)
-)
+;; (define-read-only (verify-signed-structured-data (structured-data-hash (buff 32)) (signature (buff 65)) (signer principal))
+;; 	(verify-signature (sha256 (concat structured-data-header structured-data-hash)) signature signer)
+;; )
 
 ;; Conclusion
 
-(define-read-only (get-poll-status (market principal) (market-id uint))
-    (let
-        (
-            (poll-data (unwrap! (map-get? resolution-polls {market-id: market-id, market: market}) err-unknown-proposal))
-            (is-active (< burn-block-height (get end-burn-height poll-data)))
-        )
-        (ok {active: is-active, concluded: (get concluded poll-data), votes: (get votes poll-data)})
-    )
-)
+;; (define-read-only (get-poll-status (market principal) (market-id uint))
+;;     (let
+;;         (
+;;             (poll-data (unwrap! (map-get? resolution-polls {market-id: market-id, market: market}) err-unknown-proposal))
+;;             (is-active (< burn-block-height (get end-burn-height poll-data)))
+;;         )
+;;         (ok {active: is-active, concluded: (get concluded poll-data), votes: (get votes poll-data)})
+;;     )
+;; )
     
 
 (define-public (conclude-market-vote (market <prediction-market-trait>) (market-id uint))

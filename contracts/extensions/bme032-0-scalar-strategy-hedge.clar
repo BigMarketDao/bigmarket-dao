@@ -9,17 +9,24 @@
 
 (impl-trait .hedge-trait.hedge-trait)
 (use-trait ft-velar-token 'SP2AKWJYC7BNY18W1XXKPGP0YVEK63QJG4793Z2D4.sip-010-trait-ft-standard.sip-010-trait)
+(impl-trait 'SP3JP0N1ZXGASRJ0F7QAHWFPGTVK9T2XNXDB908Z.extension-trait.extension-trait)
 
 (define-constant err-unauthorised (err u32000))
 (define-constant err-already-hedged (err u32001))
 (define-constant err-already-executed (err u32002))
 (define-constant err-hedge-not-found (err u32003))
-(define-constant err-token-incorrect (err u32004))
+(define-constant err-token-in-incorrect (err u32004))
+(define-constant err-token-out-incorrect (err u32004))
 (define-constant err-pair-not-found (err u32005))
 (define-constant err-cooldown (err u32006))
 (define-constant err-amount-zero (err u32007))
 (define-constant err-slippage (err u32008))
 (define-constant err-invalid-amount (err u32009))
+(define-constant err-wrong-market-contract (err u32010))
+(define-constant err-token-in-out-equal (err u32011))
+(define-constant err-token-in-equal (err u32012))
+(define-constant err-token-out-equal (err u32012))
+(define-constant err-token-incorrect (err u32013))
 
 (define-constant SCALE u1000000)
 
@@ -97,10 +104,10 @@
   (begin
     (try! (is-dao-or-extension))
     ;; Check token-in is one of token-a or token-b
-    (asserts! (or (is-eq token-in token-a) (is-eq token-in token-b)) err-token-incorrect)
+    (asserts! (or (is-eq token-in token-a) (is-eq token-in token-b)) err-token-in-equal)
     ;; Check token-out is the other one
-    (asserts! (or (is-eq token-out token-a) (is-eq token-out token-b)) err-token-incorrect)
-    (asserts! (not (is-eq token-in token-out)) err-token-incorrect)
+    (asserts! (or (is-eq token-out token-a) (is-eq token-out token-b)) err-token-out-equal)
+    (asserts! (not (is-eq token-in token-out)) err-token-in-out-equal)
 
     ;; Lexicographic ordering
     (let (
@@ -143,7 +150,7 @@
   )
     ;; auth + source contract check
     (try! (is-dao-or-extension))
-    (asserts! (is-eq contract-caller (var-get hedge-scalar-contract)) err-unauthorised)
+    (asserts! (is-eq contract-caller (var-get hedge-scalar-contract)) err-wrong-market-contract)
 
     ;; one-shot safety: refuse if this market was already hedged here
     (asserts! (is-none (map-get? hedges market-id)) err-already-executed)
@@ -155,8 +162,8 @@
     )
 
     ;; pair validation: enforce tokens match configured direction
-    (asserts! (is-eq (contract-of token-in)  expected-in)  err-token-incorrect)
-    (asserts! (is-eq (contract-of token-out) expected-out) err-token-incorrect)
+    (asserts! (is-eq (contract-of token-in)  expected-in)  err-token-in-incorrect)
+    (asserts! (is-eq (contract-of token-out) expected-out) err-token-out-incorrect)
 
     ;; compute bounded amount
     (let (
@@ -195,7 +202,7 @@
   (begin 
     ;; caller must be both an ACTIVE extension and sepecifically the scalar prediction market
     (try! (is-dao-or-extension))
-    (asserts! (is-eq contract-caller (var-get hedge-market-contract)) err-unauthorised)
+    (asserts! (is-eq contract-caller (var-get hedge-market-contract)) err-wrong-market-contract)
     (print {event: "perform-custom-hedge", market-id: market-id, predicted: predicted-index})
     (ok true)
   )
@@ -210,4 +217,10 @@
     )
     (ok amt)
   )
+)
+
+;; --- Extension callback
+
+(define-public (callback (sender principal) (memo (buff 34)))
+	(ok true)
 )

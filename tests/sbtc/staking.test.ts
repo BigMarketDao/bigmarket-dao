@@ -2,10 +2,9 @@ import { boolCV, Cl, listCV, noneCV, principalCV, stringAsciiCV, uintCV } from '
 import { bufferFromHex } from '@stacks/transactions/dist/cl';
 import { describe, expect, it } from 'vitest';
 import { createBinaryMarket, predictCategory } from '../categorical/categorical.test';
-import { constructDao, metadataHash, sbtcToken, setupSimnet } from '../helpers';
+import { constructDao, metadataHash, sbtcToken } from '../dao_helpers';
 
-const simnet = await setupSimnet();
-const accounts = await simnet.getAccounts();
+const accounts = simnet.getAccounts();
 const alice = accounts.get('wallet_1')!;
 const bob = accounts.get('wallet_2')!;
 const deployer = accounts.get('deployer')!;
@@ -26,16 +25,16 @@ describe('prediction errors', () => {
 describe('prediction fees and stakes', () => {
 	it('user transfers exact stake', async () => {
 		await constructDao(simnet);
-		let balances = await simnet.getAssetsMap().get('STX');
+		let balances = simnet.getAssetsMap().get('STX');
 		// console.log("prediction fees and stakes:", balances);
 
 		let response = await createBinaryMarket(0, deployer, sbtcToken);
 		expect(response.result).toEqual(Cl.ok(Cl.uint(0)));
 		response = await predictCategory(alice, 0, 'yay', 2000000, 1, sbtcToken);
-		balances = await simnet.getAssetsMap().get('STX');
+		balances = simnet.getAssetsMap().get('STX');
 
 		response = await predictCategory(bob, 0, 'nay', 10000000, 0, sbtcToken);
-		const data = await simnet.callReadOnlyFn('bme024-0-market-predicting', 'get-market-data', [Cl.uint(0)], alice);
+		const data = simnet.callReadOnlyFn('bme024-0-market-predicting', 'get-market-data', [Cl.uint(0)], alice);
 		expect(data.result).toMatchObject(
 			Cl.some(
 				Cl.tuple({
@@ -65,7 +64,7 @@ describe('prediction fees and stakes', () => {
 		let response = await createBinaryMarket(0, deployer, sbtcToken);
 		response = await predictCategory(alice, 0, 'yay', 2000000, 1, sbtcToken);
 		response = await predictCategory(bob, 0, 'nay', 10000000, 0, sbtcToken);
-		const data = await simnet.callReadOnlyFn('bme024-0-market-predicting', 'get-market-data', [Cl.uint(0)], alice);
+		const data = simnet.callReadOnlyFn('bme024-0-market-predicting', 'get-market-data', [Cl.uint(0)], alice);
 		expect(data.result).toMatchObject(
 			Cl.some(
 				Cl.tuple({
@@ -92,7 +91,7 @@ describe('prediction fees and stakes', () => {
 		response = await predictCategory(alice, 0, 'yay', 2000000, 1, sbtcToken);
 
 		// check stake
-		let aliceStake = await simnet.getMapEntry(
+		let aliceStake = simnet.getMapEntry(
 			'bme024-0-market-predicting',
 			'stake-balances',
 			Cl.tuple({
@@ -106,7 +105,7 @@ describe('prediction fees and stakes', () => {
 
 		response = await predictCategory(alice, 0, 'nay', 4000000, 0, sbtcToken);
 
-		aliceStake = await simnet.getMapEntry(
+		aliceStake = simnet.getMapEntry(
 			'bme024-0-market-predicting',
 			'stake-balances',
 			Cl.tuple({
